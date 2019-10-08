@@ -1,4 +1,5 @@
 ﻿using JuegoAleatorio.JuegoAleatorioDTOs;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace RG39
 {
@@ -25,7 +25,6 @@ namespace RG39
             try
             {
                 InitializeComponent();
-                archivos.Clear(); // está por las dudas, vacia la lista de archivos
                 LeerDatos();
                 InicializarRuta();
             }
@@ -39,16 +38,16 @@ namespace RG39
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(ruta))
+                if (!string.IsNullOrWhiteSpace(ruta)) // si la ruta no está vacia o nula
                 {
-                    if (archivos.Count > 0)
+                    if (archivos.Count > 0) // si existen archivos
                     {
                         Random aleatorio = new Random();
                         ProcessStartInfo info = new ProcessStartInfo();
                         int num = aleatorio.Next(1, archivos.Count + 1);
                         info.UseShellExecute = true;
                         info.WorkingDirectory = ruta;
-                        ArchivoDTO archivo = archivos.FirstOrDefault(a => a.Id == num); // Busca el archivo con el id aleatorio generado
+                        ArchivoDTO archivo = archivos.FirstOrDefault(a => a.Id == num && a.Activo); // Busca el archivo con el id aleatorio generado y en estado "activo"
                         if (archivo != null)
                         {
                             info.FileName = archivo.RNAF.Remove(0, ruta.Length + 1);
@@ -68,7 +67,7 @@ namespace RG39
                                         repetir = true;
                                         aleatorio = new Random();
                                         num = aleatorio.Next(1, archivos.Count + 1);
-                                        archivo = archivos.FirstOrDefault(a => a.Id == num); // Busca el archivo con el id aleatorio generado
+                                        archivo = archivos.FirstOrDefault(a => a.Id == num && a.Activo); // Busca el archivo con el id aleatorio generado y en estado "activo"
                                         info.FileName = archivo.RNAF.Remove(0, ruta.Length + 1);
                                     }
                                     else
@@ -84,9 +83,9 @@ namespace RG39
                         }
                         else
                         {
-                            string mensaje = "Disculpa, pero el juego que iba a ejecutar ya no existe, así que voy a hacer el listado de nuevo.";
+                            string mensaje = "El archivo ejecutar no está disponible, se realizará el listado de nuevo.";
                             MessageBox.Show(mensaje, "Mensaje", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            CargarArchivosEnRuta(ruta, false);
+                            CargarArchivosEnRuta(ruta, false); // false = no fue accionado desde botón, automatico
                         }
                     }
                     else
@@ -119,7 +118,7 @@ namespace RG39
                 };
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(dialog.FileName))
                 {
-                    CargarArchivosEnRuta(dialog.FileName, true);
+                    CargarArchivosEnRuta(dialog.FileName, true); // true = accionado desde botón
                 }
             }
             catch (Exception ex)
@@ -181,7 +180,12 @@ namespace RG39
 
         private void refrescar_Click_1(object sender, RoutedEventArgs e)
         {
-            CargarArchivosEnRuta(ruta, true);
+            CargarArchivosEnRuta(ruta, true); // true = accionado desde botón
+        }
+
+        private void activo_Click(object sender, RoutedEventArgs e)
+        {
+            // buscar archivo por su ID y cambiar el estado de Activo
         }
 
         // #region reutilizables
@@ -213,7 +217,8 @@ namespace RG39
                         listaProgramas.Items.Clear();
                         foreach (var archivo in archivos)
                         {
-                            listaProgramas.Items.Add(new ArchivoDTO {
+                            listaProgramas.Items.Add(new ArchivoDTO
+                            {
                                 Id = archivo.Id,
                                 Activo = archivo.Activo,
                                 RNAF = archivo.RNAF,
@@ -260,7 +265,7 @@ namespace RG39
             if (!string.IsNullOrWhiteSpace(ruta))
             {
                 rutaCargada.Content = "Ruta cargada: " + ruta;
-                CargarArchivosEnRuta(ruta, false);
+                CargarArchivosEnRuta(ruta, false); // false = no fue accionado desde botón, automatico
             }
             else
             {
