@@ -6,31 +6,47 @@
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight" 
         ResizeMode="CanResizeWithGrip"
-        MinHeight="250" MinWidth="450"
+        MinHeight="260" MinWidth="450"
         Title="RG39" Width="450">
     <Grid Background="Black">
         <TabControl x:Name="pestañas" BorderBrush="Green" Background="Black" Cursor="Arrow">
-            <TabItem x:Name="pInicio" Header="Inicio" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
-                <TabItem.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="0"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </TabItem.RenderTransform>
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Grid Name="Panel">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="30,7"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Panel" Property="Background" Value="Green" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Panel" Property="Background" Value="Black" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+
+            
+            <TabItem x:Name="pInicio" Header="Inicio" Cursor="Hand" Foreground="White">
                 <Grid Background="Black" VerticalAlignment="Top" Height="170">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
                     <Button x:Name="ejecutar" Content="INICIAR" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Click="ejecutar_Click" Height="140" Cursor="Hand" Foreground="White" BorderBrush="Green">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <RadialGradientBrush>
-                                            <GradientStop Color="Black" Offset="0.5"/>
-                                            <GradientStop Color="Green" Offset="1"/>
+                                            <GradientStop Color="Black" Offset="1"/>
+                                            <GradientStop Color="Green" Offset="0.5"/>
                                         </RadialGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -48,8 +64,8 @@
                                         <Setter Property="Background">
                                             <Setter.Value>
                                                 <RadialGradientBrush>
-                                                    <GradientStop Color="Black" Offset="1"/>
-                                                    <GradientStop Color="Green" Offset="0.5"/>
+                                                    <GradientStop Color="Black" Offset="0.5"/>
+                                                    <GradientStop Color="Green" Offset="1"/>
                                                 </RadialGradientBrush>
                                             </Setter.Value>
                                         </Setter>
@@ -58,10 +74,10 @@
                             </Style>
                         </Button.Style>
                     </Button>
-                    <CheckBox x:Name="preguntar" Content="Preguntar antes de ejecutar" HorizontalAlignment="Stretch" FontSize="14" Background="White" Foreground="White" FontWeight="Normal" FontStyle="Normal" Cursor="Hand" Margin="0,145,0,0"/>
+                    <CheckBox x:Name="preguntar" Content="Preguntar antes de ejecutar" HorizontalAlignment="Stretch" FontSize="14" Background="White" Foreground="White" Cursor="Hand" Margin="0,145,0,0"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="pLista" Header="Lista" Cursor="Hand">
+            <TabItem x:Name="pLista" Header="Lista" Cursor="Hand" Foreground="White">
                 <Grid Background="Black" Cursor="Arrow">
                     <Label x:Name="programasDisponibles" Content="Programas disponibles" HorizontalAlignment="Stretch" Foreground="White" VerticalAlignment="Top"/>
                     <Grid VerticalAlignment="Center">
@@ -83,7 +99,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="pAjustes" Header="Ajustes" Cursor="Hand">
+            <TabItem x:Name="pAjustes" Header="Ajustes" Cursor="Hand" Foreground="White">
                 <Grid Background="Black" Cursor="Arrow">
                     <Button x:Name="cambiarRuta" Content="Cambiar ruta" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="cambiarRuta_Click" Height="30" Cursor="Hand"/>
                     <Button x:Name="refrescar" Content="Refrescar ruta y lista" VerticalAlignment="Top" Margin="0,40,0,0" Click="refrescar_Click_1" Height="30" Cursor="Hand"/>
