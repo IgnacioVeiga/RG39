@@ -8,6 +8,52 @@
         ResizeMode="CanResizeWithGrip"
         MinHeight="260" MinWidth="450"
         Title="RG39" Width="450">
+
+
+    <Window.Resources>
+        <Style x:Key="ListViewItemStyle1" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border x:Name="ListBoxItemRoot" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            Uid="Border_57">
+                            <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" 
+                                              Content="{TemplateBinding Content}" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              Uid="GridViewRowPresenter_1" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"></VisualState>
+                                    <VisualState x:Name="Disabled"></VisualState>
+                                    <VisualState x:Name="MouseOver"></VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Selected"></VisualState>
+                                    <VisualState x:Name="Unselected"></VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="Green" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="LightGreen" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+
     <Grid Background="Black">
         <TabControl x:Name="pestañas" BorderBrush="Green" Background="Black" Cursor="Arrow">
             <TabControl.Resources>
@@ -29,6 +75,9 @@
                                     <Trigger Property="IsSelected" Value="False">
                                         <Setter TargetName="Panel" Property="Background" Value="Black" />
                                     </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="Panel" Property="Background" Value="#3F008000" />
+                                    </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
@@ -36,7 +85,7 @@
                 </Style>
             </TabControl.Resources>
 
-            
+
             <TabItem x:Name="pInicio" Header="Inicio" Cursor="Hand" Foreground="White">
                 <Grid Background="Black" VerticalAlignment="Top" Height="170">
                     <Button x:Name="ejecutar" Content="INICIAR" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Click="ejecutar_Click" Height="140" Cursor="Hand" Foreground="White" BorderBrush="Green">
@@ -80,8 +129,8 @@
             <TabItem x:Name="pLista" Header="Lista" Cursor="Hand" Foreground="White">
                 <Grid Background="Black" Cursor="Arrow">
                     <Label x:Name="programasDisponibles" Content="Programas disponibles" HorizontalAlignment="Stretch" Foreground="White" VerticalAlignment="Top"/>
-                    <Grid VerticalAlignment="Center">
-                        <ListView x:Name="listaProgramas" VerticalAlignment="Stretch" Margin="5,25,5,25" Cursor="Arrow" Background="#3F008000" BorderBrush="Green" Foreground="White">
+                    <Grid>
+                        <ListView x:Name="listaProgramas" Margin="5,25,5,25" Cursor="Arrow" Background="#3F008000" BorderBrush="Green" Foreground="White" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Activo">
@@ -101,10 +150,10 @@
             </TabItem>
             <TabItem x:Name="pAjustes" Header="Ajustes" Cursor="Hand" Foreground="White">
                 <Grid Background="Black" Cursor="Arrow">
-                    <Button x:Name="cambiarRuta" Content="Cambiar ruta" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="cambiarRuta_Click" Height="30" Cursor="Hand"/>
-                    <Button x:Name="refrescar" Content="Refrescar ruta y lista" VerticalAlignment="Top" Margin="0,40,0,0" Click="refrescar_Click_1" Height="30" Cursor="Hand"/>
-                    <Button x:Name="guardarConfig" Content="Guardar configuración" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,0,0,20" Height="30" Cursor="Hand" Click="guardarConfig_Click"/>
-                    <Button x:Name="borrarConfig" Content="Borrar configuración" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="30" Margin="0,0,0,60" Cursor="Hand" Click="borrarConfig_Click_1"/>
+                    <Button x:Name="cambiarRuta" Content="Cambiar ruta" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="cambiarRuta_Click" Height="30" Cursor="Hand" Foreground="White" Background="#3F008000" BorderBrush="Green"/>
+                    <Button x:Name="refrescar" Content="Refrescar ruta y lista" VerticalAlignment="Top" Margin="0,40,0,0" Click="refrescar_Click_1" Height="30" Cursor="Hand" Foreground="White" Background="#3F008000" BorderBrush="Green"/>
+                    <Button x:Name="guardarConfig" Content="Guardar configuración" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,0,0,20" Height="30" Cursor="Hand" Click="guardarConfig_Click" Foreground="White" Background="#3F008000" BorderBrush="Green"/>
+                    <Button x:Name="borrarConfig" Content="Borrar configuración" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="30" Margin="0,0,0,60" Cursor="Hand" Click="borrarConfig_Click_1" Foreground="White" Background="#3F008000" BorderBrush="Green"/>
                 </Grid>
             </TabItem>
         </TabControl>
