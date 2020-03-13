@@ -56,7 +56,7 @@ namespace RG39
                                 bool repetir = false;
                                 do
                                 {
-                                    MessageBoxResult respuesta = MessageBox.Show("Abrir \"" + info.FileName.ToString().Remove(info.FileName.Length - 4, 4) + "\"?", "Confirmar", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                                    MessageBoxResult respuesta = MessageBox.Show("Iniciar \"" + info.FileName.ToString().Remove(info.FileName.Length - 4, 4) + "\"?", "Confirmar", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                                     if (respuesta == MessageBoxResult.Yes)
                                     {
                                         repetir = false;
@@ -90,13 +90,13 @@ namespace RG39
                     }
                     else
                     {
-                        string mensaje = "Este directorio no tiene ningun archivo compatible \n" + formatosCompatibles;
+                        string mensaje = "En esta ruta no se tiene ningun archivo compatible \n" + formatosCompatibles;
                         AvisoDirectorioNoUtil(mensaje);
                     }
                 }
                 else
                 {
-                    string mensaje = "La ruta/directorio no existe, selecciona una correcta por favor.";
+                    string mensaje = "La ruta no existe, selecciona una correcta por favor.";
                     AvisoDirectorioNoUtil(mensaje);
                 }
             }
@@ -114,7 +114,7 @@ namespace RG39
                 {
                     AllowNonFileSystemItems = true,
                     IsFolderPicker = true,
-                    Title = "Buscar carpeta"
+                    Title = "Seleccionar ruta"
                 };
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(dialog.FileName))
                 {
@@ -200,7 +200,7 @@ namespace RG39
                     if (archivosFiltrados != null && archivosFiltrados.Any())
                     {
                         ruta = pRuta;
-                        rutaCargada.Content = "Carpeta: " + ruta;
+                        rutaCargada.Content = "Ruta cargada: " + ruta;
                         archivos.Clear();
                         foreach (string item in archivosFiltrados)
                         {
@@ -213,7 +213,7 @@ namespace RG39
                             };
                             archivos.Add(archivo);
                         }
-                        programasDisponibles.Content = "Archivos en lista: " + archivos.Count.ToString();
+                        programasDisponibles.Content = "Archivos en la lista: " + archivos.Count.ToString();
                         listaProgramas.Items.Clear();
                         foreach (var archivo in archivos)
                         {
@@ -234,19 +234,19 @@ namespace RG39
                     }
                     else
                     {
-                        string mensaje = "En la carpeta:\n" + ruta + "\nNo hay videojuegos compatibles.\n" + formatosCompatibles;
+                        string mensaje = "En:\n" + ruta + "\nNo hay videojuegos compatibles.\n" + formatosCompatibles;
                         AvisoDirectorioNoUtil(mensaje);
                     }
                 }
                 else
                 {
-                    string mensaje = "En la carpeta:\n" + ruta + "\nNo hay videojuegos compatibles.\n" + formatosCompatibles;
+                    string mensaje = "En:\n" + ruta + "\nNo hay videojuegos compatibles.\n" + formatosCompatibles;
                     AvisoDirectorioNoUtil(mensaje);
                 }
             }
             else
             {
-                string mensaje = "La carpeta no existe, selecciona una correcta por favor.";
+                string mensaje = "La ruta no existe, seleccione una correcta por favor.";
                 AvisoDirectorioNoUtil(mensaje);
             }
         }
@@ -264,12 +264,12 @@ namespace RG39
             ruta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // obtiene la ruta del escritorio del usuario en sesion
             if (!string.IsNullOrWhiteSpace(ruta))
             {
-                rutaCargada.Content = "Carpeta: " + ruta;
+                rutaCargada.Content = "Ruta cargada: " + ruta;
                 CargarArchivosEnRuta(ruta, false); // false = no fue accionado desde botón, automatico
             }
             else
             {
-                string mensaje = "No se pudo encontrar tu escritorio.\nPor favor, elige donde escanear tu lista de juegos.";
+                string mensaje = "No se pudo encontrar la ruta de tu escritorio.\nPor favor, elige donde escanear tu lista de juegos.";
                 AvisoDirectorioNoUtil(mensaje);
             }
         }
@@ -309,7 +309,7 @@ namespace RG39
                 string mensaje = "El juego que iba a ejecutar ya no se encuentra disponible";
                 archivos.Clear();
                 listaProgramas.Items.Clear();
-                programasDisponibles.Content = "Archivos en lista: " + archivos.Count.ToString();
+                programasDisponibles.Content = "Archivos en la lista: " + archivos.Count.ToString();
                 AvisoDirectorioNoUtil(mensaje);
             }
         }
