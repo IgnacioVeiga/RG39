@@ -132,12 +132,12 @@
                                     <GridViewColumn Header="Marcar">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox x:Name="activo" IsChecked="{Binding Activo}" Cursor="Hand" Click="activo_Click" />
+                                                <CheckBox x:Name="activo" IsChecked="{Binding Active}" Cursor="Hand" Click="activo_Click" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn x:Name="nombre" Header="Nombre" DisplayMemberBinding="{Binding NombreArchivo}"/>
-                                    <GridViewColumn x:Name="formato" Header="Formato" DisplayMemberBinding="{Binding Formato}"/>
+                                    <GridViewColumn x:Name="nombre" Header="Nombre" DisplayMemberBinding="{Binding FileName}"/>
+                                    <GridViewColumn x:Name="formato" Header="Formato" DisplayMemberBinding="{Binding Format}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -153,7 +153,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <CheckBox x:Name="preguntar" Content="Preguntar antes de iniciar" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Background="White" Foreground="White" Cursor="Hand" Margin="5,0,0,30"/>
+        <CheckBox x:Name="preguntar" Content="Preguntar antes de iniciar" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Cursor="Hand" Margin="5,0,0,30" Foreground="White" Background="#3F008000" BorderBrush="Green"/>
         <Label x:Name="rutaCargada" Content="Ruta cargada: " Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14"/>
     </Grid>
 </Window>

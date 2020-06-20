@@ -1,8 +1,7 @@
-﻿using JuegoAleatorio.JuegoAleatorioDTOs;
+﻿using RG39.N39;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,17 +15,17 @@ namespace RG39
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<ArchivoDTO> archivos = new List<ArchivoDTO>();
-        public string ruta = "";
-        public string formatosCompatibles = "(Formatos compatibles: \".lnk\", \".url\" o \".exe\")";
+        public static List<FileN39> archivos = new List<FileN39>();
+        public static string ruta = "";
+        public static string formatosCompatibles = "(Formatos compatibles: \".lnk\", \".url\" o \".exe\")";
 
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
-                LeerDatos();
-                InicializarRuta();
+                FunctionsN39.LeerDatos(preguntar);
+                FunctionsN39.InicializarRuta(pAjustes, rutaCargada, programasDisponibles, listaProgramas);
             }
             catch (Exception ex)
             {
@@ -38,19 +37,37 @@ namespace RG39
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(ruta)) // si la ruta no está vacia o nula
+                if (string.IsNullOrWhiteSpace(ruta))
                 {
-                    if (archivos.Count > 0) // si existen archivos
+                    string mensaje = "La ruta no existe, selecciona una correcta por favor.";
+                    FunctionsN39.AvisoDirectorioNoUtil(mensaje, pAjustes);
+                }
+                else
+                {
+                    if (archivos.Count <= 0)
+                    {
+                        string mensaje = "En esta ruta no se tiene ningun archivo compatible \n" + formatosCompatibles;
+                        FunctionsN39.AvisoDirectorioNoUtil(mensaje, pAjustes);
+                    }
+                    else
                     {
                         Random aleatorio = new Random();
                         ProcessStartInfo info = new ProcessStartInfo();
                         int num = aleatorio.Next(1, archivos.Count + 1);
                         info.UseShellExecute = true;
                         info.WorkingDirectory = ruta;
-                        ArchivoDTO archivo = archivos.FirstOrDefault(a => a.Id == num && a.Activo); // Busca el archivo con el id aleatorio generado y en estado "activo"
-                        if (archivo != null)
+
+                        // Busca el archivo con el id aleatorio generado y en estado "activo"
+                        FileN39 archivo = archivos.FirstOrDefault(a => a.Id == num && a.Active);
+                        if (archivo == null)
                         {
-                            info.FileName = archivo.RNAF.Remove(0, ruta.Length + 1);
+                            string mensaje = "El archivo ejecutar no está disponible, se realizará el listado de nuevo.";
+                            MessageBox.Show(mensaje, "Mensaje", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            FunctionsN39.CargarArchivosEnRuta(ruta, pAjustes, rutaCargada, programasDisponibles, listaProgramas);
+                        }
+                        else
+                        {
+                            info.FileName = archivo.FilePath.Remove(0, ruta.Length + 1);
                             if (preguntar.IsChecked == true)
                             {
                                 bool repetir = false;
@@ -60,15 +77,17 @@ namespace RG39
                                     if (respuesta == MessageBoxResult.Yes)
                                     {
                                         repetir = false;
-                                        EjecutarJuego(info);
+                                        FunctionsN39.EjecutarJuego(info, listaProgramas, programasDisponibles, pAjustes);
                                     }
                                     else if (respuesta == MessageBoxResult.No)
                                     {
                                         repetir = true;
                                         aleatorio = new Random();
                                         num = aleatorio.Next(1, archivos.Count + 1);
-                                        archivo = archivos.FirstOrDefault(a => a.Id == num && a.Activo); // Busca el archivo con el id aleatorio generado y en estado "activo"
-                                        info.FileName = archivo.RNAF.Remove(0, ruta.Length + 1);
+
+                                        // Busca el archivo con el id aleatorio generado y en estado "activo"
+                                        archivo = archivos.FirstOrDefault(a => a.Id == num && a.Active);
+                                        info.FileName = archivo.FilePath.Remove(0, ruta.Length + 1);
                                     }
                                     else
                                     {
@@ -78,26 +97,10 @@ namespace RG39
                             }
                             else
                             {
-                                EjecutarJuego(info);
+                                FunctionsN39.EjecutarJuego(info, listaProgramas, programasDisponibles, pAjustes);
                             }
                         }
-                        else
-                        {
-                            string mensaje = "El archivo ejecutar no está disponible, se realizará el listado de nuevo.";
-                            MessageBox.Show(mensaje, "Mensaje", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            CargarArchivosEnRuta(ruta, false); // false = no fue accionado desde botón, automatico
-                        }
                     }
-                    else
-                    {
-                        string mensaje = "En esta ruta no se tiene ningun archivo compatible \n" + formatosCompatibles;
-                        AvisoDirectorioNoUtil(mensaje);
-                    }
-                }
-                else
-                {
-                    string mensaje = "La ruta no existe, selecciona una correcta por favor.";
-                    AvisoDirectorioNoUtil(mensaje);
                 }
             }
             catch (Exception ex)
@@ -118,7 +121,8 @@ namespace RG39
                 };
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(dialog.FileName))
                 {
-                    CargarArchivosEnRuta(dialog.FileName, true); // true = accionado desde botón
+                    if(FunctionsN39.CargarArchivosEnRuta(dialog.FileName, pAjustes, rutaCargada, programasDisponibles, listaProgramas))
+                        MessageBox.Show("Cantidad de archivos compatibles: " + archivos.Count.ToString(), "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
@@ -129,12 +133,10 @@ namespace RG39
 
         private void guardarConfig_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(@".\config.xml"))
-            {
-                File.Delete(@".\config.xml");
-            }
             try
             {
+                if (File.Exists(@".\config.xml"))
+                    File.Delete(@".\config.xml");
                 XmlWriter config = XmlWriter.Create("config.xml");
                 config.WriteStartElement("Configuracion");
                 config.WriteElementString("PreguntarJuego", preguntar.IsChecked.ToString());
@@ -151,26 +153,17 @@ namespace RG39
 
         private void borrarConfig_Click_1(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(@".\config.xml"))
-            {
-                try
-                {
-                    File.Delete(@".\config.xml");
-                }
-                catch (IOException ex)
-                {
-                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
             try
             {
+                if (File.Exists(@".\config.xml"))
+                    File.Delete(@".\config.xml");
+
                 ruta = "";
                 rutaCargada.Content = "Ruta cargada: " + ruta;
                 archivos.Clear();
+
                 if (MessageBox.Show("Exito al borrar!", "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information) == MessageBoxResult.OK)
-                {
-                    InicializarRuta();
-                }
+                    FunctionsN39.InicializarRuta(pAjustes, rutaCargada, programasDisponibles, listaProgramas);
             }
             catch (Exception ex)
             {
@@ -180,7 +173,8 @@ namespace RG39
 
         private void refrescar_Click_1(object sender, RoutedEventArgs e)
         {
-            CargarArchivosEnRuta(ruta, true); // true = accionado desde botón
+            if(FunctionsN39.CargarArchivosEnRuta(ruta, pAjustes, rutaCargada, programasDisponibles, listaProgramas))
+                MessageBox.Show("Cantidad de archivos compatibles: " + archivos.Count.ToString(), "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void activo_Click(object sender, RoutedEventArgs e)
@@ -188,131 +182,5 @@ namespace RG39
             // buscar archivo por su ID y cambiar el estado de Activo
         }
 
-        // #region reutilizables
-        public void CargarArchivosEnRuta(string pRuta, bool accionadoDesdeBoton)
-        {
-            if (!string.IsNullOrWhiteSpace(pRuta))
-            {
-                string[] rnaf = Directory.GetFiles(pRuta); // RNAF sigifica "Ruta Nombre de Archivo y Formato"
-                if (rnaf.Length > 0) // verifico que la carpeta no esté vacia
-                {
-                    IEnumerable<string> archivosFiltrados = rnaf.Where(f => f.Remove(0, f.Length - 4) == ".lnk" || f.Remove(0, f.Length - 4) == ".url" || f.Remove(0, f.Length - 4) == ".exe");
-                    if (archivosFiltrados != null && archivosFiltrados.Any())
-                    {
-                        ruta = pRuta;
-                        rutaCargada.Content = "Ruta cargada: " + ruta;
-                        archivos.Clear();
-                        foreach (string item in archivosFiltrados)
-                        {
-                            ArchivoDTO archivo = new ArchivoDTO
-                            {
-                                Id = archivos.Count + 1,
-                                Activo = true,
-                                RNAF = item,
-                                Ruta = ruta
-                            };
-                            archivos.Add(archivo);
-                        }
-                        programasDisponibles.Content = "Archivos en la lista: " + archivos.Count.ToString();
-                        listaProgramas.Items.Clear();
-                        foreach (var archivo in archivos)
-                        {
-                            listaProgramas.Items.Add(new ArchivoDTO
-                            {
-                                Id = archivo.Id,
-                                Activo = archivo.Activo,
-                                RNAF = archivo.RNAF,
-                                Ruta = archivo.Ruta,
-                                NombreArchivo = archivo.NombreArchivo
-                            });
-
-                        }
-                        if (accionadoDesdeBoton)
-                        {
-                            MessageBox.Show("Cantidad de archivos compatibles: " + archivos.Count.ToString(), "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                    }
-                    else
-                    {
-                        string mensaje = "En:\n" + ruta + "\nNo hay videojuegos compatibles.\n" + formatosCompatibles;
-                        AvisoDirectorioNoUtil(mensaje);
-                    }
-                }
-                else
-                {
-                    string mensaje = "En:\n" + ruta + "\nNo hay videojuegos compatibles.\n" + formatosCompatibles;
-                    AvisoDirectorioNoUtil(mensaje);
-                }
-            }
-            else
-            {
-                string mensaje = "La ruta no existe, seleccione una correcta por favor.";
-                AvisoDirectorioNoUtil(mensaje);
-            }
-        }
-
-        public void AvisoDirectorioNoUtil(string mensaje)
-        {
-            if (MessageBox.Show(mensaje, "Mensaje", MessageBoxButton.OK, MessageBoxImage.Exclamation) == MessageBoxResult.OK)
-            {
-                pAjustes.IsSelected = true;
-            }
-        }
-
-        public void InicializarRuta()
-        {
-            ruta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // obtiene la ruta del escritorio del usuario en sesion
-            if (!string.IsNullOrWhiteSpace(ruta))
-            {
-                rutaCargada.Content = "Ruta cargada: " + ruta;
-                CargarArchivosEnRuta(ruta, false); // false = no fue accionado desde botón, automatico
-            }
-            else
-            {
-                string mensaje = "No se pudo encontrar la ruta de tu escritorio.\nPor favor, elige donde escanear tu lista de juegos.";
-                AvisoDirectorioNoUtil(mensaje);
-            }
-        }
-
-        public void LeerDatos()
-        {
-            if (File.Exists(@".\config.xml"))
-            {
-                try
-                {
-                    XmlReader config = XmlReader.Create("config.xml");
-                    config.ReadStartElement("Configuracion");
-                    preguntar.IsChecked = Convert.ToBoolean(config.ReadElementContentAsString());
-                    ruta = config.ReadElementContentAsString();
-                    config.Close();
-                }
-                catch (IOException ex)
-                {
-                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            if (string.IsNullOrWhiteSpace(ruta))
-            {
-                ruta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // obtiene la ruta del escritorio del usuario en sesion
-            }
-        }
-
-        public void EjecutarJuego(ProcessStartInfo info)
-        {
-            try
-            {
-                Process.Start(info);
-                Application.Current.Shutdown();
-            }
-            catch (Win32Exception)
-            {
-                string mensaje = "El juego que iba a ejecutar ya no se encuentra disponible";
-                archivos.Clear();
-                listaProgramas.Items.Clear();
-                programasDisponibles.Content = "Archivos en la lista: " + archivos.Count.ToString();
-                AvisoDirectorioNoUtil(mensaje);
-            }
-        }
-        // #endregion reutilizables
     }
 }
