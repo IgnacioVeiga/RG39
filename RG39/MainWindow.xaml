@@ -17,25 +17,22 @@
             </TabItem>
             <TabItem x:Name="gameListTAB" Header="Games" Cursor="Hand">
                 <Grid Cursor="Arrow">
-                    <Label Content="Files: " HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
-                    <Grid>
-                        <ListView x:Name="gamesList" Margin="5,25,5,50" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Width="30">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox x:Name="active" IsChecked="{Binding Active}" Cursor="Hand"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn x:Name="filename" Header="File name" DisplayMemberBinding="{Binding FileName}"/>
-                                    <GridViewColumn x:Name="type" Header="Type" DisplayMemberBinding="{Binding Type}"/>
-                                    <GridViewColumn x:Name="from" Header="From" DisplayMemberBinding="{Binding From}"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </Grid>
+                    <ListView x:Name="gamesList" Margin="5,25,5,50" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="30">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox x:Name="active" IsChecked="{Binding Active}" Cursor="Hand"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn x:Name="filename" Header="File name" DisplayMemberBinding="{Binding FileName}"/>
+                                <GridViewColumn x:Name="type" Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                                <GridViewColumn x:Name="from" Header="From" DisplayMemberBinding="{Binding From}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
             </TabItem>
             <TabItem x:Name="settingsTAB" Header="Settings" Cursor="Hand">

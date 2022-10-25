@@ -18,11 +18,16 @@ namespace RG39
             try
             {
                 InitializeComponent();
-                List<GenericFile> steamGames = MyFunctions.GetSteamLib();
-                foreach (GenericFile game in steamGames)
+                MessageBoxResult result = MessageBox.Show("¿Cargar la libreria de Steam?", "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    game.Id = gamesList.Items.Count + 1;
-                    gamesList.Items.Add(game);
+                    List<GenericFile> steamGames = MyFunctions.GetSteamLib();
+                    foreach (GenericFile game in steamGames)
+                    {
+                        game.Id = gamesList.Items.Count + 1;
+                        gamesList.Items.Add(game);
+                    }
                 }
             }
             catch (Exception ex)
