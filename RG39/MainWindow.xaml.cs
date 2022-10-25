@@ -1,12 +1,10 @@
-﻿using RG39.N39;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows;
-using System.Xml;
+using WinCopies.Linq;
 
 namespace RG39
 {
@@ -15,172 +13,91 @@ namespace RG39
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static List<FileN39> archivos = new List<FileN39>();
-        public static string ruta = "";
-        public static string formatosCompatibles = "(Formatos compatibles: \".lnk\", \".url\" o \".exe\")";
-
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
-                FunctionsN39.LeerDatos(preguntar);
-                FunctionsN39.InicializarRuta(pAjustes, rutaCargada, programasDisponibles, listaProgramas);
+                List<GenericFile> steamGames = MyFunctions.GetSteamLib();
+                foreach (GenericFile game in steamGames)
+                {
+                    game.Id = gamesList.Items.Count + 1;
+                    gamesList.Items.Add(game);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void ejecutar_Click(object sender, RoutedEventArgs e)
+        private void Run_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(ruta))
+                if (gamesList.Items.Count > 0)
                 {
-                    string mensaje = "La ruta no existe, selecciona una correcta por favor.";
-                    FunctionsN39.AvisoDirectorioNoUtil(mensaje, pAjustes);
-                }
-                else
-                {
-                    if (archivos.Count <= 0)
+                    ProcessStartInfo info = new()
                     {
-                        string mensaje = "En esta ruta no se tiene ningun archivo compatible \n" + formatosCompatibles;
-                        FunctionsN39.AvisoDirectorioNoUtil(mensaje, pAjustes);
+                        UseShellExecute = true
+                    };
+                    int num = new Random().Next(1, gamesList.Items.Count + 1);
+
+                    // Busca el archivo con el id aleatorio generado y en estado "activo"
+                    GenericFile game = gamesList.Items.As<GenericFile>()
+                                                         .FirstOrDefault(f => f.Id == num && f.Active);
+                    if (game is null)
+                    {
+                        return;
                     }
-                    else
+                    if (game.From == FromLibrary.Other)
                     {
-                        Random aleatorio = new Random();
-                        ProcessStartInfo info = new ProcessStartInfo();
-                        int num = aleatorio.Next(1, archivos.Count + 1);
-                        info.UseShellExecute = true;
-                        info.WorkingDirectory = ruta;
-
-                        // Busca el archivo con el id aleatorio generado y en estado "activo"
-                        FileN39 archivo = archivos.FirstOrDefault(a => a.Id == num && a.Active);
-                        if (archivo == null)
+                        info.FileName = game.FileName + game.Type;
+                        info.WorkingDirectory = game.Path;
+                        MyFunctions.RunGame(info);
+                    }
+                    if (game.From == FromLibrary.Steam)
+                    {
+                        // Obtener ubicación del ejecutable steam.exe
+                        string steamExe = MyFunctions.LocateSteamExe();
+                        // Ejecutar steam.exe con el parametro steam://rungameid/game_id
+                        if (string.IsNullOrEmpty(steamExe))
                         {
-                            string mensaje = "El archivo ejecutar no está disponible, se realizará el listado de nuevo.";
-                            MessageBox.Show(mensaje, "Mensaje", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            FunctionsN39.CargarArchivosEnRuta(ruta, pAjustes, rutaCargada, programasDisponibles, listaProgramas);
+                            MessageBox.Show("No se puede ubicar steam.exe");
+                            return;
                         }
-                        else
-                        {
-                            info.FileName = archivo.FilePath.Remove(0, ruta.Length + 1);
-                            if (preguntar.IsChecked == true)
-                            {
-                                bool repetir = false;
-                                do
-                                {
-                                    MessageBoxResult respuesta = MessageBox.Show("Iniciar \"" + info.FileName.ToString().Remove(info.FileName.Length - 4, 4) + "\"?", "Confirmar", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                                    if (respuesta == MessageBoxResult.Yes)
-                                    {
-                                        repetir = false;
-                                        FunctionsN39.EjecutarJuego(info, listaProgramas, programasDisponibles, pAjustes);
-                                    }
-                                    else if (respuesta == MessageBoxResult.No)
-                                    {
-                                        repetir = true;
-                                        aleatorio = new Random();
-                                        num = aleatorio.Next(1, archivos.Count + 1);
-
-                                        // Busca el archivo con el id aleatorio generado y en estado "activo"
-                                        archivo = archivos.FirstOrDefault(a => a.Id == num && a.Active);
-                                        info.FileName = archivo.FilePath.Remove(0, ruta.Length + 1);
-                                    }
-                                    else
-                                    {
-                                        repetir = false;
-                                    }
-                                } while (repetir);
-                            }
-                            else
-                            {
-                                FunctionsN39.EjecutarJuego(info, listaProgramas, programasDisponibles, pAjustes);
-                            }
-                        }
+                        Process.Start($"\"{steamExe}\"",$"steam://rungameid/{game.SteamGameId}");
+                        Application.Current.Shutdown();
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void cambiarRuta_Click(object sender, RoutedEventArgs e)
+        private void AddGame_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                CommonOpenFileDialog dialog = new CommonOpenFileDialog
+                string gameFileName = MyFunctions.SelectExecutable();
+                if (gameFileName is null)
                 {
-                    AllowNonFileSystemItems = true,
-                    IsFolderPicker = true,
-                    Title = "Seleccionar ruta"
-                };
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(dialog.FileName))
-                {
-                    if(FunctionsN39.CargarArchivosEnRuta(dialog.FileName, pAjustes, rutaCargada, programasDisponibles, listaProgramas))
-                        MessageBox.Show("Cantidad de archivos compatibles: " + archivos.Count.ToString(), "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
                 }
+                gamesList.Items.Add(new GenericFile()
+                {
+                    Id = gamesList.Items.Count + 1,
+                    FilePath = gameFileName,
+                    Active = true,
+                    From = FromLibrary.Other
+                });
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message);
             }
         }
-
-        private void guardarConfig_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (File.Exists(@".\config.xml"))
-                    File.Delete(@".\config.xml");
-                XmlWriter config = XmlWriter.Create("config.xml");
-                config.WriteStartElement("Configuracion");
-                config.WriteElementString("PreguntarJuego", preguntar.IsChecked.ToString());
-                config.WriteElementString("Ruta", ruta);
-                config.WriteEndElement();
-                config.Close();
-                MessageBox.Show("Exito al guardar!", "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void borrarConfig_Click_1(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (File.Exists(@".\config.xml"))
-                    File.Delete(@".\config.xml");
-
-                ruta = "";
-                rutaCargada.Content = "Ruta cargada: " + ruta;
-                archivos.Clear();
-
-                if (MessageBox.Show("Exito al borrar!", "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information) == MessageBoxResult.OK)
-                    FunctionsN39.InicializarRuta(pAjustes, rutaCargada, programasDisponibles, listaProgramas);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void refrescar_Click_1(object sender, RoutedEventArgs e)
-        {
-            if(FunctionsN39.CargarArchivosEnRuta(ruta, pAjustes, rutaCargada, programasDisponibles, listaProgramas))
-                MessageBox.Show("Cantidad de archivos compatibles: " + archivos.Count.ToString(), "Mensaje", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void activo_Click(object sender, RoutedEventArgs e)
-        {
-            // buscar archivo por su ID y cambiar el estado de Activo
-        }
-
     }
 }

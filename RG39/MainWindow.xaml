@@ -3,157 +3,49 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p = "clr-namespace:RG39.Lang"
         mc:Ignorable="d"
-        SizeToContent="WidthAndHeight" 
+        SizeToContent="Manual" 
         ResizeMode="CanResizeWithGrip"
-        MinHeight="350" MinWidth="550"
+        MinHeight="600" MinWidth="800"
         Title="RG39">
-
-
-    <Window.Resources>
-        <Style x:Key="ListViewItemStyle1" TargetType="{x:Type ListViewItem}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListViewItem}">
-                        <Border x:Name="ListBoxItemRoot" 
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}"
-                            Uid="Border_57">
-                            <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}" 
-                                              Content="{TemplateBinding Content}" 
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              Margin="{TemplateBinding Padding}" 
-                                              Uid="GridViewRowPresenter_1" 
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"></VisualState>
-                                    <VisualState x:Name="Disabled"></VisualState>
-                                    <VisualState x:Name="MouseOver"></VisualState>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="SelectionStates">
-                                    <VisualState x:Name="Selected"></VisualState>
-                                    <VisualState x:Name="Unselected"></VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Background" Value="Green" />
-                    <Setter Property="Foreground" Value="White" />
-                </Trigger>
-                <Trigger Property="IsSelected" Value="true">
-                    <Setter Property="Background" Value="LightGreen" />
-                    <Setter Property="Foreground" Value="Black" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
-    <Grid Background="Black">
-        <TabControl x:Name="pestañas" BorderBrush="Green" Background="Black" Cursor="Arrow">
-            <TabControl.Resources>
-                <Style TargetType="TabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Grid Name="Panel">
-                                    <ContentPresenter x:Name="ContentSite"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        ContentSource="Header"
-                                        Margin="30,7"/>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Panel" Property="Background" Value="Green" />
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="Panel" Property="Background" Value="Black" />
-                                    </Trigger>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter TargetName="Panel" Property="Background" Value="#3F008000" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources>
-
-
-            <TabItem x:Name="pInicio" Header="Inicio" Cursor="Hand" Foreground="White">
-                <Button x:Name="ejecutar" Content="INICIAR" Margin="0,0,0,50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="36" FontWeight="Bold" Click="ejecutar_Click" Cursor="Hand" Foreground="White" BorderBrush="Green">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <RadialGradientBrush>
-                                        <GradientStop Color="Black" Offset="1"/>
-                                        <GradientStop Color="Green" Offset="0.5"/>
-                                    </RadialGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <RadialGradientBrush>
-                                                <GradientStop Color="Black" Offset="0.5"/>
-                                                <GradientStop Color="Green" Offset="1"/>
-                                            </RadialGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+    
+    <Grid>
+        <TabControl Cursor="Arrow">
+            <TabItem x:Name="MainTAB" Header="Inicio" Cursor="Hand">
+                <Button Content="{x:Static p:strings.RUN_BTN}" Margin="0,0,0,50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="36" FontWeight="Bold" Click="Run_Click" Cursor="Hand"/>
             </TabItem>
-            <TabItem x:Name="pLista" Header="Lista" Cursor="Hand" Foreground="White">
-                <Grid Background="Black" Cursor="Arrow">
-                    <Label x:Name="programasDisponibles" Content="Archivos en lista" HorizontalAlignment="Stretch" Foreground="White" VerticalAlignment="Top"/>
+            <TabItem x:Name="gameListTAB" Header="Games" Cursor="Hand">
+                <Grid Cursor="Arrow">
+                    <Label Content="Files: " HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
                     <Grid>
-                        <ListView x:Name="listaProgramas" Margin="5,25,5,50" Cursor="Arrow" Background="#3F008000" BorderBrush="Green" Foreground="White" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+                        <ListView x:Name="gamesList" Margin="5,25,5,50" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Marcar">
+                                    <GridViewColumn Width="30">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox x:Name="activo" IsChecked="{Binding Active}" Cursor="Hand" Click="activo_Click" />
+                                                <CheckBox x:Name="active" IsChecked="{Binding Active}" Cursor="Hand"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn x:Name="nombre" Header="Nombre" DisplayMemberBinding="{Binding FileName}"/>
-                                    <GridViewColumn x:Name="formato" Header="Formato" DisplayMemberBinding="{Binding Format}"/>
+                                    <GridViewColumn x:Name="filename" Header="File name" DisplayMemberBinding="{Binding FileName}"/>
+                                    <GridViewColumn x:Name="type" Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                                    <GridViewColumn x:Name="from" Header="From" DisplayMemberBinding="{Binding From}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="pAjustes" Header="Ajustes" Cursor="Hand" Foreground="White">
+            <TabItem x:Name="settingsTAB" Header="Settings" Cursor="Hand">
                 <Grid Cursor="Arrow">
-                    <Button x:Name="cambiarRuta" Content="Cambiar ruta" Height="40" Cursor="Hand" Click="cambiarRuta_Click" Foreground="White" Background="#3F008000" BorderBrush="Green" VerticalAlignment="Top"/>
-                    <Button x:Name="refrescar" Content="Refrescar lista y ruta" Height="40" Cursor="Hand" Click="refrescar_Click_1" Foreground="White" Background="#3F008000" BorderBrush="Green" VerticalAlignment="Top" Margin="0,50,0,0"/>
-                    <Button x:Name="borrarConfig" Content="Borrar configuración" Height="40" Cursor="Hand" Click="borrarConfig_Click_1" Foreground="White" Background="#3F008000" BorderBrush="Green" VerticalAlignment="Top" Margin="0,100,0,0"/>
-                    <Button x:Name="guardarConfig" Content="Guardar configuración" Height="40" Cursor="Hand" Click="guardarConfig_Click" Foreground="White" Background="#3F008000" BorderBrush="Green" VerticalAlignment="Top" Margin="0,150,0,0"/>
+                    <Button Content="Add game" Height="40" Cursor="Hand" VerticalAlignment="Top" Click="AddGame_Click"/>
+                    <Button Content="Restore default" Height="40" Cursor="Hand" VerticalAlignment="Top" Margin="0,50,0,0"/>
+                    <Button Content="Save" Height="40" Cursor="Hand" VerticalAlignment="Top" Margin="0,100,0,0"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <CheckBox x:Name="preguntar" Content="Preguntar antes de iniciar" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Cursor="Hand" Margin="5,0,0,30" Foreground="White" Background="#3F008000" BorderBrush="Green"/>
-        <Label x:Name="rutaCargada" Content="Ruta cargada: " Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14"/>
+        <Label x:Name="folder" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14"/>
     </Grid>
 </Window>
