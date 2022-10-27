@@ -179,5 +179,33 @@ namespace RG39
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void LocateSteam_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string steamFileName = MyFunctions.SelectExecutable();
+                string str = steamFileName[(steamFileName.LastIndexOf(@"\") + 1)..];
+                if (steamFileName is null || str != "steam.exe")
+                {
+                    MessageBox.Show("Ejecutable incorrecto");
+                    return;
+                }
+                else
+                {
+                    List<GenericFile> steamGames = MyFunctions.GetSteamLib();
+                    foreach (GenericFile game in steamGames)
+                    {
+                        gamesList.Items.Add(game);
+                    }
+
+                    steamExe.Content = steamFileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
