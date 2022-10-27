@@ -8,6 +8,11 @@ using GameFinder.StoreHandlers.Steam;
 using System.Runtime.InteropServices;
 using GameFinder.RegistryUtils;
 using Microsoft.Win32;
+using System.Xml;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using WinCopies.Util;
 
 namespace RG39
 {
@@ -130,6 +135,51 @@ namespace RG39
                 return exe.FileName;
             }
             return null;
+        }
+
+        public static void SaveList(List<GenericFile> game)
+        {
+            try
+            {
+                if (File.Exists(@".\list.xml"))
+                    File.Delete(@".\list.xml");
+                XmlWriter list = XmlWriter.Create("list.xml");
+                list.WriteStartElement("MyGames");
+                list.WriteElementString("Other", JsonSerializer.Serialize(game));
+                list.WriteEndElement();
+                list.Close();
+                MessageBox.Show("Ok");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public static List<GenericFile> ReadList()
+        {
+            List<GenericFile> gamesList = new();
+            try
+            {
+                if (File.Exists(@".\list.xml"))
+                {
+                    XmlReader listXML = XmlReader.Create("list.xml");
+                    listXML.ReadToFollowing("Other");
+                    string json = listXML.ReadElementContentAsString();
+                    List<GenericFile> list = JsonSerializer.Deserialize<List<GenericFile>>(json);
+                    foreach (GenericFile item in list)
+                    {
+                        gamesList.Add(item);
+                    }
+                    listXML.Close();
+                }
+                return gamesList;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
     }
 }

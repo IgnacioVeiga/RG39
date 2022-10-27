@@ -2,9 +2,6 @@
 {
     public class GenericFile
     {
-        // A primary key
-        public int Id { get; set; }
-
         public int SteamGameId { get; set; }
 
         // indicates if must be filtered
