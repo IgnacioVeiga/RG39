@@ -7,7 +7,7 @@
         // indicates if must be filtered
         public bool Active { get; set; }
 
-        // example:    "C:/Folder/FileName.ext"
+        // example:    "C:/Folder/FileName.ext" (NOT for Steam games)
         public string FilePath { get; set; }
 
         // example:    "C:/Folder"

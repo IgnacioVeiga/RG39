@@ -137,7 +137,7 @@ namespace RG39
             return null;
         }
 
-        public static void SaveList(List<GenericFile> game)
+        public static void SaveList(List<GenericFile> games)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace RG39
                     File.Delete(@".\list.xml");
                 XmlWriter list = XmlWriter.Create("list.xml");
                 list.WriteStartElement("MyGames");
-                list.WriteElementString("Other", JsonSerializer.Serialize(game));
+                list.WriteElementString("Other", JsonSerializer.Serialize(games));
                 list.WriteEndElement();
                 list.Close();
                 MessageBox.Show("Ok");
