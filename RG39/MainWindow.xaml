@@ -7,15 +7,19 @@
         mc:Ignorable="d"
         SizeToContent="Manual" 
         ResizeMode="CanResizeWithGrip"
-        MinHeight="400" MinWidth="500"
+        MinHeight="450" MinWidth="500"
         Title="RG39">
 
     <Grid>
         <Button x:Name="run_BTN" Content="{x:Static p:strings.RUN_BTN}" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontSize="32" FontWeight="Bold" Click="Run_Click" Cursor="Hand"/>
-        <TabControl Cursor="Arrow" Margin="0,70,0,0">
-            <TabItem x:Name="gameListTAB" Header="Games" Cursor="Hand">
+        <TabControl Cursor="Arrow" Margin="0,60,0,0">
+            <TabItem x:Name="gameListTAB" Header="{x:Static p:strings.GAMES_TAB}" Cursor="Hand">
                 <Grid Cursor="Arrow">
-                    <ListView x:Name="gamesList" Margin="10,10,10,50" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}" VerticalAlignment="Top">
+
+                    <Button Content="+" Height="20" Width="20" Margin="0,5,40,0" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Center" Click="AddGameToList_Click"/>
+                    <Button Content="X" Height="20" Width="20" Margin="40,5,0,0" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Center" Click="ClearList_Click"/>
+                    
+                    <ListView x:Name="gamesList" Margin="10,30,10,50" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}" VerticalAlignment="Top">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="30">
@@ -25,9 +29,9 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn x:Name="filename" Header="File name" DisplayMemberBinding="{Binding FileName}" Width="auto"/>
-                                <GridViewColumn x:Name="type" Header="Type" DisplayMemberBinding="{Binding Type}" Width="auto"/>
-                                <GridViewColumn x:Name="from" Header="From" DisplayMemberBinding="{Binding From}" Width="auto"/>
+                                <GridViewColumn x:Name="filename" Header="{x:Static p:strings.FILENAME_COL}" DisplayMemberBinding="{Binding FileName}" Width="auto"/>
+                                <GridViewColumn x:Name="type" Header="{x:Static p:strings.TYPE_COL}" DisplayMemberBinding="{Binding Type}" Width="auto"/>
+                                <GridViewColumn x:Name="from" Header="{x:Static p:strings.FROM_COL}" DisplayMemberBinding="{Binding From}" Width="auto"/>
                                 <GridViewColumn Width="30">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -40,14 +44,12 @@
                     </ListView>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="settingsTAB" Header="Settings" Cursor="Hand">
+            <TabItem x:Name="settingsTAB" Header="{x:Static p:strings.SETTINGS_TAB}" Cursor="Hand" IsEnabled="False">
                 <Grid Cursor="Arrow" VerticalAlignment="Stretch">
-                    <Button Content="Add game to list" Height="40" Cursor="Hand" VerticalAlignment="Top" Width="150" HorizontalAlignment="Left" Margin="10,10,0,0" Click="AddGameToList_Click"/>
-                    <Button Content="Clear list (others)" Height="40" Cursor="Hand" VerticalAlignment="Top" Margin="165,10,0,0" Width="150" HorizontalAlignment="Left" Click="ClearList_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Label Content="Steam instalado en: " VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Margin="10,0,0,10"/>
+        <Label Content="{x:Static p:strings.STEAM_LOCATION_MSG}" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Margin="10,0,0,10"/>
         <Label x:Name="steamExe" VerticalAlignment="Bottom" FontSize="14" Margin="149,0,45,10"/>
         <Button Content="[...]" Height="30" Width="30" Cursor="Hand" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="LocateSteam_Click"/>
     </Grid>

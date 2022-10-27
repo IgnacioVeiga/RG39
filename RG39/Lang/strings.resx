@@ -123,4 +123,37 @@
   <data name="RUN_BTN" xml:space="preserve">
     <value>RUN</value>
   </data>
+  <data name="SEL_EXE_TITLE" xml:space="preserve">
+    <value>Select executable</value>
+  </data>
+  <data name="LOAD_STEAM_LIB_MSG" xml:space="preserve">
+    <value>Load Steam library?</value>
+  </data>
+  <data name="CANNOT_LOCATE_STEAM" xml:space="preserve">
+    <value>Cannot locate steam.exe</value>
+  </data>
+  <data name="FILENAME_COL" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="TYPE_COL" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="FROM_COL" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="SETTINGS_TAB" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="GAMES_TAB" xml:space="preserve">
+    <value>Games</value>
+  </data>
+  <data name="STEAM_LOCATION_MSG" xml:space="preserve">
+    <value>Steam installed on:</value>
+  </data>
+  <data name="CLEAR_LIST_TITLE" xml:space="preserve">
+    <value>Clear list</value>
+  </data>
+  <data name="CLEAR_LIST_MSG" xml:space="preserve">
+    <value>Want to clear games from list?</value>
+  </data>
 </root>

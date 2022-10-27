@@ -1,10 +1,9 @@
-﻿using System;
+﻿using RG39.Lang;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using WinCopies.Linq;
@@ -32,7 +31,7 @@ namespace RG39
                     }
                 }
 
-                MessageBoxResult result = MessageBox.Show("¿Cargar la libreria de Steam?", "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -47,7 +46,7 @@ namespace RG39
                     // Ejecutar steam.exe con el parametro steam://rungameid/game_id
                     if (string.IsNullOrEmpty((string)steamExe.Content))
                     {
-                        MessageBox.Show("No se puede ubicar steam.exe");
+                        MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
                         return;
                     }
                 }
@@ -88,7 +87,7 @@ namespace RG39
                 {
                     if (string.IsNullOrEmpty((string)steamExe.Content))
                     {
-                        MessageBox.Show("No se puede ubicar steam.exe");
+                        MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
                         return;
                     }
                     Process.Start($"\"{steamExe.Content}\"", $"steam://rungameid/{game.SteamGameId}");
@@ -133,9 +132,10 @@ namespace RG39
         {
             try
             {
-                if (File.Exists(@".\list.xml"))
+                if (MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    File.Delete(@".\list.xml");
+                    if (File.Exists(@".\list.xml"))
+                        File.Delete(@".\list.xml");
                     gamesList.Items.Clear();
                     MessageBox.Show("Ok");
                 }
@@ -185,10 +185,8 @@ namespace RG39
             try
             {
                 string steamFileName = MyFunctions.SelectExecutable();
-                string str = steamFileName[(steamFileName.LastIndexOf(@"\") + 1)..];
-                if (steamFileName is null || str != "steam.exe")
+                if (steamFileName is null)
                 {
-                    MessageBox.Show("Ejecutable incorrecto");
                     return;
                 }
                 else

@@ -11,8 +11,7 @@ using Microsoft.Win32;
 using System.Xml;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using WinCopies.Util;
+using RG39.Lang;
 
 namespace RG39
 {
@@ -29,6 +28,24 @@ namespace RG39
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public static string LocateSteamExe()
+        {
+            try
+            {
+                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
+                if (key is not null)
+                {
+                    object steamExeDir = key.GetValue("SteamExe");
+                    if (steamExeDir is not null) return steamExeDir as string;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return string.Empty;
         }
 
         public static List<GenericFile> GetSteamLib()
@@ -73,24 +90,6 @@ namespace RG39
             return steamLib;
         }
 
-        public static string LocateSteamExe()
-        {
-            try
-            {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
-                if (key is not null)
-                {
-                    object steamExeDir = key.GetValue("SteamExe");
-                    if (steamExeDir is not null) return steamExeDir as string;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return string.Empty;
-        }
-
         public static void EpicGamesStoreLib()
         {
             //var handler = new EGSHandler();
@@ -121,7 +120,7 @@ namespace RG39
             CommonOpenFileDialog exe = new()
             {
                 // TODO: reemplazar este dialogo por el propio en creación
-                Title = "Select executable",
+                Title = strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,
 
