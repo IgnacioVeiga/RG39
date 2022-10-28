@@ -1,4 +1,5 @@
 ﻿using RG39.Lang;
+using RG39.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,7 +53,7 @@ namespace RG39
                 }
 
                 // En btn se activa si hay elementos en la lista
-                run_BTN.IsEnabled = gamesList.Items.Count > 0;
+                start_BTN.IsEnabled = gamesList.Items.Count > 0;
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@ namespace RG39
             }
         }
 
-        private void Run_Click(object sender, RoutedEventArgs e)
+        private void Start_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -120,7 +121,7 @@ namespace RG39
                                                     .Where(i => i.From == FromLibrary.Other)
                                                     .ToList());
                 // En btn se activa si hay elementos en la lista
-                run_BTN.IsEnabled = gamesList.Items.Count > 0;
+                start_BTN.IsEnabled = gamesList.Items.Count > 0;
             }
             catch (Exception ex)
             {
@@ -140,7 +141,7 @@ namespace RG39
                     MessageBox.Show("Ok");
                 }
                 // En btn se activa si hay elementos en la lista
-                run_BTN.IsEnabled = gamesList.Items.Count > 0;
+                start_BTN.IsEnabled = gamesList.Items.Count > 0;
             }
             catch (Exception ex)
             {
@@ -172,7 +173,7 @@ namespace RG39
                 gamesList.Items.RemoveAt(gameIndex);
 
                 // En btn se activa si hay elementos en la lista
-                run_BTN.IsEnabled = gamesList.Items.Count > 0;
+                start_BTN.IsEnabled = gamesList.Items.Count > 0;
             }
             catch (Exception ex)
             {
@@ -199,6 +200,22 @@ namespace RG39
 
                     steamExe.Content = steamFileName;
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ToggleLang_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Settings.Default.Lang == "en")
+                    Settings.Default.Lang = "es";
+                else
+                    Settings.Default.Lang = "en";
+
             }
             catch (Exception ex)
             {

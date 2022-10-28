@@ -3,9 +3,15 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>RG39</RootNamespace>
     <UseWPF>true</UseWPF>
     <StartupObject>RG39.App</StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Authors>Ignacio Veiga Martín</Authors>
+    <Version>1.5.0</Version>
+    <SignAssembly>False</SignAssembly>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GameFinder.StoreHandlers.Steam" Version="2.2.1" />

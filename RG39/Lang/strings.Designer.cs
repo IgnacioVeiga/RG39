@@ -124,11 +124,11 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RUN.
+        ///   Looks up a localized string similar to Multiple instances of this program are not allowed..
         /// </summary>
-        public static string RUN_BTN {
+        public static string MULTI_INSTANCE_MSG {
             get {
-                return ResourceManager.GetString("RUN_BTN", resourceCulture);
+                return ResourceManager.GetString("MULTI_INSTANCE_MSG", resourceCulture);
             }
         }
         
@@ -156,6 +156,15 @@ namespace RG39.Lang {
         public static string SETTINGS_TAB {
             get {
                 return ResourceManager.GetString("SETTINGS_TAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to START.
+        /// </summary>
+        public static string START_BTN {
+            get {
+                return ResourceManager.GetString("START_BTN", resourceCulture);
             }
         }
         
