@@ -1,4 +1,9 @@
-﻿using System.Windows;
+﻿using RG39.Lang;
+using RG39.Properties;
+using System;
+using System.Globalization;
+using System.Threading;
+using System.Windows;
 
 namespace RG39
 {
@@ -7,5 +12,31 @@ namespace RG39
     /// </summary>
     public partial class App : Application
     {
+        private static Mutex _mutex = null;
+
+        App()
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Lang);
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            string mutexId = "RandomGame";
+            _mutex = new Mutex(true, mutexId, out bool createdNew);
+            if (createdNew)
+            {
+                Exit += CloseMutexHandler;
+            }
+            else
+            {
+                MessageBox.Show(strings.MULTI_INSTANCE_MSG);
+                Current.Shutdown();
+            }
+            base.OnStartup(e);
+        }
+        protected virtual void CloseMutexHandler(object sender, EventArgs e)
+        {
+            _mutex?.Close();
+        }
     }
 }

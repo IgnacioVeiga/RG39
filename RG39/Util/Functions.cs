@@ -8,6 +8,10 @@ using GameFinder.StoreHandlers.Steam;
 using System.Runtime.InteropServices;
 using GameFinder.RegistryUtils;
 using Microsoft.Win32;
+using System.Xml;
+using System.IO;
+using System.Text.Json;
+using RG39.Lang;
 
 namespace RG39
 {
@@ -24,6 +28,24 @@ namespace RG39
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public static string LocateSteamExe()
+        {
+            try
+            {
+                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
+                if (key is not null)
+                {
+                    object steamExeDir = key.GetValue("SteamExe");
+                    if (steamExeDir is not null) return steamExeDir as string;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return string.Empty;
         }
 
         public static List<GenericFile> GetSteamLib()
@@ -68,24 +90,6 @@ namespace RG39
             return steamLib;
         }
 
-        public static string LocateSteamExe()
-        {
-            try
-            {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
-                if (key is not null)
-                {
-                    object steamExeDir = key.GetValue("SteamExe");
-                    if (steamExeDir is not null) return steamExeDir as string;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return string.Empty;
-        }
-
         public static void EpicGamesStoreLib()
         {
             //var handler = new EGSHandler();
@@ -116,7 +120,7 @@ namespace RG39
             CommonOpenFileDialog exe = new()
             {
                 // TODO: reemplazar este dialogo por el propio en creación
-                Title = "Select executable",
+                Title = strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,
 
@@ -130,6 +134,51 @@ namespace RG39
                 return exe.FileName;
             }
             return null;
+        }
+
+        public static void SaveList(List<GenericFile> games)
+        {
+            try
+            {
+                if (File.Exists(@".\list.xml"))
+                    File.Delete(@".\list.xml");
+                XmlWriter list = XmlWriter.Create("list.xml");
+                list.WriteStartElement("MyGames");
+                list.WriteElementString("Other", JsonSerializer.Serialize(games));
+                list.WriteEndElement();
+                list.Close();
+                MessageBox.Show("Ok");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public static List<GenericFile> ReadList()
+        {
+            List<GenericFile> gamesList = new();
+            try
+            {
+                if (File.Exists(@".\list.xml"))
+                {
+                    XmlReader listXML = XmlReader.Create("list.xml");
+                    listXML.ReadToFollowing("Other");
+                    string json = listXML.ReadElementContentAsString();
+                    List<GenericFile> list = JsonSerializer.Deserialize<List<GenericFile>>(json);
+                    foreach (GenericFile item in list)
+                    {
+                        gamesList.Add(item);
+                    }
+                    listXML.Close();
+                }
+                return gamesList;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
     }
 }

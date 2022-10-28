@@ -120,7 +120,43 @@
   <data name="SEARCH_FOLDER_TITLE" xml:space="preserve">
     <value>Buscar carpeta</value>
   </data>
-  <data name="RUN_BTN" xml:space="preserve">
+  <data name="START_BTN" xml:space="preserve">
     <value>INICIAR</value>
+  </data>
+  <data name="SEL_EXE_TITLE" xml:space="preserve">
+    <value>Seleccionar ejecutable</value>
+  </data>
+  <data name="LOAD_STEAM_LIB_MSG" xml:space="preserve">
+    <value>¿Cargar la librería de Steam?</value>
+  </data>
+  <data name="CANNOT_LOCATE_STEAM" xml:space="preserve">
+    <value>No se puede ubicar steam.exe</value>
+  </data>
+  <data name="FILENAME_COL" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="TYPE_COL" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="FROM_COL" xml:space="preserve">
+    <value>De</value>
+  </data>
+  <data name="SETTINGS_TAB" xml:space="preserve">
+    <value>Ajustes</value>
+  </data>
+  <data name="GAMES_TAB" xml:space="preserve">
+    <value>Juegos</value>
+  </data>
+  <data name="STEAM_LOCATION_MSG" xml:space="preserve">
+    <value>Steam instalado en:</value>
+  </data>
+  <data name="CLEAR_LIST_TITLE" xml:space="preserve">
+    <value>Limpiar lista</value>
+  </data>
+  <data name="CLEAR_LIST_MSG" xml:space="preserve">
+    <value>¿Quieres borrar juegos de la lista?</value>
+  </data>
+  <data name="MULTI_INSTANCE_MSG" xml:space="preserve">
+    <value>No se permiten múltiples instancias de este programa.</value>
   </data>
 </root>

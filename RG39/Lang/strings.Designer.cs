@@ -61,11 +61,74 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RUN.
+        ///   Looks up a localized string similar to Cannot locate steam.exe.
         /// </summary>
-        public static string RUN_BTN {
+        public static string CANNOT_LOCATE_STEAM {
             get {
-                return ResourceManager.GetString("RUN_BTN", resourceCulture);
+                return ResourceManager.GetString("CANNOT_LOCATE_STEAM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Want to clear games from list?.
+        /// </summary>
+        public static string CLEAR_LIST_MSG {
+            get {
+                return ResourceManager.GetString("CLEAR_LIST_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear list.
+        /// </summary>
+        public static string CLEAR_LIST_TITLE {
+            get {
+                return ResourceManager.GetString("CLEAR_LIST_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File name.
+        /// </summary>
+        public static string FILENAME_COL {
+            get {
+                return ResourceManager.GetString("FILENAME_COL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string FROM_COL {
+            get {
+                return ResourceManager.GetString("FROM_COL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Games.
+        /// </summary>
+        public static string GAMES_TAB {
+            get {
+                return ResourceManager.GetString("GAMES_TAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Steam library?.
+        /// </summary>
+        public static string LOAD_STEAM_LIB_MSG {
+            get {
+                return ResourceManager.GetString("LOAD_STEAM_LIB_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple instances of this program are not allowed..
+        /// </summary>
+        public static string MULTI_INSTANCE_MSG {
+            get {
+                return ResourceManager.GetString("MULTI_INSTANCE_MSG", resourceCulture);
             }
         }
         
@@ -75,6 +138,51 @@ namespace RG39.Lang {
         public static string SEARCH_FOLDER_TITLE {
             get {
                 return ResourceManager.GetString("SEARCH_FOLDER_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select executable.
+        /// </summary>
+        public static string SEL_EXE_TITLE {
+            get {
+                return ResourceManager.GetString("SEL_EXE_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SETTINGS_TAB {
+            get {
+                return ResourceManager.GetString("SETTINGS_TAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to START.
+        /// </summary>
+        public static string START_BTN {
+            get {
+                return ResourceManager.GetString("START_BTN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam installed on:.
+        /// </summary>
+        public static string STEAM_LOCATION_MSG {
+            get {
+                return ResourceManager.GetString("STEAM_LOCATION_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string TYPE_COL {
+            get {
+                return ResourceManager.GetString("TYPE_COL", resourceCulture);
             }
         }
     }
