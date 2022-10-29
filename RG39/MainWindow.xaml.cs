@@ -42,7 +42,7 @@ namespace RG39
 
                 if (resultSteam == MessageBoxResult.Yes)
                 {
-                    List<GenericFile> steamGames = MyFunctions.GetSteamLib();
+                    List<GenericFile> steamGames = MyFunctions.GetGamesFromLib(FromLibrary.Steam);
                     foreach (GenericFile game in steamGames)
                     {
                         gamesList.Items.Add(game);
@@ -58,7 +58,7 @@ namespace RG39
 
                 if (resultEpic == MessageBoxResult.Yes)
                 {
-                    List<GenericFile> epicGames = MyFunctions.GetEpicGamesStoreLib();
+                    List<GenericFile> epicGames = MyFunctions.GetGamesFromLib(FromLibrary.EpicGames);
                     foreach (GenericFile game in epicGames)
                     {
                         gamesList.Items.Add(game);
@@ -109,7 +109,7 @@ namespace RG39
                         MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
                         return;
                     }
-                    // Ejecutar steam.exe con el parametro steam://rungameid/game_id
+                    // Ejecutar steam.exe con el parametro steam://rungameid/SteamGameId
                     Process.Start($"\"{steamExe.Content}\"", $"steam://rungameid/{game.SteamGameId}");
                     Application.Current.Shutdown();
                 }
@@ -120,7 +120,10 @@ namespace RG39
                         MessageBox.Show(strings.CANNOT_LOCATE_EPIC);
                         return;
                     }
-                    // Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{game_id}{parametro}?action=launch&silent=true
+                    // Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
+                    // Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
+                    // El EGSGameId es 283080ad58e64fd084d30413888a571c
+                    // ToDo: encontrar los otros 2 parametros que lo rodean
                     MessageBox.Show($"Por ahora no puedo ejecutar \"{game.FileName}\".");
                     // Process.Start($"{epicGamesExe.Content} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
                     // Application.Current.Shutdown();
@@ -222,7 +225,7 @@ namespace RG39
                 }
                 else if (filename.EndsWith("steam.exe"))
                 {
-                    List<GenericFile> steamGames = MyFunctions.GetSteamLib();
+                    List<GenericFile> steamGames = MyFunctions.GetGamesFromLib(FromLibrary.Steam);
                     foreach (GenericFile game in steamGames)
                     {
                         gamesList.Items.Add(game);
@@ -232,7 +235,7 @@ namespace RG39
                 }
                 else if (filename.EndsWith("EpicGamesLauncher.exe"))
                 {
-                    List<GenericFile> egsGames = MyFunctions.GetEpicGamesStoreLib();
+                    List<GenericFile> egsGames = MyFunctions.GetGamesFromLib(FromLibrary.EpicGames);
                     foreach (GenericFile game in egsGames)
                     {
                         gamesList.Items.Add(game);

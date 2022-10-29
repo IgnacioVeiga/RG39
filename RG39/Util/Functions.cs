@@ -61,55 +61,52 @@ namespace RG39
             return string.Empty;
         }
 
-        public static List<GenericFile> GetSteamLib()
+        public static List<GenericFile> GetGamesFromLib(FromLibrary from)
         {
-            List<GenericFile> steamLib = new();
+            List<GenericFile> games = new();
 
-            // use the Windows registry on Windows
-            // Linux doesn't have a registry
-            SteamHandler handler = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? new SteamHandler(new WindowsRegistry())
-                : new SteamHandler(null);
-
-            // method 1: iterate over the game-error result
-            foreach ((SteamGame game, string error) in handler.FindAllGames())
+            if (FromLibrary.Steam == from)
             {
-                if (game is not null && game.AppId != 228980)
+                // use the Windows registry on Windows
+                // Linux doesn't have a registry
+                SteamHandler handler = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? new SteamHandler(new WindowsRegistry())
+                    : new SteamHandler(null);
+
+                foreach ((SteamGame game, string error) in handler.FindAllGames())
                 {
-                    steamLib.Add(new GenericFile()
+                    if (game is not null && game.AppId != 228980)
                     {
-                        Active = true,
-                        FileName = game.Name,
-                        FilePath = game.Path,
-                        From = FromLibrary.Steam,
-                        SteamGameId = game.AppId
-                    });
+                        games.Add(new GenericFile()
+                        {
+                            Active = true,
+                            FileName = game.Name,
+                            FilePath = game.Path,
+                            From = FromLibrary.Steam,
+                            SteamGameId = game.AppId
+                        });
+                    }
                 }
             }
-            return steamLib;
-        }
-
-        public static List<GenericFile> GetEpicGamesStoreLib()
-        {
-            List<GenericFile> epicLib = new();
-            EGSHandler handler = new();
-
-            // method 1: iterate over the game-error result
-            foreach ((EGSGame game, string error) in handler.FindAllGames())
+            else if (FromLibrary.EpicGames == from)
             {
-                if (game is not null)
+                EGSHandler handler = new();
+                foreach ((EGSGame game, string error) in handler.FindAllGames())
                 {
-                    epicLib.Add(new GenericFile()
+                    if (game is not null)
                     {
-                        Active= true,
-                        FileName = game.DisplayName,
-                        FilePath = game.InstallLocation,
-                        From = FromLibrary.EpicGames,
-                        EGSGameId = game.CatalogItemId
-                    });
+                        games.Add(new GenericFile()
+                        {
+                            Active = true,
+                            FileName = game.DisplayName,
+                            FilePath = game.InstallLocation,
+                            From = FromLibrary.EpicGames,
+                            EGSGameId = game.CatalogItemId
+                        });
+                    }
                 }
             }
-            return epicLib;
+            return games;
         }
 
         public static string SelectExecutable()
