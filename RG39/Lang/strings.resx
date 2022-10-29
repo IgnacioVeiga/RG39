@@ -159,4 +159,13 @@
   <data name="MULTI_INSTANCE_MSG" xml:space="preserve">
     <value>Multiple instances of this program are not allowed.</value>
   </data>
+  <data name="LOAD_EPIC_LIB_MSG" xml:space="preserve">
+    <value>Load Epic Games library?</value>
+  </data>
+  <data name="EPIC_LOCATION_MSG" xml:space="preserve">
+    <value>Epic Games Store installed on:</value>
+  </data>
+  <data name="CANNOT_LOCATE_EPIC" xml:space="preserve">
+    <value>Cannot locate EpicGamesLauncher.exe</value>
+  </data>
 </root>

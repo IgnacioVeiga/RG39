@@ -32,28 +32,46 @@ namespace RG39
                     }
                 }
 
-                MessageBoxResult result = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                // Obtener ubicación del ejecutable steam.exe
+                steamExe.Content = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
 
-                if (result == MessageBoxResult.Yes)
+                // Obtener ubicación del ejecutable epic.exe
+                epicGamesExe.Content = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+
+                MessageBoxResult resultSteam = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (resultSteam == MessageBoxResult.Yes)
                 {
                     List<GenericFile> steamGames = MyFunctions.GetSteamLib();
                     foreach (GenericFile game in steamGames)
                     {
                         gamesList.Items.Add(game);
                     }
-
-                    // Obtener ubicación del ejecutable steam.exe
-                    steamExe.Content = MyFunctions.LocateSteamExe();
-                    // Ejecutar steam.exe con el parametro steam://rungameid/game_id
                     if (string.IsNullOrEmpty((string)steamExe.Content))
                     {
                         MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
-                        return;
+                        epicGamesExe.Content = "[No encontado]";
+                    }
+                }
+
+                MessageBoxResult resultEpic = MessageBox.Show(strings.LOAD_EPIC_LIB_MSG, "Epic Games", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (resultEpic == MessageBoxResult.Yes)
+                {
+                    List<GenericFile> epicGames = MyFunctions.GetEpicGamesStoreLib();
+                    foreach (GenericFile game in epicGames)
+                    {
+                        gamesList.Items.Add(game);
+                    }
+                    if (string.IsNullOrEmpty((string)epicGamesExe.Content))
+                    {
+                        MessageBox.Show(strings.CANNOT_LOCATE_EPIC);
+                        epicGamesExe.Content = "[No encontado]";
                     }
                 }
 
                 // En btn se activa si hay elementos en la lista
-                start_BTN.IsEnabled = gamesList.Items.Count > 0;
+                start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
             catch (Exception ex)
             {
@@ -91,8 +109,21 @@ namespace RG39
                         MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
                         return;
                     }
+                    // Ejecutar steam.exe con el parametro steam://rungameid/game_id
                     Process.Start($"\"{steamExe.Content}\"", $"steam://rungameid/{game.SteamGameId}");
                     Application.Current.Shutdown();
+                }
+                if (game.From == FromLibrary.EpicGames)
+                {
+                    if (string.IsNullOrEmpty((string)epicGamesExe.Content))
+                    {
+                        MessageBox.Show(strings.CANNOT_LOCATE_EPIC);
+                        return;
+                    }
+                    // Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{game_id}{parametro}?action=launch&silent=true
+                    MessageBox.Show($"Por ahora no puedo ejecutar \"{game.FileName}\".");
+                    // Process.Start($"{epicGamesExe.Content} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
+                    // Application.Current.Shutdown();
                 }
             }
             catch (Exception ex)
@@ -120,8 +151,8 @@ namespace RG39
                 MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
                                                     .Where(i => i.From == FromLibrary.Other)
                                                     .ToList());
-                // En btn se activa si hay elementos en la lista
-                start_BTN.IsEnabled = gamesList.Items.Count > 0;
+
+                start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
             catch (Exception ex)
             {
@@ -140,8 +171,8 @@ namespace RG39
                     gamesList.Items.Clear();
                     MessageBox.Show("Ok");
                 }
-                // En btn se activa si hay elementos en la lista
-                start_BTN.IsEnabled = gamesList.Items.Count > 0;
+
+                start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
             catch (Exception ex)
             {
@@ -161,7 +192,7 @@ namespace RG39
 
                 if (((GenericFile)((Button)sender).DataContext).From == FromLibrary.Other)
                 {
-                    bool result = MessageBox.Show($"Quitar de la lista a \n{((GenericFile)((Button)sender).DataContext).FileName.ToString()}?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+                    bool result = MessageBox.Show($"Quitar de la lista a \n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
                     if (result)
                     {
                         MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
@@ -172,8 +203,7 @@ namespace RG39
                 }
                 gamesList.Items.RemoveAt(gameIndex);
 
-                // En btn se activa si hay elementos en la lista
-                start_BTN.IsEnabled = gamesList.Items.Count > 0;
+                start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
             catch (Exception ex)
             {
@@ -181,16 +211,16 @@ namespace RG39
             }
         }
 
-        private void LocateSteam_Click(object sender, RoutedEventArgs e)
+        private void LocateStoreExe_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string steamFileName = MyFunctions.SelectExecutable();
-                if (steamFileName is null)
+                string filename = MyFunctions.SelectExecutable();
+                if (filename is null)
                 {
                     return;
                 }
-                else
+                else if (filename.EndsWith("steam.exe"))
                 {
                     List<GenericFile> steamGames = MyFunctions.GetSteamLib();
                     foreach (GenericFile game in steamGames)
@@ -198,7 +228,21 @@ namespace RG39
                         gamesList.Items.Add(game);
                     }
 
-                    steamExe.Content = steamFileName;
+                    steamExe.Content = filename;
+                }
+                else if (filename.EndsWith("EpicGamesLauncher.exe"))
+                {
+                    List<GenericFile> egsGames = MyFunctions.GetEpicGamesStoreLib();
+                    foreach (GenericFile game in egsGames)
+                    {
+                        gamesList.Items.Add(game);
+                    }
+
+                    epicGamesExe.Content = filename;
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect executable");
                 }
             }
             catch (Exception ex)
@@ -216,6 +260,27 @@ namespace RG39
                 else
                     Settings.Default.Lang = "en";
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void showOrHideTabs_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (generalTabControl.Visibility == Visibility.Visible)
+                {
+                    generalTabControl.Visibility = Visibility.Collapsed;
+                    showOrHideTabs_BTN.Content = "˅";
+                }
+                else if (generalTabControl.Visibility == Visibility.Collapsed)
+                {
+                    generalTabControl.Visibility = Visibility.Visible;
+                    showOrHideTabs_BTN.Content = "˄";
+                }
             }
             catch (Exception ex)
             {

@@ -5,22 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:p = "clr-namespace:RG39.Lang"
         mc:Ignorable="d"
-        SizeToContent="Manual" 
+        SizeToContent="Width" 
         ResizeMode="CanResizeWithGrip"
-        MinHeight="400" MinWidth="460"
-        Height="450" Width="500"
+        MinHeight="300" MinWidth="450"
+        Height="500" Width="600"
         Title="RG39">
 
     <Grid>
         <Button x:Name="start_BTN" Content="{x:Static p:strings.START_BTN}" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontSize="32" FontWeight="Bold" Click="Start_Click" Cursor="Hand"/>
-        <TabControl Cursor="Arrow" Margin="0,70,0,0">
+
+        <Button x:Name="showOrHideTabs_BTN" Content="˅" Margin="10,70,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="showOrHideTabs_BTN_Click" Cursor="Hand"/>
+
+        <TabControl x:Name="generalTabControl" Cursor="Arrow" Margin="0,100,0,0" HorizontalAlignment="Stretch">
             <TabItem x:Name="gameListTAB" Header="{x:Static p:strings.GAMES_TAB}" Cursor="Hand">
                 <Grid Cursor="Arrow">
 
                     <Button Content="+" Height="20" Width="20" Margin="0,5,40,0" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Center" Click="AddGameToList_Click"/>
                     <Button Content="X" Height="20" Width="20" Margin="40,5,0,0" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Center" Click="ClearList_Click"/>
                     
-                    <ListView x:Name="gamesList" Margin="10,30,10,50" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}" VerticalAlignment="Top">
+                    <ListView x:Name="gamesList" Margin="10,30,10,10" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}" VerticalAlignment="Top" SelectionMode="Single">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="30">
@@ -32,7 +35,7 @@
                                 </GridViewColumn>
                                 <GridViewColumn x:Name="filename" Header="{x:Static p:strings.FILENAME_COL}" DisplayMemberBinding="{Binding FileName}" Width="Auto"/>
                                 <GridViewColumn x:Name="type" Header="{x:Static p:strings.TYPE_COL}" DisplayMemberBinding="{Binding Type}" Width="Auto"/>
-                                <GridViewColumn x:Name="from" Header="{x:Static p:strings.FROM_COL}" DisplayMemberBinding="{Binding From}" Width="Auto"/>
+                                <GridViewColumn x:Name="from" Header="{x:Static p:strings.FROM_COL}" DisplayMemberBinding="{Binding From}" Width="70"/>
                                 <GridViewColumn Width="30">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -45,14 +48,19 @@
                     </ListView>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="settingsTAB" Header="{x:Static p:strings.SETTINGS_TAB}" Cursor="Hand" IsEnabled="False">
+            <TabItem x:Name="settingsTAB" Header="{x:Static p:strings.SETTINGS_TAB}" Cursor="Hand">
                 <Grid Cursor="Arrow" VerticalAlignment="Stretch">
-                    <Button Content="en/es" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ToggleLang_Click"/>
+                    <Button Content="en/es" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ToggleLang_Click" Visibility="Hidden"/>
+
+                    <Label Content="{x:Static p:strings.EPIC_LOCATION_MSG}" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Margin="10,0,0,50"/>
+                    <Label x:Name="epicGamesExe"  VerticalAlignment="Bottom" FontSize="14" Margin="214,0,50,50"/>
+                    <Button Content="[...]" Height="30" Width="30" Cursor="Hand" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,50" Click="LocateStoreExe_Click"/>
+
+                    <Label Content="{x:Static p:strings.STEAM_LOCATION_MSG}" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Margin="10,0,0,10"/>
+                    <Label x:Name="steamExe"  VerticalAlignment="Bottom" FontSize="14" Margin="145,0,50,10"/>
+                    <Button Content="[...]" Height="30" Width="30" Cursor="Hand" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="LocateStoreExe_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Label Content="{x:Static p:strings.STEAM_LOCATION_MSG}" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="14" Margin="10,0,0,10"/>
-        <Label x:Name="steamExe"  VerticalAlignment="Bottom" FontSize="14" Margin="140,0,50,10"/>
-        <Button Content="[...]" Height="30" Width="30" Cursor="Hand" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="LocateSteam_Click"/>
     </Grid>
 </Window>

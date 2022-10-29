@@ -61,6 +61,15 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot locate EpicGamesLauncher.exe.
+        /// </summary>
+        public static string CANNOT_LOCATE_EPIC {
+            get {
+                return ResourceManager.GetString("CANNOT_LOCATE_EPIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot locate steam.exe.
         /// </summary>
         public static string CANNOT_LOCATE_STEAM {
@@ -88,6 +97,15 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Epic Games Store installed on:.
+        /// </summary>
+        public static string EPIC_LOCATION_MSG {
+            get {
+                return ResourceManager.GetString("EPIC_LOCATION_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File name.
         /// </summary>
         public static string FILENAME_COL {
@@ -111,6 +129,15 @@ namespace RG39.Lang {
         public static string GAMES_TAB {
             get {
                 return ResourceManager.GetString("GAMES_TAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Epic Games library?.
+        /// </summary>
+        public static string LOAD_EPIC_LIB_MSG {
+            get {
+                return ResourceManager.GetString("LOAD_EPIC_LIB_MSG", resourceCulture);
             }
         }
         

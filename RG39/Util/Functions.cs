@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.EGS;
 using System.Runtime.InteropServices;
 using GameFinder.RegistryUtils;
 using Microsoft.Win32;
@@ -30,15 +31,27 @@ namespace RG39
             }
         }
 
-        public static string LocateSteamExe()
+        public static string LocateStoreExeFromReg(FromLibrary from)
         {
             try
             {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
-                if (key is not null)
+                if (FromLibrary.Steam == from)
                 {
-                    object steamExeDir = key.GetValue("SteamExe");
-                    if (steamExeDir is not null) return steamExeDir as string;
+                    using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
+                    if (key is not null)
+                    {
+                        object steamExeDir = key.GetValue("SteamExe");
+                        if (steamExeDir is not null) return steamExeDir as string;
+                    }
+                }
+                else if (FromLibrary.EpicGames == from)
+                {
+                    using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
+                    if (key is not null)
+                    {
+                        object egsExeDir = key.GetValue("ModSdkCommand");
+                        if (egsExeDir is not null) return egsExeDir as string;
+                    }
                 }
             }
             catch (Exception ex)
@@ -63,9 +76,6 @@ namespace RG39
             {
                 if (game is not null && game.AppId != 228980)
                 {
-                    //MessageBox.Show($"Found {game}");
-
-                    // Mapear SteamGame a GenericFile
                     steamLib.Add(new GenericFile()
                     {
                         Active = true,
@@ -75,43 +85,31 @@ namespace RG39
                         SteamGameId = game.AppId
                     });
                 }
-                //else
-                //{
-                //    MessageBox.Show($"Error: {error}");
-                //}
             }
-
-            // method 2: use the dictionary if you need to find games by id
-            //Dictionary<SteamGame, int> games = handler.FindAllGamesById(out string[] errors);
-
-            // method 3: find a single game by id
-            //SteamGame? game = handler.FindOneGameById(570940, out string[] errors);
-
             return steamLib;
         }
 
-        public static void EpicGamesStoreLib()
+        public static List<GenericFile> GetEpicGamesStoreLib()
         {
-            //var handler = new EGSHandler();
+            List<GenericFile> epicLib = new();
+            EGSHandler handler = new();
 
-            //// method 1: iterate over the game-error result
-            //foreach (var (game, error) in handler.FindAllGames())
-            //{
-            //    if (game is not null)
-            //    {
-            //        Console.WriteLine($"Found {game}");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"Error: {error}");
-            //    }
-            //}
-
-            //// method 2: use the dictionary if you need to find games by id
-            //Dictionary<EGSGame, string> games = handler.FindAllGamesById(out string[] errors);
-
-            //// method 3: find a single game by id
-            //EGSGame? game = handler.FindOneGameById("3257e06c28764231acd93049f3774ed6", out string[] errors);
+            // method 1: iterate over the game-error result
+            foreach ((EGSGame game, string error) in handler.FindAllGames())
+            {
+                if (game is not null)
+                {
+                    epicLib.Add(new GenericFile()
+                    {
+                        Active= true,
+                        FileName = game.DisplayName,
+                        FilePath = game.InstallLocation,
+                        From = FromLibrary.EpicGames,
+                        EGSGameId = game.CatalogItemId
+                    });
+                }
+            }
+            return epicLib;
         }
 
         public static string SelectExecutable()

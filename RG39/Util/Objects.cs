@@ -3,6 +3,7 @@
     public class GenericFile
     {
         public int SteamGameId { get; set; }
+        public string EGSGameId { get; set; }
 
         // indicates if must be filtered
         public bool Active { get; set; }
@@ -16,7 +17,7 @@
         {
             get
             {
-                if (From == FromLibrary.Steam)
+                if (From != FromLibrary.Other)
                 {
                     return FilePath;
                 }
@@ -52,7 +53,7 @@
         {
             get
             {
-                if (From == FromLibrary.Steam)
+                if (From != FromLibrary.Other)
                 {
                     return fileName;
                 }
