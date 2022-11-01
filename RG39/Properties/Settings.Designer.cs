@@ -25,7 +25,7 @@ namespace RG39.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("es")]
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
         public string Lang {
             get {
                 return ((string)(this["Lang"]));

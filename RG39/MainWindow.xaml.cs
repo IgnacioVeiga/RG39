@@ -50,7 +50,11 @@ namespace RG39
                     if (string.IsNullOrEmpty((string)steamExe.Content))
                     {
                         MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
-                        epicGamesExe.Content = "[No encontado]";
+                        steamExe.Content = strings.NOT_FOUND_MSG;
+                    }
+                    else
+                    {
+                        steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)steamExe.Content));
                     }
                 }
 
@@ -66,7 +70,12 @@ namespace RG39
                     if (string.IsNullOrEmpty((string)epicGamesExe.Content))
                     {
                         MessageBox.Show(strings.CANNOT_LOCATE_EPIC);
-                        epicGamesExe.Content = "[No encontado]";
+                        epicGamesExe.Content = strings.NOT_FOUND_MSG;
+                    }
+                    else
+                    {
+
+                        egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)epicGamesExe.Content));
                     }
                 }
 
@@ -124,7 +133,7 @@ namespace RG39
                     // Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
                     // El EGSGameId es 283080ad58e64fd084d30413888a571c
                     // ToDo: encontrar los otros 2 parametros que lo rodean
-                    MessageBox.Show($"Por ahora no puedo ejecutar \"{game.FileName}\".");
+                    MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.FileName}\".");
                     // Process.Start($"{epicGamesExe.Content} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
                     // Application.Current.Shutdown();
                 }
@@ -144,6 +153,11 @@ namespace RG39
                 {
                     return;
                 }
+                if (gamesList.Items.As<GenericFile>().FirstOrDefault(g => g.FilePath == gameFileName) is not null)
+                {
+                    MessageBox.Show($"\"{gameFileName}\"\n {strings.REPEATED_GAME_MSG}", strings.REPEATED_TITLE);
+                    return;
+                }
                 GenericFile game = new()
                 {
                     FilePath = gameFileName,
@@ -154,7 +168,6 @@ namespace RG39
                 MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
                                                     .Where(i => i.From == FromLibrary.Other)
                                                     .ToList());
-
                 start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
             catch (Exception ex)
@@ -195,7 +208,7 @@ namespace RG39
 
                 if (((GenericFile)((Button)sender).DataContext).From == FromLibrary.Other)
                 {
-                    bool result = MessageBox.Show($"Quitar de la lista a \n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+                    bool result = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
                     if (result)
                     {
                         MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
@@ -242,10 +255,6 @@ namespace RG39
                     }
 
                     epicGamesExe.Content = filename;
-                }
-                else
-                {
-                    MessageBox.Show("Incorrect executable");
                 }
             }
             catch (Exception ex)

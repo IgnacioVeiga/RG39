@@ -1,4 +1,8 @@
-﻿namespace RG39
+﻿using System.Drawing;
+using System.Text.Json.Serialization;
+using System.Windows.Media;
+
+namespace RG39
 {
     public class GenericFile
     {
@@ -8,7 +12,29 @@
         // indicates if must be filtered
         public bool Active { get; set; }
 
-        // example:    "C:/Folder/FileName.ext" (NOT for Steam games)
+        [JsonIgnore]
+        private ImageSource appIcon;
+        [JsonIgnore]
+        public ImageSource AppIcon
+        {
+            get
+            {
+                if (From == FromLibrary.Other)
+                {
+                    appIcon = IconUtilities.ToImageSource(Icon.ExtractAssociatedIcon(FilePath));
+                    return appIcon;
+                }
+                //else if (From == FromLibrary.Steam)
+                //{
+                //    return AppIcon;
+                //}
+                else return null;
+            }
+            set => appIcon = value;
+        }
+
+        // example:    "C:/Folder/FileName.ext" (NOT for Steam/Epic games)
+        // IMPORTANT: for Steam or EGS FilePath == Path
         public string FilePath { get; set; }
 
         // example:    "C:/Folder"
@@ -21,7 +47,8 @@
                 {
                     return FilePath;
                 }
-                return path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
+                path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
+                return path;
             }
             set => path = value;
         }

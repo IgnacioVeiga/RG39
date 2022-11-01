@@ -61,6 +61,15 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot load this game:.
+        /// </summary>
+        public static string CANNOT_LOAD_GAME_MSG {
+            get {
+                return ResourceManager.GetString("CANNOT_LOAD_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot locate EpicGamesLauncher.exe.
         /// </summary>
         public static string CANNOT_LOCATE_EPIC {
@@ -93,15 +102,6 @@ namespace RG39.Lang {
         public static string CLEAR_LIST_TITLE {
             get {
                 return ResourceManager.GetString("CLEAR_LIST_TITLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Epic Games Store installed on:.
-        /// </summary>
-        public static string EPIC_LOCATION_MSG {
-            get {
-                return ResourceManager.GetString("EPIC_LOCATION_MSG", resourceCulture);
             }
         }
         
@@ -160,6 +160,42 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [Not found].
+        /// </summary>
+        public static string NOT_FOUND_MSG {
+            get {
+                return ResourceManager.GetString("NOT_FOUND_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove:.
+        /// </summary>
+        public static string REMOVE_GAME_MSG {
+            get {
+                return ResourceManager.GetString("REMOVE_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to was already added..
+        /// </summary>
+        public static string REPEATED_GAME_MSG {
+            get {
+                return ResourceManager.GetString("REPEATED_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeated.
+        /// </summary>
+        public static string REPEATED_TITLE {
+            get {
+                return ResourceManager.GetString("REPEATED_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search folder.
         /// </summary>
         public static string SEARCH_FOLDER_TITLE {
@@ -192,15 +228,6 @@ namespace RG39.Lang {
         public static string START_BTN {
             get {
                 return ResourceManager.GetString("START_BTN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam installed on:.
-        /// </summary>
-        public static string STEAM_LOCATION_MSG {
-            get {
-                return ResourceManager.GetString("STEAM_LOCATION_MSG", resourceCulture);
             }
         }
         

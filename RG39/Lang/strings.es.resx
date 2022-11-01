@@ -147,9 +147,6 @@
   <data name="GAMES_TAB" xml:space="preserve">
     <value>Juegos</value>
   </data>
-  <data name="STEAM_LOCATION_MSG" xml:space="preserve">
-    <value>Steam instalado en:</value>
-  </data>
   <data name="CLEAR_LIST_TITLE" xml:space="preserve">
     <value>Limpiar lista</value>
   </data>
@@ -162,10 +159,22 @@
   <data name="LOAD_EPIC_LIB_MSG" xml:space="preserve">
     <value>¿Cargar la librería de Epic Games?</value>
   </data>
-  <data name="EPIC_LOCATION_MSG" xml:space="preserve">
-    <value>Epic Games Store instalado en:</value>
-  </data>
   <data name="CANNOT_LOCATE_EPIC" xml:space="preserve">
     <value>No se puede ubicar EpicGamesLauncher.exe</value>
+  </data>
+  <data name="NOT_FOUND_MSG" xml:space="preserve">
+    <value>[No encontrado]</value>
+  </data>
+  <data name="REPEATED_GAME_MSG" xml:space="preserve">
+    <value>ya estaba añadido.</value>
+  </data>
+  <data name="REPEATED_TITLE" xml:space="preserve">
+    <value>Repetido</value>
+  </data>
+  <data name="CANNOT_LOAD_GAME_MSG" xml:space="preserve">
+    <value>No puedo cargar este juego:</value>
+  </data>
+  <data name="REMOVE_GAME_MSG" xml:space="preserve">
+    <value>¿Quitar:</value>
   </data>
 </root>
