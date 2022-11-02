@@ -129,9 +129,6 @@
   <data name="LOAD_STEAM_LIB_MSG" xml:space="preserve">
     <value>Load Steam library?</value>
   </data>
-  <data name="CANNOT_LOCATE_STEAM" xml:space="preserve">
-    <value>Cannot locate steam.exe</value>
-  </data>
   <data name="FILENAME_COL" xml:space="preserve">
     <value>File name</value>
   </data>
@@ -158,9 +155,6 @@
   </data>
   <data name="LOAD_EPIC_LIB_MSG" xml:space="preserve">
     <value>Load Epic Games library?</value>
-  </data>
-  <data name="CANNOT_LOCATE_EPIC" xml:space="preserve">
-    <value>Cannot locate EpicGamesLauncher.exe</value>
   </data>
   <data name="NOT_FOUND_MSG" xml:space="preserve">
     <value>[Not found]</value>

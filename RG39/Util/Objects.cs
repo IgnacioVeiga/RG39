@@ -24,11 +24,7 @@ namespace RG39
                     appIcon = IconUtilities.ToImageSource(Icon.ExtractAssociatedIcon(FilePath));
                     return appIcon;
                 }
-                //else if (From == FromLibrary.Steam)
-                //{
-                //    return AppIcon;
-                //}
-                else return null;
+                else return appIcon;
             }
             set => appIcon = value;
         }

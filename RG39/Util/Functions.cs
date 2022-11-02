@@ -181,6 +181,7 @@ namespace RG39
         }
     }
 
+    // source: https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource
     internal static class IconUtilities
     {
         [DllImport("gdi32.dll", SetLastError = true)]

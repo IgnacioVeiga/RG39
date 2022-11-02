@@ -14,7 +14,7 @@
     <Grid>
         <Button x:Name="start_BTN" Content="{x:Static p:strings.START_BTN}" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontSize="32" FontWeight="Bold" Click="Start_Click" Cursor="Hand"/>
 
-        <Button x:Name="showOrHideTabs_BTN" Content="˅" Margin="10,70,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="showOrHideTabs_BTN_Click" Cursor="Hand"/>
+        <Button x:Name="showOrHideTabs_BTN" Content="˅" Margin="10,70,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="ShowOrHideTabs_BTN_Click" Cursor="Hand"/>
 
         <TabControl x:Name="generalTabControl" Cursor="Arrow" Margin="0,100,0,0" HorizontalAlignment="Stretch">
             <TabItem x:Name="gameListTAB" Header="{x:Static p:strings.GAMES_TAB}" Cursor="Hand">

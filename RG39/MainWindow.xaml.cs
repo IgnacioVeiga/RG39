@@ -32,51 +32,41 @@ namespace RG39
                     }
                 }
 
-                // Obtener ubicación del ejecutable steam.exe
                 steamExe.Content = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
-
-                // Obtener ubicación del ejecutable epic.exe
                 epicGamesExe.Content = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
-                MessageBoxResult resultSteam = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (resultSteam == MessageBoxResult.Yes)
+                if (!string.IsNullOrEmpty((string)steamExe.Content))
                 {
+                    // MessageBoxResult resultSteam = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)steamExe.Content));
                     List<GenericFile> steamGames = MyFunctions.GetGamesFromLib(FromLibrary.Steam);
                     foreach (GenericFile game in steamGames)
                     {
+                        game.AppIcon = steamIcon.Source;
                         gamesList.Items.Add(game);
                     }
-                    if (string.IsNullOrEmpty((string)steamExe.Content))
-                    {
-                        MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
-                        steamExe.Content = strings.NOT_FOUND_MSG;
-                    }
-                    else
-                    {
-                        steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)steamExe.Content));
-                    }
+                }
+                else
+                {
+                    steamExe.Content = $"Steam: {strings.NOT_FOUND_MSG}";
                 }
 
-                MessageBoxResult resultEpic = MessageBox.Show(strings.LOAD_EPIC_LIB_MSG, "Epic Games", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (resultEpic == MessageBoxResult.Yes)
+                if (!string.IsNullOrEmpty((string)epicGamesExe.Content))
                 {
+                    //MessageBoxResult resultEpic = MessageBox.Show(strings.LOAD_EPIC_LIB_MSG, "Epic Games", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)epicGamesExe.Content));
                     List<GenericFile> epicGames = MyFunctions.GetGamesFromLib(FromLibrary.EpicGames);
                     foreach (GenericFile game in epicGames)
                     {
+                        game.AppIcon = egsIcon.Source;
                         gamesList.Items.Add(game);
                     }
-                    if (string.IsNullOrEmpty((string)epicGamesExe.Content))
-                    {
-                        MessageBox.Show(strings.CANNOT_LOCATE_EPIC);
-                        epicGamesExe.Content = strings.NOT_FOUND_MSG;
-                    }
-                    else
-                    {
-
-                        egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)epicGamesExe.Content));
-                    }
+                }
+                else
+                {
+                    epicGamesExe.Content = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
                 }
 
                 // En btn se activa si hay elementos en la lista
@@ -113,22 +103,12 @@ namespace RG39
                 }
                 if (game.From == FromLibrary.Steam)
                 {
-                    if (string.IsNullOrEmpty((string)steamExe.Content))
-                    {
-                        MessageBox.Show(strings.CANNOT_LOCATE_STEAM);
-                        return;
-                    }
                     // Ejecutar steam.exe con el parametro steam://rungameid/SteamGameId
                     Process.Start($"\"{steamExe.Content}\"", $"steam://rungameid/{game.SteamGameId}");
                     Application.Current.Shutdown();
                 }
                 if (game.From == FromLibrary.EpicGames)
                 {
-                    if (string.IsNullOrEmpty((string)epicGamesExe.Content))
-                    {
-                        MessageBox.Show(strings.CANNOT_LOCATE_EPIC);
-                        return;
-                    }
                     // Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
                     // Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
                     // El EGSGameId es 283080ad58e64fd084d30413888a571c
@@ -279,7 +259,7 @@ namespace RG39
             }
         }
 
-        private void showOrHideTabs_BTN_Click(object sender, RoutedEventArgs e)
+        private void ShowOrHideTabs_BTN_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -287,11 +267,17 @@ namespace RG39
                 {
                     generalTabControl.Visibility = Visibility.Collapsed;
                     showOrHideTabs_BTN.Content = "˅";
+                    theWindow.MinHeight = 150;
+                    theWindow.MaxHeight = 150;
+                    theWindow.Height = 150;
                 }
                 else if (generalTabControl.Visibility == Visibility.Collapsed)
                 {
                     generalTabControl.Visibility = Visibility.Visible;
                     showOrHideTabs_BTN.Content = "˄";
+                    theWindow.MinHeight = 400;
+                    theWindow.MaxHeight = double.PositiveInfinity;
+                    theWindow.Height = 400;
                 }
             }
             catch (Exception ex)

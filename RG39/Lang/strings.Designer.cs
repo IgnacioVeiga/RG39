@@ -70,24 +70,6 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot locate EpicGamesLauncher.exe.
-        /// </summary>
-        public static string CANNOT_LOCATE_EPIC {
-            get {
-                return ResourceManager.GetString("CANNOT_LOCATE_EPIC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot locate steam.exe.
-        /// </summary>
-        public static string CANNOT_LOCATE_STEAM {
-            get {
-                return ResourceManager.GetString("CANNOT_LOCATE_STEAM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Want to clear games from list?.
         /// </summary>
         public static string CLEAR_LIST_MSG {
