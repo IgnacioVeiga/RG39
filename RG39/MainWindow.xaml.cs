@@ -32,41 +32,43 @@ namespace RG39
                     }
                 }
 
-                steamExe.Content = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
-                epicGamesExe.Content = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+                Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
+                Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
-                if (!string.IsNullOrEmpty((string)steamExe.Content))
+                if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
                 {
                     // MessageBoxResult resultSteam = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-                    steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)steamExe.Content));
+                    steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath));
                     List<GenericFile> steamGames = MyFunctions.GetGamesFromLib(FromLibrary.Steam);
                     foreach (GenericFile game in steamGames)
                     {
                         game.AppIcon = steamIcon.Source;
                         gamesList.Items.Add(game);
                     }
+                    loadSteam_exe_btn.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    steamExe.Content = $"Steam: {strings.NOT_FOUND_MSG}";
+                    Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
                 }
 
-                if (!string.IsNullOrEmpty((string)epicGamesExe.Content))
+                if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
                 {
                     //MessageBoxResult resultEpic = MessageBox.Show(strings.LOAD_EPIC_LIB_MSG, "Epic Games", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-                    egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon((string)epicGamesExe.Content));
+                    egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath));
                     List<GenericFile> epicGames = MyFunctions.GetGamesFromLib(FromLibrary.EpicGames);
                     foreach (GenericFile game in epicGames)
                     {
                         game.AppIcon = egsIcon.Source;
                         gamesList.Items.Add(game);
                     }
+                    loadEGS_exe_btn.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    epicGamesExe.Content = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+                    Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
                 }
 
                 // En btn se activa si hay elementos en la lista
@@ -82,41 +84,12 @@ namespace RG39
         {
             try
             {
-                ProcessStartInfo info = new()
-                {
-                    UseShellExecute = true
-                };
                 int max = gamesList.Items.As<GenericFile>().Where(f => f.Active).ToList().Count;
                 int num = new Random().Next(max);
 
                 // Busca el archivo con el id aleatorio generado y en estado "activo"
                 GenericFile game = gamesList.Items.As<GenericFile>().Where(f => f.Active).ToArray()[num];
-                if (game is null)
-                {
-                    return;
-                }
-                if (game.From == FromLibrary.Other)
-                {
-                    info.FileName = game.FileName + game.Type;
-                    info.WorkingDirectory = game.Path;
-                    MyFunctions.RunGame(info);
-                }
-                if (game.From == FromLibrary.Steam)
-                {
-                    // Ejecutar steam.exe con el parametro steam://rungameid/SteamGameId
-                    Process.Start($"\"{steamExe.Content}\"", $"steam://rungameid/{game.SteamGameId}");
-                    Application.Current.Shutdown();
-                }
-                if (game.From == FromLibrary.EpicGames)
-                {
-                    // Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
-                    // Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
-                    // El EGSGameId es 283080ad58e64fd084d30413888a571c
-                    // ToDo: encontrar los otros 2 parametros que lo rodean
-                    MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.FileName}\".");
-                    // Process.Start($"{epicGamesExe.Content} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
-                    // Application.Current.Shutdown();
-                }
+                MyFunctions.RunGame(game);
             }
             catch (Exception ex)
             {
@@ -224,7 +197,7 @@ namespace RG39
                         gamesList.Items.Add(game);
                     }
 
-                    steamExe.Content = filename;
+                    Settings.Default.SteamPath = filename;
                 }
                 else if (filename.EndsWith("EpicGamesLauncher.exe"))
                 {
@@ -234,7 +207,7 @@ namespace RG39
                         gamesList.Items.Add(game);
                     }
 
-                    epicGamesExe.Content = filename;
+                    Settings.Default.EGSPath = filename;
                 }
             }
             catch (Exception ex)
@@ -279,6 +252,19 @@ namespace RG39
                     theWindow.MaxHeight = double.PositiveInfinity;
                     theWindow.Height = 400;
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void StartItemFromList_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                GenericFile game = ((Button)sender).DataContext as GenericFile;
+                MyFunctions.RunGame(game);
             }
             catch (Exception ex)
             {

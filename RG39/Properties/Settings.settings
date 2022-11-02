@@ -5,5 +5,11 @@
     <Setting Name="Lang" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
+    <Setting Name="SteamPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EGSPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

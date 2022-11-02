@@ -61,6 +61,15 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string ABOUT_TAB {
+            get {
+                return ResourceManager.GetString("ABOUT_TAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load this game:.
         /// </summary>
         public static string CANNOT_LOAD_GAME_MSG {

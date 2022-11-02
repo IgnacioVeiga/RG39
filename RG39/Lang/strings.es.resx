@@ -171,4 +171,7 @@
   <data name="REMOVE_GAME_MSG" xml:space="preserve">
     <value>¿Quitar:</value>
   </data>
+  <data name="ABOUT_TAB" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
 </root>

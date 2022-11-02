@@ -34,5 +34,29 @@ namespace RG39.Properties {
                 this["Lang"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SteamPath {
+            get {
+                return ((string)(this["SteamPath"]));
+            }
+            set {
+                this["SteamPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EGSPath {
+            get {
+                return ((string)(this["EGSPath"]));
+            }
+            set {
+                this["EGSPath"] = value;
+            }
+        }
     }
 }
