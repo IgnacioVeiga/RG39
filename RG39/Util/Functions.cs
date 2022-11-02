@@ -42,18 +42,23 @@ namespace RG39
 
                 if (game.From == FromLibrary.EpicGames)
                 {
-                    // Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
-                    // Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
-                    // El EGSGameId es 283080ad58e64fd084d30413888a571c
-                    // ToDo: encontrar los otros 2 parametros que lo rodean
+                    /*
+                     Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
+                     Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
+                     El EGSGameId es 283080ad58e64fd084d30413888a571c
+                     ToDo: encontrar los otros 2 parametros que lo rodean
+                     */
                     MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.FileName}\".");
+                    return;
                     // Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
                 }
                 Application.Current.Shutdown();
             }
             catch (Win32Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message
+                                + "\n"
+                                + JsonSerializer.Serialize(game, new JsonSerializerOptions() { WriteIndented = true }));
             }
         }
 
@@ -101,7 +106,8 @@ namespace RG39
 
                 foreach ((SteamGame game, string error) in handler.FindAllGames())
                 {
-                    if (game is not null && game.AppId != 228980)
+                    // ToDo: filter soundtracks
+                    if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
                     {
                         games.Add(new GenericFile()
                         {
@@ -140,7 +146,7 @@ namespace RG39
             // Sirve para mostrar el dialogo selector de carpetas
             CommonOpenFileDialog exe = new()
             {
-                // TODO: reemplazar este dialogo por el propio en creación
+                // ToDo: reemplazar este dialogo por el propio en creación
                 Title = strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,

@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SEARCH_FOLDER_TITLE" xml:space="preserve">
-    <value>Search folder</value>
-  </data>
   <data name="START_BTN" xml:space="preserve">
     <value>START</value>
   </data>
   <data name="SEL_EXE_TITLE" xml:space="preserve">
     <value>Select executable</value>
-  </data>
-  <data name="LOAD_STEAM_LIB_MSG" xml:space="preserve">
-    <value>Load Steam library?</value>
   </data>
   <data name="FILENAME_COL" xml:space="preserve">
     <value>File name</value>
@@ -152,9 +146,6 @@
   </data>
   <data name="MULTI_INSTANCE_MSG" xml:space="preserve">
     <value>Multiple instances of this program are not allowed.</value>
-  </data>
-  <data name="LOAD_EPIC_LIB_MSG" xml:space="preserve">
-    <value>Load Epic Games library?</value>
   </data>
   <data name="NOT_FOUND_MSG" xml:space="preserve">
     <value>[Not found]</value>

@@ -70,12 +70,10 @@
                     <!--https://weblogs.asp.net/thomaslebrun/wpf-how-to-bind-a-control-to-a-property-defined-in-the-settings-->
                     
                     <Image x:Name="egsIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,50"/>
-                    <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,50,50" Content="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}"/>
-                    <Button x:Name="loadEGS_exe_btn" Content="[...]" Height="30" Width="30" Cursor="Hand" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,50" Click="LocateStoreExe_Click"/>
+                    <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,10,50" Content="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}"/>
 
                     <Image x:Name="steamIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10"/>
-                    <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,50,10" Content="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}"/>
-                    <Button x:Name="loadSteam_exe_btn" Content="[...]" Height="30" Width="30" Cursor="Hand" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="LocateStoreExe_Click"/>
+                    <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,10,10" Content="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="aboutTAB" Header="{x:Static p:strings.ABOUT_TAB}" Cursor="Hand" IsEnabled="False">

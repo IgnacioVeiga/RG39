@@ -124,24 +124,6 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load Epic Games library?.
-        /// </summary>
-        public static string LOAD_EPIC_LIB_MSG {
-            get {
-                return ResourceManager.GetString("LOAD_EPIC_LIB_MSG", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Load Steam library?.
-        /// </summary>
-        public static string LOAD_STEAM_LIB_MSG {
-            get {
-                return ResourceManager.GetString("LOAD_STEAM_LIB_MSG", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple instances of this program are not allowed..
         /// </summary>
         public static string MULTI_INSTANCE_MSG {
@@ -183,15 +165,6 @@ namespace RG39.Lang {
         public static string REPEATED_TITLE {
             get {
                 return ResourceManager.GetString("REPEATED_TITLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search folder.
-        /// </summary>
-        public static string SEARCH_FOLDER_TITLE {
-            get {
-                return ResourceManager.GetString("SEARCH_FOLDER_TITLE", resourceCulture);
             }
         }
         

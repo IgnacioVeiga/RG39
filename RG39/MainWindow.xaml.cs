@@ -2,7 +2,6 @@
 using RG39.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -37,16 +36,12 @@ namespace RG39
 
                 if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
                 {
-                    // MessageBoxResult resultSteam = MessageBox.Show(strings.LOAD_STEAM_LIB_MSG, "Steam", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
                     steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath));
-                    List<GenericFile> steamGames = MyFunctions.GetGamesFromLib(FromLibrary.Steam);
-                    foreach (GenericFile game in steamGames)
+                    foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.Steam))
                     {
                         game.AppIcon = steamIcon.Source;
                         gamesList.Items.Add(game);
                     }
-                    loadSteam_exe_btn.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
@@ -55,16 +50,12 @@ namespace RG39
 
                 if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
                 {
-                    //MessageBoxResult resultEpic = MessageBox.Show(strings.LOAD_EPIC_LIB_MSG, "Epic Games", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
                     egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath));
-                    List<GenericFile> epicGames = MyFunctions.GetGamesFromLib(FromLibrary.EpicGames);
-                    foreach (GenericFile game in epicGames)
+                    foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.EpicGames))
                     {
                         game.AppIcon = egsIcon.Source;
                         gamesList.Items.Add(game);
                     }
-                    loadEGS_exe_btn.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
@@ -84,11 +75,11 @@ namespace RG39
         {
             try
             {
-                int max = gamesList.Items.As<GenericFile>().Where(f => f.Active).ToList().Count;
-                int num = new Random().Next(max);
+                int index = new Random().Next(gamesList.Items.As<GenericFile>()
+                                                           .Where(f => f.Active)
+                                                           .ToList().Count);
 
-                // Busca el archivo con el id aleatorio generado y en estado "activo"
-                GenericFile game = gamesList.Items.As<GenericFile>().Where(f => f.Active).ToArray()[num];
+                GenericFile game = gamesList.Items.As<GenericFile>().Where(f => f.Active).ToArray()[index];
                 MyFunctions.RunGame(game);
             }
             catch (Exception ex)
@@ -102,25 +93,26 @@ namespace RG39
             try
             {
                 string gameFileName = MyFunctions.SelectExecutable();
-                if (gameFileName is null)
-                {
-                    return;
-                }
+                if (gameFileName is null) return;
+
                 if (gamesList.Items.As<GenericFile>().FirstOrDefault(g => g.FilePath == gameFileName) is not null)
                 {
                     MessageBox.Show($"\"{gameFileName}\"\n {strings.REPEATED_GAME_MSG}", strings.REPEATED_TITLE);
                     return;
                 }
+
                 GenericFile game = new()
                 {
                     FilePath = gameFileName,
                     Active = true,
                     From = FromLibrary.Other
                 };
+
                 gamesList.Items.Add(game);
                 MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
                                                     .Where(i => i.From == FromLibrary.Other)
                                                     .ToList());
+                
                 start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
             catch (Exception ex)
@@ -155,14 +147,14 @@ namespace RG39
             {
                 string gameFilePath = ((GenericFile)((Button)sender).DataContext).FilePath;
                 if (gameFilePath is null) return;
+                
                 int gameIndex = (int)gamesList.Items.As<GenericFile>().FindIndexOf(g => g.FilePath == gameFilePath);
                 if (gameIndex < 0) return;
 
-
                 if (((GenericFile)((Button)sender).DataContext).From == FromLibrary.Other)
                 {
-                    bool result = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-                    if (result)
+                    MessageBoxResult res = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo);
+                    if (res == MessageBoxResult.Yes)
                     {
                         MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
                                                         .Where(i => i.From == FromLibrary.Other && i.FilePath != gameFilePath)
@@ -170,45 +162,9 @@ namespace RG39
                     }
                     else return;
                 }
+
                 gamesList.Items.RemoveAt(gameIndex);
-
                 start_BTN.IsEnabled = gamesList.Items.Count > 1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void LocateStoreExe_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string filename = MyFunctions.SelectExecutable();
-                if (filename is null)
-                {
-                    return;
-                }
-                else if (filename.EndsWith("steam.exe"))
-                {
-                    List<GenericFile> steamGames = MyFunctions.GetGamesFromLib(FromLibrary.Steam);
-                    foreach (GenericFile game in steamGames)
-                    {
-                        gamesList.Items.Add(game);
-                    }
-
-                    Settings.Default.SteamPath = filename;
-                }
-                else if (filename.EndsWith("EpicGamesLauncher.exe"))
-                {
-                    List<GenericFile> egsGames = MyFunctions.GetGamesFromLib(FromLibrary.EpicGames);
-                    foreach (GenericFile game in egsGames)
-                    {
-                        gamesList.Items.Add(game);
-                    }
-
-                    Settings.Default.EGSPath = filename;
-                }
             }
             catch (Exception ex)
             {
