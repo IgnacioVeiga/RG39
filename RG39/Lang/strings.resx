@@ -165,4 +165,10 @@
   <data name="ABOUT_TAB" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="CLEAR_LIST_BTN" xml:space="preserve">
+    <value>Clear list</value>
+  </data>
+  <data name="ADD_GAME_BTN" xml:space="preserve">
+    <value>Add game</value>
+  </data>
 </root>

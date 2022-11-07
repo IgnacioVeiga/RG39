@@ -18,57 +18,51 @@ namespace RG39
     {
         public MainWindow()
         {
-            try
+            InitializeComponent();
+
+            List<GenericFile> gamesListSaved = MyFunctions.ReadList();
+            if (gamesListSaved is not null)
             {
-                InitializeComponent();
-
-                List<GenericFile> gamesListSaved = MyFunctions.ReadList();
-                if (gamesListSaved is not null)
+                foreach (GenericFile item in gamesListSaved)
                 {
-                    foreach (GenericFile item in gamesListSaved)
-                    {
-                        gamesList.Items.Add(item);
-                    }
+                    gamesList.Items.Add(item);
                 }
-
-                Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
-                Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
-
-                if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
-                {
-                    steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath));
-                    foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.Steam))
-                    {
-                        game.AppIcon = steamIcon.Source;
-                        gamesList.Items.Add(game);
-                    }
-                }
-                else
-                {
-                    Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
-                }
-
-                if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
-                {
-                    egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath));
-                    foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.EpicGames))
-                    {
-                        game.AppIcon = egsIcon.Source;
-                        gamesList.Items.Add(game);
-                    }
-                }
-                else
-                {
-                    Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
-                }
-
-                // En btn se activa si hay elementos en la lista
-                start_BTN.IsEnabled = gamesList.Items.Count > 1;
             }
-            catch (Exception ex)
+
+            Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
+            Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+
+            if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
-                MessageBox.Show(ex.Message);
+                steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath));
+                foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.Steam))
+                {
+                    game.AppIcon = steamIcon.Source;
+                    gamesList.Items.Add(game);
+                }
             }
+            else
+            {
+                Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
+            }
+
+            if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
+            {
+                egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath));
+                foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.EpicGames))
+                {
+                    game.AppIcon = egsIcon.Source;
+                    gamesList.Items.Add(game);
+                }
+            }
+            else
+            {
+                Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+            }
+
+            // En btn se activa si hay elementos en la lista
+            start_BTN.IsEnabled = gamesList.Items.Count > 1;
+
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -90,142 +84,101 @@ namespace RG39
 
         private void AddGameToList_Click(object sender, RoutedEventArgs e)
         {
-            try
+            string gameFileName = MyFunctions.SelectExecutable();
+            if (gameFileName is null) return;
+
+            if (gamesList.Items.As<GenericFile>().FirstOrDefault(g => g.FilePath == gameFileName) is not null)
             {
-                string gameFileName = MyFunctions.SelectExecutable();
-                if (gameFileName is null) return;
-
-                if (gamesList.Items.As<GenericFile>().FirstOrDefault(g => g.FilePath == gameFileName) is not null)
-                {
-                    MessageBox.Show($"\"{gameFileName}\"\n {strings.REPEATED_GAME_MSG}", strings.REPEATED_TITLE);
-                    return;
-                }
-
-                GenericFile game = new()
-                {
-                    FilePath = gameFileName,
-                    Active = true,
-                    From = FromLibrary.Other
-                };
-
-                gamesList.Items.Add(game);
-                MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
-                                                    .Where(i => i.From == FromLibrary.Other)
-                                                    .ToList());
-                
-                start_BTN.IsEnabled = gamesList.Items.Count > 1;
+                MessageBox.Show($"\"{gameFileName}\"\n {strings.REPEATED_GAME_MSG}", strings.REPEATED_TITLE);
+                return;
             }
-            catch (Exception ex)
+
+            GenericFile game = new()
             {
-                MessageBox.Show(ex.Message);
-            }
+                FilePath = gameFileName,
+                Active = true,
+                From = FromLibrary.Other
+            };
+
+            gamesList.Items.Add(game);
+            MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
+                                                .Where(i => i.From == FromLibrary.Other)
+                                                .ToList());
+
+            start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
         private void ClearList_Click(object sender, RoutedEventArgs e)
         {
-            try
+            MessageBoxResult msgResult = MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
+            if (msgResult == MessageBoxResult.Yes)
             {
-                if (MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    if (File.Exists(@".\list.xml"))
-                        File.Delete(@".\list.xml");
-                    gamesList.Items.Clear();
-                    MessageBox.Show("Ok");
-                }
+                if (File.Exists(@".\list.xml"))
+                    File.Delete(@".\list.xml");
+                gamesList.Items.Clear();
+                MessageBox.Show("Ok");
+            }
 
-                start_BTN.IsEnabled = gamesList.Items.Count > 1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
         private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string gameFilePath = ((GenericFile)((Button)sender).DataContext).FilePath;
-                if (gameFilePath is null) return;
-                
-                int gameIndex = (int)gamesList.Items.As<GenericFile>().FindIndexOf(g => g.FilePath == gameFilePath);
-                if (gameIndex < 0) return;
+            string gameFilePath = ((GenericFile)((Button)sender).DataContext).FilePath;
+            if (gameFilePath is null) return;
 
-                if (((GenericFile)((Button)sender).DataContext).From == FromLibrary.Other)
+            int gameIndex = (int)gamesList.Items.As<GenericFile>().FindIndexOf(g => g.FilePath == gameFilePath);
+            if (gameIndex < 0) return;
+
+            if (((GenericFile)((Button)sender).DataContext).From == FromLibrary.Other)
+            {
+                MessageBoxResult res = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
                 {
-                    MessageBoxResult res = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo);
-                    if (res == MessageBoxResult.Yes)
-                    {
-                        MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
-                                                        .Where(i => i.From == FromLibrary.Other && i.FilePath != gameFilePath)
-                                                        .ToList());
-                    }
-                    else return;
+                    MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
+                                                    .Where(i => i.From == FromLibrary.Other && i.FilePath != gameFilePath)
+                                                    .ToList());
                 }
+                else return;
+            }
 
-                gamesList.Items.RemoveAt(gameIndex);
-                start_BTN.IsEnabled = gamesList.Items.Count > 1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            gamesList.Items.RemoveAt(gameIndex);
+            start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
         private void ToggleLang_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (Settings.Default.Lang == "en")
-                    Settings.Default.Lang = "es";
-                else
-                    Settings.Default.Lang = "en";
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            if (Settings.Default.Lang == "en")
+                Settings.Default.Lang = "es";
+            else
+                Settings.Default.Lang = "en";
         }
 
-        private void ShowOrHideTabs_BTN_Click(object sender, RoutedEventArgs e)
+        private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (general.Visibility == Visibility.Visible)
             {
-                if (generalTabControl.Visibility == Visibility.Visible)
-                {
-                    generalTabControl.Visibility = Visibility.Collapsed;
-                    showOrHideTabs_BTN.Content = "˅";
-                    theWindow.MinHeight = 150;
-                    theWindow.MaxHeight = 150;
-                    theWindow.Height = 150;
-                }
-                else if (generalTabControl.Visibility == Visibility.Collapsed)
-                {
-                    generalTabControl.Visibility = Visibility.Visible;
-                    showOrHideTabs_BTN.Content = "˄";
-                    theWindow.MinHeight = 400;
-                    theWindow.MaxHeight = double.PositiveInfinity;
-                    theWindow.Height = 400;
-                }
+                general.Visibility = Visibility.Collapsed;
+                toggleVisibilityGeneralBTN.Content = "˅";
+                theWindow.MinHeight = 150;
+                theWindow.MaxHeight = 150;
+                theWindow.Height = 150;
             }
-            catch (Exception ex)
+            else if (general.Visibility == Visibility.Collapsed)
             {
-                MessageBox.Show(ex.Message);
+                general.Visibility = Visibility.Visible;
+                toggleVisibilityGeneralBTN.Content = "˄";
+                theWindow.MinHeight = 400;
+                theWindow.MaxHeight = double.PositiveInfinity;
+                theWindow.Height = 400;
             }
+
         }
 
         private void StartItemFromList_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                GenericFile game = ((Button)sender).DataContext as GenericFile;
-                MyFunctions.RunGame(game);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            GenericFile game = ((Button)sender).DataContext as GenericFile;
+            MyFunctions.RunGame(game);
         }
     }
 }

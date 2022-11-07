@@ -21,12 +21,10 @@ namespace RG39
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            string mutexId = "RandomGame";
-            _mutex = new Mutex(true, mutexId, out bool createdNew);
-            if (createdNew)
-            {
-                Exit += CloseMutexHandler;
-            }
+            bool initiallyOwned = true;
+            string name = "RG39";
+            _mutex = new Mutex(initiallyOwned, name, out bool createdNew);
+            if (createdNew) Exit += CloseMutexHandler;
             else
             {
                 MessageBox.Show(strings.MULTI_INSTANCE_MSG);

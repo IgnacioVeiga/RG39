@@ -8,79 +8,77 @@
         mc:Ignorable="d"
         SizeToContent="Width" 
         ResizeMode="CanResizeWithGrip"
-        MinHeight="400" MinWidth="500"
+        MinHeight="400" MinWidth="400"
         Height="400" Width="500"
         Title="RG39">
 
     <Grid>
         <Button x:Name="start_BTN" Content="{x:Static p:strings.START_BTN}" Margin="10,10,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontSize="32" FontWeight="Bold" Click="Start_Click" Cursor="Hand"/>
+        <Button x:Name="toggleVisibilityGeneralBTN" Content="˄" Margin="10,70,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="ToggleVisibilityGeneral_Click" Cursor="Hand"/>
 
-        <Button x:Name="showOrHideTabs_BTN" Content="˄" Margin="10,70,10,10" VerticalAlignment="Top" HorizontalAlignment="Stretch" Click="ShowOrHideTabs_BTN_Click" Cursor="Hand"/>
+        <Grid x:Name="general" Margin="0,100,0,0">
+            <TabControl Cursor="Arrow" HorizontalAlignment="Stretch">
+                <TabItem Header="{x:Static p:strings.GAMES_TAB}" Cursor="Hand">
+                    <Grid Cursor="Arrow">
+                        <ListView x:Name="gamesList" Margin="10,10,10,10" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}" VerticalAlignment="Top" SelectionMode="Single">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="32">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox x:Name="active" IsChecked="{Binding Active}" Cursor="Hand"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="32">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image x:Name="appIcon" Source="{Binding AppIcon}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn x:Name="filename" Header="{x:Static p:strings.FILENAME_COL}" DisplayMemberBinding="{Binding FileName}" Width="Auto"/>
+                                    <GridViewColumn x:Name="type" Header="{x:Static p:strings.TYPE_COL}" DisplayMemberBinding="{Binding Type}" Width="Auto"/>
+                                    <GridViewColumn x:Name="from" Header="{x:Static p:strings.FROM_COL}" DisplayMemberBinding="{Binding From}" Width="70"/>
+                                    <GridViewColumn Width="30">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="X" FontSize="8"  Height="16" Width="16" Cursor="Hand" Click="RemoveItemFromList_Click"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="30">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="▶" FontSize="8"  Height="16" Width="16" Cursor="Hand" Click="StartItemFromList_Click"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{x:Static p:strings.SETTINGS_TAB}" Cursor="Hand">
+                    <Grid Cursor="Arrow" VerticalAlignment="Stretch">
+                        <Button Content="{x:Static p:strings.ADD_GAME_BTN}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="AddGameToList_Click"/>
+                        <Button Content="{x:Static p:strings.CLEAR_LIST_BTN}" HorizontalAlignment="Left" Margin="120,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ClearList_Click"/>
+                        <Button Content="en/es" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ToggleLang_Click" Visibility="Hidden"/>
 
-        <TabControl x:Name="generalTabControl" Cursor="Arrow" Margin="0,100,0,0" HorizontalAlignment="Stretch">
-            <TabItem x:Name="gameListTAB" Header="{x:Static p:strings.GAMES_TAB}" Cursor="Hand">
-                <Grid Cursor="Arrow">
+                        <!--https://weblogs.asp.net/thomaslebrun/wpf-how-to-bind-a-control-to-a-property-defined-in-the-settings-->
+                        <Image x:Name="egsIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,50"/>
+                        <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,10,50" Content="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}"/>
 
-                    <Button Content="+" Height="20" Width="20" Margin="0,5,40,0" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Center" Click="AddGameToList_Click"/>
-                    <Button Content="x" Height="20" Width="20" Margin="40,5,0,0" Cursor="Hand" VerticalAlignment="Top" HorizontalAlignment="Center" Click="ClearList_Click"/>
-
-                    <ListView x:Name="gamesList" Margin="10,30,10,10" Cursor="Arrow" d:ItemsSource="{d:SampleData ItemCount=30}" VerticalAlignment="Top" SelectionMode="Single">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="32">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox x:Name="active" IsChecked="{Binding Active}" Cursor="Hand"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Width="32">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Image x:Name="appIcon" Source="{Binding AppIcon}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn x:Name="filename" Header="{x:Static p:strings.FILENAME_COL}" DisplayMemberBinding="{Binding FileName}" Width="Auto"/>
-                                <GridViewColumn x:Name="type" Header="{x:Static p:strings.TYPE_COL}" DisplayMemberBinding="{Binding Type}" Width="Auto"/>
-                                <GridViewColumn x:Name="from" Header="{x:Static p:strings.FROM_COL}" DisplayMemberBinding="{Binding From}" Width="70"/>
-                                <GridViewColumn Width="30">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Content="X" FontSize="8"  Height="16" Width="16" Cursor="Hand" Click="RemoveItemFromList_Click"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Width="30">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Content="▶" FontSize="8"  Height="16" Width="16" Cursor="Hand" Click="StartItemFromList_Click"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="settingsTAB" Header="{x:Static p:strings.SETTINGS_TAB}" Cursor="Hand">
-                <Grid Cursor="Arrow" VerticalAlignment="Stretch">
-                    <Button Content="en/es" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ToggleLang_Click" Visibility="Hidden"/>
-
-                    <!--https://weblogs.asp.net/thomaslebrun/wpf-how-to-bind-a-control-to-a-property-defined-in-the-settings-->
-                    
-                    <Image x:Name="egsIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,50"/>
-                    <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,10,50" Content="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}"/>
-
-                    <Image x:Name="steamIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10"/>
-                    <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,10,10" Content="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}"/>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="aboutTAB" Header="{x:Static p:strings.ABOUT_TAB}" Cursor="Hand" IsEnabled="False">
-                <Grid Cursor="Arrow" VerticalAlignment="Stretch">
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,24,0,0" TextWrapping="Wrap"/>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                        <Image x:Name="steamIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10"/>
+                        <Label VerticalAlignment="Bottom" FontSize="14" Margin="50,0,10,10" Content="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{x:Static p:strings.ABOUT_TAB}" Cursor="Hand" IsEnabled="False">
+                    <Grid Cursor="Arrow" VerticalAlignment="Stretch">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,24,0,0" TextWrapping="Wrap"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Window>

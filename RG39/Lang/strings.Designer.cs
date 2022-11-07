@@ -70,11 +70,29 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add game.
+        /// </summary>
+        public static string ADD_GAME_BTN {
+            get {
+                return ResourceManager.GetString("ADD_GAME_BTN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load this game:.
         /// </summary>
         public static string CANNOT_LOAD_GAME_MSG {
             get {
                 return ResourceManager.GetString("CANNOT_LOAD_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear list.
+        /// </summary>
+        public static string CLEAR_LIST_BTN {
+            get {
+                return ResourceManager.GetString("CLEAR_LIST_BTN", resourceCulture);
             }
         }
         

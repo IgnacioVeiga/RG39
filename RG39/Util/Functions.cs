@@ -64,30 +64,23 @@ namespace RG39
 
         public static string LocateStoreExeFromReg(FromLibrary from)
         {
-            try
+            if (FromLibrary.Steam == from)
             {
-                if (FromLibrary.Steam == from)
+                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
+                if (key is not null)
                 {
-                    using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
-                    if (key is not null)
-                    {
-                        object steamExeDir = key.GetValue("SteamExe");
-                        if (steamExeDir is not null) return steamExeDir as string;
-                    }
-                }
-                else if (FromLibrary.EpicGames == from)
-                {
-                    using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
-                    if (key is not null)
-                    {
-                        object egsExeDir = key.GetValue("ModSdkCommand");
-                        if (egsExeDir is not null) return egsExeDir as string;
-                    }
+                    object steamExeDir = key.GetValue("SteamExe");
+                    if (steamExeDir is not null) return steamExeDir as string;
                 }
             }
-            catch (Exception ex)
+            else if (FromLibrary.EpicGames == from)
             {
-                MessageBox.Show(ex.Message);
+                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
+                if (key is not null)
+                {
+                    object egsExeDir = key.GetValue("ModSdkCommand");
+                    if (egsExeDir is not null) return egsExeDir as string;
+                }
             }
             return string.Empty;
         }
@@ -103,8 +96,7 @@ namespace RG39
                 SteamHandler handler = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                     ? new SteamHandler(new WindowsRegistry())
                     : new SteamHandler(null);
-
-                foreach ((SteamGame game, string error) in handler.FindAllGames())
+                foreach ((SteamGame game, _) in handler.FindAllGames())
                 {
                     // ToDo: filter soundtracks
                     if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
@@ -123,7 +115,7 @@ namespace RG39
             else if (FromLibrary.EpicGames == from)
             {
                 EGSHandler handler = new();
-                foreach ((EGSGame game, string error) in handler.FindAllGames())
+                foreach ((EGSGame game, _) in handler.FindAllGames())
                 {
                     if (game is not null)
                     {
@@ -150,62 +142,44 @@ namespace RG39
                 Title = strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,
+                EnsureFileExists = true,
 
                 // Carpeta de escritorio por defecto
                 DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
             };
 
             // Muestro la ventana para seleccionar carpeta y cargamos datos si es ok
-            if (exe.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                return exe.FileName;
-            }
-            return null;
+            if (exe.ShowDialog() == CommonFileDialogResult.Ok) return exe.FileName;
+            else return null;
         }
 
         public static void SaveList(List<GenericFile> games)
         {
-            try
-            {
-                if (File.Exists(@".\list.xml"))
-                    File.Delete(@".\list.xml");
-                XmlWriter list = XmlWriter.Create("list.xml");
-                list.WriteStartElement("MyGames");
-                list.WriteElementString("Other", JsonSerializer.Serialize(games));
-                list.WriteEndElement();
-                list.Close();
-                MessageBox.Show("Ok");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            if (File.Exists(@".\list.xml"))
+                File.Delete(@".\list.xml");
+            XmlWriter list = XmlWriter.Create("list.xml");
+            list.WriteStartElement("MyGames");
+            list.WriteElementString("Other", JsonSerializer.Serialize(games));
+            list.WriteEndElement();
+            list.Close();
         }
 
         public static List<GenericFile> ReadList()
         {
             List<GenericFile> gamesList = new();
-            try
+            if (File.Exists(@".\list.xml"))
             {
-                if (File.Exists(@".\list.xml"))
+                XmlReader listXML = XmlReader.Create("list.xml");
+                listXML.ReadToFollowing("Other");
+                string json = listXML.ReadElementContentAsString();
+                List<GenericFile> list = JsonSerializer.Deserialize<List<GenericFile>>(json);
+                foreach (GenericFile item in list)
                 {
-                    XmlReader listXML = XmlReader.Create("list.xml");
-                    listXML.ReadToFollowing("Other");
-                    string json = listXML.ReadElementContentAsString();
-                    List<GenericFile> list = JsonSerializer.Deserialize<List<GenericFile>>(json);
-                    foreach (GenericFile item in list)
-                    {
-                        gamesList.Add(item);
-                    }
-                    listXML.Close();
+                    gamesList.Add(item);
                 }
-                return gamesList;
+                listXML.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
+            return gamesList;
         }
     }
 
