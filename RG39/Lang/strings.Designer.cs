@@ -61,11 +61,38 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot locate steam.exe.
+        ///   Looks up a localized string similar to About.
         /// </summary>
-        public static string CANNOT_LOCATE_STEAM {
+        public static string ABOUT_TAB {
             get {
-                return ResourceManager.GetString("CANNOT_LOCATE_STEAM", resourceCulture);
+                return ResourceManager.GetString("ABOUT_TAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add game.
+        /// </summary>
+        public static string ADD_GAME_BTN {
+            get {
+                return ResourceManager.GetString("ADD_GAME_BTN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot load this game:.
+        /// </summary>
+        public static string CANNOT_LOAD_GAME_MSG {
+            get {
+                return ResourceManager.GetString("CANNOT_LOAD_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear list.
+        /// </summary>
+        public static string CLEAR_LIST_BTN {
+            get {
+                return ResourceManager.GetString("CLEAR_LIST_BTN", resourceCulture);
             }
         }
         
@@ -115,15 +142,6 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load Steam library?.
-        /// </summary>
-        public static string LOAD_STEAM_LIB_MSG {
-            get {
-                return ResourceManager.GetString("LOAD_STEAM_LIB_MSG", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple instances of this program are not allowed..
         /// </summary>
         public static string MULTI_INSTANCE_MSG {
@@ -133,11 +151,38 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search folder.
+        ///   Looks up a localized string similar to [Not found].
         /// </summary>
-        public static string SEARCH_FOLDER_TITLE {
+        public static string NOT_FOUND_MSG {
             get {
-                return ResourceManager.GetString("SEARCH_FOLDER_TITLE", resourceCulture);
+                return ResourceManager.GetString("NOT_FOUND_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove:.
+        /// </summary>
+        public static string REMOVE_GAME_MSG {
+            get {
+                return ResourceManager.GetString("REMOVE_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to was already added..
+        /// </summary>
+        public static string REPEATED_GAME_MSG {
+            get {
+                return ResourceManager.GetString("REPEATED_GAME_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeated.
+        /// </summary>
+        public static string REPEATED_TITLE {
+            get {
+                return ResourceManager.GetString("REPEATED_TITLE", resourceCulture);
             }
         }
         
@@ -165,15 +210,6 @@ namespace RG39.Lang {
         public static string START_BTN {
             get {
                 return ResourceManager.GetString("START_BTN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam installed on:.
-        /// </summary>
-        public static string STEAM_LOCATION_MSG {
-            get {
-                return ResourceManager.GetString("STEAM_LOCATION_MSG", resourceCulture);
             }
         }
         

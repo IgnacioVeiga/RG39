@@ -1,13 +1,44 @@
-﻿namespace RG39
+﻿using System.Drawing;
+using System.Windows.Media;
+using System.Text.Json.Serialization;
+using RG39.Properties;
+
+namespace RG39.Util
 {
     public class GenericFile
     {
         public int SteamGameId { get; set; }
+        public string EGSGameId { get; set; }
 
         // indicates if must be filtered
         public bool Active { get; set; }
 
-        // example:    "C:/Folder/FileName.ext" (NOT for Steam games)
+        [JsonIgnore]
+        private ImageSource appIcon;
+        [JsonIgnore]
+        public ImageSource AppIcon
+        {
+            get
+            {
+                if (From == FromLibrary.Other)
+                {
+                    appIcon = Icon.ExtractAssociatedIcon(FilePath).ToImageSource();
+                }
+                else if (From == FromLibrary.Steam)
+                {
+                    appIcon = Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
+                }
+                else if (From == FromLibrary.EpicGames)
+                {
+                    appIcon = Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                }
+                return appIcon;
+            }
+            set => appIcon = value;
+        }
+
+        // example:    "C:/Folder/FileName.ext" (NOT for Steam/Epic games)
+        // IMPORTANT: for Steam or EGS FilePath == Path
         public string FilePath { get; set; }
 
         // example:    "C:/Folder"
@@ -16,11 +47,12 @@
         {
             get
             {
-                if (From == FromLibrary.Steam)
+                if (From == FromLibrary.Other)
                 {
-                    return FilePath;
+                    path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
+                    return path;
                 }
-                return path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
+                return FilePath;
             }
             set => path = value;
         }
@@ -45,18 +77,17 @@
             }
         }
 
-        // name of file but without format
+        // file name without extension
         // example:  "FileName", NOT "FileName.ext"
         private string fileName;
         public string FileName
         {
             get
             {
-                if (From == FromLibrary.Steam)
-                {
+                if (From == FromLibrary.Other)
+                    return fileName = FilePath.Remove(0, Path.Length)[..^4];
+                else
                     return fileName;
-                }
-                return fileName = FilePath.Remove(0, Path.Length)[..^4];
             }
             set => fileName = value;
         }

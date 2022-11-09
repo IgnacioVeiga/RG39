@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.EGS;
 using System.Runtime.InteropServices;
 using GameFinder.RegistryUtils;
 using Microsoft.Win32;
@@ -12,27 +13,57 @@ using System.Xml;
 using System.IO;
 using System.Text.Json;
 using RG39.Lang;
+using RG39.Properties;
+using System.Drawing;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
-namespace RG39
+namespace RG39.Util
 {
     public static class MyFunctions
     {
-        public static void RunGame(ProcessStartInfo info)
+        public static void RunGame(GenericFile game)
         {
             try
             {
-                Process.Start(info);
+                if (game is null) return;
+
+                if (game.From == FromLibrary.Other)
+                    Process.Start(new ProcessStartInfo()
+                    {
+                        UseShellExecute = true,
+                        FileName = game.FileName + game.Type,
+                        WorkingDirectory = game.Path
+                    });
+
+                if (game.From == FromLibrary.Steam)
+                    Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.SteamGameId}");
+
+                if (game.From == FromLibrary.EpicGames)
+                {
+                    /*
+                     Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
+                     Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
+                     El EGSGameId es 283080ad58e64fd084d30413888a571c
+                     ToDo: encontrar los otros 2 parametros que lo rodean
+                     */
+                    MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.FileName}\".");
+                    return;
+                    // Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
+                }
                 Application.Current.Shutdown();
             }
             catch (Win32Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                string msg = ex.Message + "\n" + JsonSerializer.Serialize(game, new JsonSerializerOptions() { WriteIndented = true });
+                MessageBox.Show(msg);
             }
         }
 
-        public static string LocateSteamExe()
+        public static string LocateStoreExeFromReg(FromLibrary from)
         {
-            try
+            if (FromLibrary.Steam == from)
             {
                 using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
                 if (key is not null)
@@ -41,77 +72,64 @@ namespace RG39
                     if (steamExeDir is not null) return steamExeDir as string;
                 }
             }
-            catch (Exception ex)
+            else if (FromLibrary.EpicGames == from)
             {
-                MessageBox.Show(ex.Message);
+                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
+                if (key is not null)
+                {
+                    object egsExeDir = key.GetValue("ModSdkCommand");
+                    if (egsExeDir is not null) return egsExeDir as string;
+                }
             }
             return string.Empty;
         }
 
-        public static List<GenericFile> GetSteamLib()
+        public static List<GenericFile> GetGamesFromLib(FromLibrary from)
         {
-            List<GenericFile> steamLib = new();
+            List<GenericFile> games = new();
 
-            // use the Windows registry on Windows
-            // Linux doesn't have a registry
-            SteamHandler handler = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? new SteamHandler(new WindowsRegistry())
-                : new SteamHandler(null);
-
-            // method 1: iterate over the game-error result
-            foreach ((SteamGame game, string error) in handler.FindAllGames())
+            if (FromLibrary.Steam == from)
             {
-                if (game is not null && game.AppId != 228980)
+                // use the Windows registry on Windows
+                // Linux doesn't have a registry
+                SteamHandler handler = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? new SteamHandler(new WindowsRegistry())
+                    : new SteamHandler(null);
+                foreach ((SteamGame game, _) in handler.FindAllGames())
                 {
-                    //MessageBox.Show($"Found {game}");
-
-                    // Mapear SteamGame a GenericFile
-                    steamLib.Add(new GenericFile()
+                    // ToDo: filter soundtracks
+                    if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
                     {
-                        Active = true,
-                        FileName = game.Name,
-                        FilePath = game.Path,
-                        From = FromLibrary.Steam,
-                        SteamGameId = game.AppId
-                    });
+                        games.Add(new GenericFile()
+                        {
+                            Active = true,
+                            FileName = game.Name,
+                            FilePath = game.Path,
+                            From = FromLibrary.Steam,
+                            SteamGameId = game.AppId
+                        });
+                    }
                 }
-                //else
-                //{
-                //    MessageBox.Show($"Error: {error}");
-                //}
             }
-
-            // method 2: use the dictionary if you need to find games by id
-            //Dictionary<SteamGame, int> games = handler.FindAllGamesById(out string[] errors);
-
-            // method 3: find a single game by id
-            //SteamGame? game = handler.FindOneGameById(570940, out string[] errors);
-
-            return steamLib;
-        }
-
-        public static void EpicGamesStoreLib()
-        {
-            //var handler = new EGSHandler();
-
-            //// method 1: iterate over the game-error result
-            //foreach (var (game, error) in handler.FindAllGames())
-            //{
-            //    if (game is not null)
-            //    {
-            //        Console.WriteLine($"Found {game}");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"Error: {error}");
-            //    }
-            //}
-
-            //// method 2: use the dictionary if you need to find games by id
-            //Dictionary<EGSGame, string> games = handler.FindAllGamesById(out string[] errors);
-
-            //// method 3: find a single game by id
-            //EGSGame? game = handler.FindOneGameById("3257e06c28764231acd93049f3774ed6", out string[] errors);
+            else if (FromLibrary.EpicGames == from)
+            {
+                EGSHandler handler = new();
+                foreach ((EGSGame game, _) in handler.FindAllGames())
+                {
+                    if (game is not null)
+                    {
+                        games.Add(new GenericFile()
+                        {
+                            Active = false,
+                            FileName = game.DisplayName,
+                            FilePath = game.InstallLocation,
+                            From = FromLibrary.EpicGames,
+                            EGSGameId = game.CatalogItemId
+                        });
+                    }
+                }
+            }
+            return games;
         }
 
         public static string SelectExecutable()
@@ -119,66 +137,69 @@ namespace RG39
             // Sirve para mostrar el dialogo selector de carpetas
             CommonOpenFileDialog exe = new()
             {
-                // TODO: reemplazar este dialogo por el propio en creación
+                // ToDo: reemplazar este dialogo por el propio en creación
                 Title = strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,
+                EnsureFileExists = true,
 
                 // Carpeta de escritorio por defecto
                 DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
             };
 
             // Muestro la ventana para seleccionar carpeta y cargamos datos si es ok
-            if (exe.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                return exe.FileName;
-            }
-            return null;
+            if (exe.ShowDialog() == CommonFileDialogResult.Ok) return exe.FileName;
+            else return null;
         }
 
         public static void SaveList(List<GenericFile> games)
         {
-            try
-            {
-                if (File.Exists(@".\list.xml"))
-                    File.Delete(@".\list.xml");
-                XmlWriter list = XmlWriter.Create("list.xml");
-                list.WriteStartElement("MyGames");
-                list.WriteElementString("Other", JsonSerializer.Serialize(games));
-                list.WriteEndElement();
-                list.Close();
-                MessageBox.Show("Ok");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            if (File.Exists(@".\list.xml"))
+                File.Delete(@".\list.xml");
+            XmlWriter list = XmlWriter.Create("list.xml");
+            list.WriteStartElement("MyGames");
+            list.WriteElementString("Other", JsonSerializer.Serialize(games));
+            list.WriteEndElement();
+            list.Close();
         }
 
         public static List<GenericFile> ReadList()
         {
             List<GenericFile> gamesList = new();
-            try
+            if (File.Exists(@".\list.xml"))
             {
-                if (File.Exists(@".\list.xml"))
-                {
-                    XmlReader listXML = XmlReader.Create("list.xml");
-                    listXML.ReadToFollowing("Other");
-                    string json = listXML.ReadElementContentAsString();
-                    List<GenericFile> list = JsonSerializer.Deserialize<List<GenericFile>>(json);
-                    foreach (GenericFile item in list)
-                    {
-                        gamesList.Add(item);
-                    }
-                    listXML.Close();
-                }
-                return gamesList;
+                XmlReader listXML = XmlReader.Create("list.xml");
+                listXML.ReadToFollowing("Other");
+                string json = listXML.ReadElementContentAsString();
+                List<GenericFile> games = JsonSerializer.Deserialize<List<GenericFile>>(json);
+                gamesList.AddRange(games);
+                listXML.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
+            return gamesList;
+        }
+    }
+
+    // source: https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource
+    internal static class IconUtilities
+    {
+        [DllImport("gdi32.dll", SetLastError = true)]
+        private static extern bool DeleteObject(IntPtr hObject);
+
+        public static ImageSource ToImageSource(this Icon icon)
+        {
+            Bitmap bitmap = icon.ToBitmap();
+            IntPtr hBitmap = bitmap.GetHbitmap();
+
+            ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(
+                hBitmap,
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+            );
+
+            if (!DeleteObject(hBitmap)) throw new Win32Exception();
+
+            return wpfBitmap;
         }
     }
 }

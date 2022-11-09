@@ -5,15 +5,13 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>RG39</RootNamespace>
     <UseWPF>true</UseWPF>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <StartupObject>RG39.App</StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <Authors>Ignacio Veiga Martín</Authors>
-    <Version>1.5.0</Version>
-    <SignAssembly>False</SignAssembly>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="GameFinder.StoreHandlers.EGS" Version="2.2.1" />
     <PackageReference Include="GameFinder.StoreHandlers.Steam" Version="2.2.1" />
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="2.12.0.2" />
   </ItemGroup>

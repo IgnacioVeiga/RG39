@@ -117,20 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SEARCH_FOLDER_TITLE" xml:space="preserve">
-    <value>Buscar carpeta</value>
-  </data>
   <data name="START_BTN" xml:space="preserve">
     <value>INICIAR</value>
   </data>
   <data name="SEL_EXE_TITLE" xml:space="preserve">
     <value>Seleccionar ejecutable</value>
-  </data>
-  <data name="LOAD_STEAM_LIB_MSG" xml:space="preserve">
-    <value>¿Cargar la librería de Steam?</value>
-  </data>
-  <data name="CANNOT_LOCATE_STEAM" xml:space="preserve">
-    <value>No se puede ubicar steam.exe</value>
   </data>
   <data name="FILENAME_COL" xml:space="preserve">
     <value>Nombre</value>
@@ -147,9 +138,6 @@
   <data name="GAMES_TAB" xml:space="preserve">
     <value>Juegos</value>
   </data>
-  <data name="STEAM_LOCATION_MSG" xml:space="preserve">
-    <value>Steam instalado en:</value>
-  </data>
   <data name="CLEAR_LIST_TITLE" xml:space="preserve">
     <value>Limpiar lista</value>
   </data>
@@ -158,5 +146,29 @@
   </data>
   <data name="MULTI_INSTANCE_MSG" xml:space="preserve">
     <value>No se permiten múltiples instancias de este programa.</value>
+  </data>
+  <data name="NOT_FOUND_MSG" xml:space="preserve">
+    <value>[No encontrado]</value>
+  </data>
+  <data name="REPEATED_GAME_MSG" xml:space="preserve">
+    <value>ya estaba añadido.</value>
+  </data>
+  <data name="REPEATED_TITLE" xml:space="preserve">
+    <value>Repetido</value>
+  </data>
+  <data name="CANNOT_LOAD_GAME_MSG" xml:space="preserve">
+    <value>No puedo cargar este juego:</value>
+  </data>
+  <data name="REMOVE_GAME_MSG" xml:space="preserve">
+    <value>¿Quitar:</value>
+  </data>
+  <data name="ABOUT_TAB" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="CLEAR_LIST_BTN" xml:space="preserve">
+    <value>Vaciar lista</value>
+  </data>
+  <data name="ADD_GAME_BTN" xml:space="preserve">
+    <value>Añadir juego</value>
   </data>
 </root>
