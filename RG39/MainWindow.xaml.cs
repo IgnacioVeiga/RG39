@@ -1,5 +1,6 @@
 ﻿using RG39.Lang;
 using RG39.Properties;
+using RG39.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +25,7 @@ namespace RG39
             if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
 
             Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
-            Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+            //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
@@ -33,12 +34,12 @@ namespace RG39
             }
             else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
 
-            if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
-            {
-                egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
-                this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.EpicGames));
-            }
-            else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+            //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
+            //{
+            //    egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+            //    this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.EpicGames));
+            //}
+            //else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
 
             // En btn se activa si hay elementos en la lista
             start_BTN.IsEnabled = this.gamesList.Items.Count > 1;

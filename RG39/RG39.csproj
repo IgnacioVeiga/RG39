@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>RG39</RootNamespace>
     <UseWPF>true</UseWPF>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <StartupObject>RG39.App</StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>

@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Text.Json.Serialization;
 using RG39.Properties;
 
-namespace RG39
+namespace RG39.Util
 {
     public class GenericFile
     {
@@ -47,12 +47,12 @@ namespace RG39
         {
             get
             {
-                if (From != FromLibrary.Other)
+                if (From == FromLibrary.Other)
                 {
-                    return FilePath;
+                    path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
+                    return path;
                 }
-                path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
-                return path;
+                return FilePath;
             }
             set => path = value;
         }
@@ -77,18 +77,17 @@ namespace RG39
             }
         }
 
-        // name of file but without format
+        // file name without extension
         // example:  "FileName", NOT "FileName.ext"
         private string fileName;
         public string FileName
         {
             get
             {
-                if (From != FromLibrary.Other)
-                {
+                if (From == FromLibrary.Other)
+                    return fileName = FilePath.Remove(0, Path.Length)[..^4];
+                else
                     return fileName;
-                }
-                return fileName = FilePath.Remove(0, Path.Length)[..^4];
             }
             set => fileName = value;
         }

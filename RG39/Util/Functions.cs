@@ -19,7 +19,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 
-namespace RG39
+namespace RG39.Util
 {
     public static class MyFunctions
     {
@@ -56,9 +56,8 @@ namespace RG39
             }
             catch (Win32Exception ex)
             {
-                MessageBox.Show(ex.Message
-                                + "\n"
-                                + JsonSerializer.Serialize(game, new JsonSerializerOptions() { WriteIndented = true }));
+                string msg = ex.Message + "\n" + JsonSerializer.Serialize(game, new JsonSerializerOptions() { WriteIndented = true });
+                MessageBox.Show(msg);
             }
         }
 
@@ -121,7 +120,7 @@ namespace RG39
                     {
                         games.Add(new GenericFile()
                         {
-                            Active = true,
+                            Active = false,
                             FileName = game.DisplayName,
                             FilePath = game.InstallLocation,
                             From = FromLibrary.EpicGames,
