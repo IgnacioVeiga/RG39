@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
-using System.Text.Json.Serialization;
 using System.Windows.Media;
+using System.Text.Json.Serialization;
+using RG39.Properties;
 
 namespace RG39
 {
@@ -21,10 +22,17 @@ namespace RG39
             {
                 if (From == FromLibrary.Other)
                 {
-                    appIcon = IconUtilities.ToImageSource(Icon.ExtractAssociatedIcon(FilePath));
-                    return appIcon;
+                    appIcon = Icon.ExtractAssociatedIcon(FilePath).ToImageSource();
                 }
-                else return appIcon;
+                else if (From == FromLibrary.Steam)
+                {
+                    appIcon = Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
+                }
+                else if (From == FromLibrary.EpicGames)
+                {
+                    appIcon = Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                }
+                return appIcon;
             }
             set => appIcon = value;
         }

@@ -21,8 +21,8 @@ namespace RG39
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            bool initiallyOwned = true;
-            string name = "RG39";
+            const bool initiallyOwned = true;
+            const string name = "RG39";
             _mutex = new Mutex(initiallyOwned, name, out bool createdNew);
             if (createdNew) Exit += CloseMutexHandler;
             else
@@ -32,6 +32,7 @@ namespace RG39
             }
             base.OnStartup(e);
         }
+
         protected virtual void CloseMutexHandler(object sender, EventArgs e)
         {
             _mutex?.Close();

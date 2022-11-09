@@ -20,60 +20,38 @@ namespace RG39
         {
             InitializeComponent();
 
-            List<GenericFile> gamesListSaved = MyFunctions.ReadList();
-            if (gamesListSaved is not null)
-            {
-                foreach (GenericFile item in gamesListSaved)
-                {
-                    gamesList.Items.Add(item);
-                }
-            }
+            List<GenericFile> gamesList = MyFunctions.ReadList();
+            if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
 
             Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
             Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
-                steamIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath));
-                foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.Steam))
-                {
-                    game.AppIcon = steamIcon.Source;
-                    gamesList.Items.Add(game);
-                }
+                steamIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
+                this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.Steam));
             }
-            else
-            {
-                Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
-            }
+            else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
 
             if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             {
-                egsIcon.Source = IconUtilities.ToImageSource(System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath));
-                foreach (GenericFile game in MyFunctions.GetGamesFromLib(FromLibrary.EpicGames))
-                {
-                    game.AppIcon = egsIcon.Source;
-                    gamesList.Items.Add(game);
-                }
+                egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.EpicGames));
             }
-            else
-            {
-                Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
-            }
+            else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
 
             // En btn se activa si hay elementos en la lista
-            start_BTN.IsEnabled = gamesList.Items.Count > 1;
-
+            start_BTN.IsEnabled = this.gamesList.Items.Count > 1;
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                int index = new Random().Next(gamesList.Items.As<GenericFile>()
-                                                           .Where(f => f.Active)
-                                                           .ToList().Count);
+                IEnumerable<GenericFile> list = gamesList.Items.As<GenericFile>().Where(f => f.Active);
+                int index = new Random().Next(list.Count());
+                GenericFile game = list.ToArray()[index];
 
-                GenericFile game = gamesList.Items.As<GenericFile>().Where(f => f.Active).ToArray()[index];
                 MyFunctions.RunGame(game);
             }
             catch (Exception ex)
@@ -87,7 +65,7 @@ namespace RG39
             string gameFileName = MyFunctions.SelectExecutable();
             if (gameFileName is null) return;
 
-            if (gamesList.Items.As<GenericFile>().FirstOrDefault(g => g.FilePath == gameFileName) is not null)
+            if (gamesList.Items.As<GenericFile>().Any(g => g.FilePath == gameFileName))
             {
                 MessageBox.Show($"\"{gameFileName}\"\n {strings.REPEATED_GAME_MSG}", strings.REPEATED_TITLE);
                 return;
@@ -156,6 +134,7 @@ namespace RG39
 
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
         {
+            // ToDo: realizar esto de otra forma más simple
             if (general.Visibility == Visibility.Visible)
             {
                 general.Visibility = Visibility.Collapsed;

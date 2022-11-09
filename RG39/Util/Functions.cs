@@ -172,11 +172,8 @@ namespace RG39
                 XmlReader listXML = XmlReader.Create("list.xml");
                 listXML.ReadToFollowing("Other");
                 string json = listXML.ReadElementContentAsString();
-                List<GenericFile> list = JsonSerializer.Deserialize<List<GenericFile>>(json);
-                foreach (GenericFile item in list)
-                {
-                    gamesList.Add(item);
-                }
+                List<GenericFile> games = JsonSerializer.Deserialize<List<GenericFile>>(json);
+                gamesList.AddRange(games);
                 listXML.Close();
             }
             return gamesList;
@@ -198,12 +195,10 @@ namespace RG39
                 hBitmap,
                 IntPtr.Zero,
                 Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                BitmapSizeOptions.FromEmptyOptions()
+            );
 
-            if (!DeleteObject(hBitmap))
-            {
-                throw new Win32Exception();
-            }
+            if (!DeleteObject(hBitmap)) throw new Win32Exception();
 
             return wpfBitmap;
         }

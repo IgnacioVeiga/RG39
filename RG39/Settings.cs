@@ -8,14 +8,13 @@ namespace RG39.Properties
     //  The PropertyChanged event is raised after a setting's value is changed.
     //  The SettingsLoaded event is raised after the setting values are loaded.
     //  The SettingsSaving event is raised before the setting values are saved.
-    public sealed partial class Settings {
-        
+    public sealed partial class Settings
+    {
         public Settings() {
             // To add event handlers for saving and changing settings, uncomment the lines below:
 
             SettingChanging += SettingChangingEventHandler;
             SettingsSaving += SettingsSavingEventHandler;
-
         }
 
         private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
