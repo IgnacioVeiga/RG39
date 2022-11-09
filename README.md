@@ -1,5 +1,5 @@
 # RG39
-![RG39Icon](/RG39/icon.ico)<br /> <br />
+![RG39Icon](/RG39/Images/RG39.svg)</br>
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
 ## Capturas:
