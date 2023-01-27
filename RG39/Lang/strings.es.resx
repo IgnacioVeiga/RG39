@@ -142,7 +142,7 @@
     <value>Limpiar lista</value>
   </data>
   <data name="CLEAR_LIST_MSG" xml:space="preserve">
-    <value>¿Quieres borrar juegos de la lista?</value>
+    <value>¿Quieres borrar los juegos de la lista?</value>
   </data>
   <data name="MULTI_INSTANCE_MSG" xml:space="preserve">
     <value>No se permiten múltiples instancias de este programa.</value>

@@ -1,7 +1,7 @@
-﻿using System.Drawing;
-using System.Windows.Media;
+﻿using RG39.Properties;
+using System.Drawing;
 using System.Text.Json.Serialization;
-using RG39.Properties;
+using System.Windows.Media;
 
 namespace RG39.Util
 {
