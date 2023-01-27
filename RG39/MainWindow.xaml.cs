@@ -132,6 +132,7 @@ namespace RG39
                 Settings.Default.Lang = "es";
             else
                 Settings.Default.Lang = "en";
+            Settings.Default.Save();
         }
 
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)

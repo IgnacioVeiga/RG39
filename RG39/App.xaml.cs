@@ -16,6 +16,9 @@ namespace RG39
 
         App()
         {
+            if (string.IsNullOrEmpty(Settings.Default.Lang))
+                Settings.Default.Lang = "en";
+
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Lang);
         }
 
