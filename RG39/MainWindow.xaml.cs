@@ -22,6 +22,7 @@ namespace RG39
             InitializeComponent();
 
             List<GenericFile> gamesList = MyFunctions.ReadList();
+            // ToDo: mostrar en una ventana aparte los juegos no existentes.
             if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
 
             Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);

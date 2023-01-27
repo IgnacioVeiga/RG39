@@ -18,6 +18,9 @@ using System.Drawing;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using WinCopies.Linq;
+using WinCopies.Util;
+using System.Linq;
 
 namespace RG39.Util
 {
@@ -171,9 +174,9 @@ namespace RG39.Util
                 XmlReader listXML = XmlReader.Create("list.xml");
                 listXML.ReadToFollowing("Other");
                 string json = listXML.ReadElementContentAsString();
-                List<GenericFile> games = JsonSerializer.Deserialize<List<GenericFile>>(json);
-                gamesList.AddRange(games);
+                gamesList.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json));
                 listXML.Close();
+                gamesList = gamesList.Where(g => File.Exists(g.FilePath)).ToList();
             }
             return gamesList;
         }
