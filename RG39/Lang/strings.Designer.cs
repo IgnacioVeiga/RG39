@@ -214,6 +214,15 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The language will change when the application is restarted..
+        /// </summary>
+        public static string TOGGLE_LANG_MSG {
+            get {
+                return ResourceManager.GetString("TOGGLE_LANG_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string TYPE_COL {

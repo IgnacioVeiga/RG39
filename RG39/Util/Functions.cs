@@ -179,6 +179,28 @@ namespace RG39.Util
             }
             return gamesList;
         }
+
+        /// <summary>
+        /// 0 = English
+        /// 1 = Español
+        /// </summary>
+        /// <param name="langIndex"></param>
+        public static void ChangeLang(int langIndex)
+        {
+            switch (langIndex)
+            {
+                case 0:
+                    Settings.Default.LangString = "en";
+                    break;
+                case 1:
+                    Settings.Default.LangString = "es";
+                    break;
+            }
+
+            // ToDo: buscar otra manera de recordar el item seleccionado del ComboBox "langSelected"
+            Settings.Default.LangIndex = langIndex;
+            Settings.Default.Save();
+        }
     }
 
     // source: https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource

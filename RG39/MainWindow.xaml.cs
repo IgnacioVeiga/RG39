@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Controls;
 using WinCopies.Linq;
@@ -126,15 +127,6 @@ namespace RG39
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
-        private void ToggleLang_Click(object sender, RoutedEventArgs e)
-        {
-            if (Settings.Default.Lang == "en")
-                Settings.Default.Lang = "es";
-            else
-                Settings.Default.Lang = "en";
-            Settings.Default.Save();
-        }
-
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
         {
             // ToDo: realizar esto de otra forma más simple
@@ -161,6 +153,14 @@ namespace RG39
         {
             GenericFile game = ((Button)sender).DataContext as GenericFile;
             MyFunctions.RunGame(game);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MyFunctions.ChangeLang(((ComboBox)sender).SelectedIndex);
+
+            if (langSelected.IsVisible)
+                MessageBox.Show(strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

@@ -171,4 +171,7 @@
   <data name="ADD_GAME_BTN" xml:space="preserve">
     <value>Añadir juego</value>
   </data>
+  <data name="TOGGLE_LANG_MSG" xml:space="preserve">
+    <value>El idioma cambiará cuando se reinicie la aplicación.</value>
+  </data>
 </root>

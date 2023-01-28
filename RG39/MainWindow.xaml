@@ -63,7 +63,11 @@
                     <Grid Cursor="Arrow" VerticalAlignment="Stretch">
                         <Button Content="{x:Static p:strings.ADD_GAME_BTN}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="AddGameToList_Click"/>
                         <Button Content="{x:Static p:strings.CLEAR_LIST_BTN}" HorizontalAlignment="Left" Margin="120,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ClearList_Click"/>
-                        <Button Content="{Binding Source={x:Static properties:Settings.Default}, Path=Lang}" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="ToggleLang_Click"/>
+
+                        <ComboBox x:Name="langSelected" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top" Height="30" Width="100" SelectionChanged="ComboBox_SelectionChanged" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=LangIndex}">
+                            <ComboBoxItem Content="English"/>
+                            <ComboBoxItem Content="Español"/>
+                        </ComboBox>
 
                         <!--https://weblogs.asp.net/thomaslebrun/wpf-how-to-bind-a-control-to-a-property-defined-in-the-settings-->
                         <Image x:Name="egsIcon" Width="32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,50"/>

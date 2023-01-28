@@ -1,5 +1,6 @@
 ﻿using RG39.Lang;
 using RG39.Properties;
+using RG39.Util;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -16,10 +17,11 @@ namespace RG39
 
         App()
         {
-            if (string.IsNullOrEmpty(Settings.Default.Lang))
-                Settings.Default.Lang = "en";
+            if (string.IsNullOrEmpty(Settings.Default.LangString))
+                MyFunctions.ChangeLang(0);
 
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Lang);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.LangString);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.LangString);
         }
 
         protected override void OnStartup(StartupEventArgs e)

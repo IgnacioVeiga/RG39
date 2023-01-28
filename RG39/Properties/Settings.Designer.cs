@@ -26,18 +26,6 @@ namespace RG39.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Lang {
-            get {
-                return ((string)(this["Lang"]));
-            }
-            set {
-                this["Lang"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SteamPath {
             get {
                 return ((string)(this["SteamPath"]));
@@ -56,6 +44,29 @@ namespace RG39.Properties {
             }
             set {
                 this["EGSPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int LangIndex {
+            get {
+                return ((int)(this["LangIndex"]));
+            }
+            set {
+                this["LangIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LangString {
+            get {
+                return ((string)(this["LangString"]));
+            }
+            set {
+                this["LangString"] = value;
             }
         }
     }
