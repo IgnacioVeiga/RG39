@@ -228,6 +228,19 @@ namespace RG39.Util
             Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
         }
+
+        public static void RestartApp()
+        {
+            try
+            {
+                Process.Start(Environment.ProcessPath);
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 
     // source: https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource
