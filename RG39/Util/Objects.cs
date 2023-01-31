@@ -7,7 +7,10 @@ namespace RG39.Util
 {
     public class GenericFile
     {
-        // ToDo: Revisar que atributos son fundamentales para el archivo json
+        // ToDo:
+        // Revisar que atributos son fundamentales para el archivo json.
+        // Debería "auto-construirse" solo con el path completo y el campo de activo.
+        // Crear otra clase diferente para Steam y EGS de ser necesario
 
         public int SteamGameId { get; set; }
         public string EGSGameId { get; set; }
