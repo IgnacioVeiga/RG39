@@ -154,6 +154,15 @@ namespace RG39.Util
             else return null;
         }
 
+        public static void ClearList()
+        {
+            if (File.Exists(@".\list.xml"))
+                File.Delete(@".\list.xml");
+
+            if (File.Exists(@".\list.json"))
+                File.Delete(@".\list.json");
+        }
+
         public static void SaveList(List<GenericFile> games)
         {
             JsonSerializerOptions options = new() { WriteIndented = true };

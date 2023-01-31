@@ -25,6 +25,7 @@ namespace RG39
             // ToDo: mostrar en una ventana aparte los juegos no existentes.
             if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
 
+            #region Steam
             Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
             //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
@@ -34,13 +35,16 @@ namespace RG39
                 this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.Steam));
             }
             else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
+            #endregion
 
+            #region EpicGamesStore
             //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             //{
             //    egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
             //    this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.EpicGames));
             //}
             //else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+            #endregion
 
             // En btn se activa si hay elementos en la lista
             start_BTN.IsEnabled = this.gamesList.Items.Count > 1;
@@ -93,8 +97,7 @@ namespace RG39
             MessageBoxResult msgResult = MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
-                if (File.Exists(@".\list.xml"))
-                    File.Delete(@".\list.xml");
+                MyFunctions.ClearList();
                 gamesList.Items.Clear();
                 MessageBox.Show("Ok");
             }
