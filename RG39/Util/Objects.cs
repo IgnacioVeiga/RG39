@@ -7,6 +7,8 @@ namespace RG39.Util
 {
     public class GenericFile
     {
+        // ToDo: Revisar que atributos son fundamentales para el archivo json
+
         public int SteamGameId { get; set; }
         public string EGSGameId { get; set; }
 
@@ -62,11 +64,7 @@ namespace RG39.Util
         {
             get
             {
-                if (From == FromLibrary.Steam)
-                {
-                    return ".url";
-                }
-                else if (From == FromLibrary.EpicGames)
+                if (From == FromLibrary.Steam || From == FromLibrary.EpicGames)
                 {
                     return ".url";
                 }

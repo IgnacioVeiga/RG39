@@ -156,29 +156,43 @@ namespace RG39.Util
 
         public static void SaveList(List<GenericFile> games)
         {
-            if (File.Exists(@".\list.xml"))
-                File.Delete(@".\list.xml");
-            XmlWriter list = XmlWriter.Create("list.xml");
-            list.WriteStartElement("MyGames");
-            list.WriteElementString("Other", JsonSerializer.Serialize(games));
-            list.WriteEndElement();
-            list.Close();
+            JsonSerializerOptions options = new() { WriteIndented = true };
+            string json = JsonSerializer.Serialize(games, options);
+            File.WriteAllText(@".\list.json", json);
         }
 
         public static List<GenericFile> ReadList()
         {
-            List<GenericFile> gamesList = new();
+            List<GenericFile> games = new();
+
+            if (File.Exists(@".\list.json"))
+            {
+                string json = File.ReadAllText(@".\list.json");
+                JsonSerializerOptions options = new() { WriteIndented = true };
+                games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json, options));
+            }
+
             if (File.Exists(@".\list.xml"))
             {
-                XmlReader listXML = XmlReader.Create("list.xml");
-                listXML.ReadToFollowing("Other");
-                string json = listXML.ReadElementContentAsString();
-                gamesList.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json));
-                listXML.Close();
-                gamesList = gamesList.Where(g => File.Exists(g.FilePath)).ToList();
+                games.AddRange(ReadListLegacy(games));
+                File.Delete(@".\list.xml");
+                SaveList(games.Where(g => File.Exists(g.FilePath)).ToList());
             }
-            return gamesList;
+
+            return games.Where(g => File.Exists(g.FilePath)).ToList();
         }
+
+        #region Legacy
+        public static List<GenericFile> ReadListLegacy(List<GenericFile> games)
+        {
+            XmlReader listXML = XmlReader.Create("list.xml");
+            listXML.ReadToFollowing("Other");
+            string json = listXML.ReadElementContentAsString();
+            games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json));
+            listXML.Close();
+            return games;
+        }
+        #endregion
 
         /// <summary>
         /// 0 = English
