@@ -3,8 +3,6 @@ using RG39.Properties;
 using RG39.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -159,7 +157,6 @@ namespace RG39
             MyFunctions.RunGame(game);
         }
 
-        [RequiresAssemblyFiles("Calls System.Reflection.Assembly.Location")]
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MyFunctions.ChangeLanguage(((ComboBox)sender).SelectedIndex);
