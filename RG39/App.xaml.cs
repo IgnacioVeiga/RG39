@@ -16,7 +16,7 @@ namespace RG39
 
         App()
         {
-            MyFunctions.ChangeLang(Settings.Default.LangIndex);
+            MyFunctions.ChangeLanguage(Settings.Default.LangIndex);
         }
 
         protected override void OnStartup(StartupEventArgs e)

@@ -210,9 +210,8 @@ namespace RG39.Util
         /// 1 = Español
         /// </summary>
         /// <param name="langIndex"></param>
-        public static void ChangeLang(int langIndex)
+        public static void ChangeLanguage(int langIndex)
         {
-            // Default
             string lang = "en";
 
             switch (langIndex)
@@ -220,8 +219,6 @@ namespace RG39.Util
                 case (int)Languages.Español:
                     lang = "es";
                     break;
-
-                default: break;
             }
 
             // ToDo: buscar otra manera de recordar el item seleccionado del ComboBox "langSelected"

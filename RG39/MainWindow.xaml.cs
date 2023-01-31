@@ -159,7 +159,7 @@ namespace RG39
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MyFunctions.ChangeLang(((ComboBox)sender).SelectedIndex);
+            MyFunctions.ChangeLanguage(((ComboBox)sender).SelectedIndex);
 
             if (langSelected.IsVisible)
             {
