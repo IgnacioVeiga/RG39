@@ -102,4 +102,11 @@ namespace RG39.Util
         Steam = 1,
         EpicGames = 2
     }
+
+    // ToDo: Intentar generar los ComboBoxItems a partir de esta enum
+    public enum Languages
+    {
+        English = 0,
+        Español = 1
+    }
 }

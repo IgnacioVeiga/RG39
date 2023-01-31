@@ -10,10 +10,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -210,19 +212,24 @@ namespace RG39.Util
         /// <param name="langIndex"></param>
         public static void ChangeLang(int langIndex)
         {
+            // Default
+            string lang = "en";
+
             switch (langIndex)
             {
-                case 0:
-                    Settings.Default.LangString = "en";
+                case (int)Languages.Español:
+                    lang = "es";
                     break;
-                case 1:
-                    Settings.Default.LangString = "es";
-                    break;
+
+                default: break;
             }
 
             // ToDo: buscar otra manera de recordar el item seleccionado del ComboBox "langSelected"
             Settings.Default.LangIndex = langIndex;
             Settings.Default.Save();
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
         }
     }
 

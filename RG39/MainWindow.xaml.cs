@@ -3,7 +3,6 @@ using RG39.Properties;
 using RG39.Util;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,12 +21,11 @@ namespace RG39
             InitializeComponent();
 
             List<GenericFile> gamesList = MyFunctions.ReadList();
-            // ToDo: mostrar en una ventana aparte los juegos no existentes.
             if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
+            // ToDo: mostrar en una ventana aparte los juegos no existentes pero enlistados.
 
             #region Steam
             Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
-            //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
@@ -38,6 +36,8 @@ namespace RG39
             #endregion
 
             #region EpicGamesStore
+            //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+
             //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             //{
             //    egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
@@ -102,7 +102,7 @@ namespace RG39
                 MessageBox.Show("Ok");
             }
 
-            start_BTN.IsEnabled = gamesList.Items.Count > 1;
+            start_BTN.IsEnabled = false;
         }
 
         private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
@@ -162,7 +162,10 @@ namespace RG39
             MyFunctions.ChangeLang(((ComboBox)sender).SelectedIndex);
 
             if (langSelected.IsVisible)
+            {
                 MessageBox.Show(strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Todo: reiniciar prograna luego del mensaje
+            }            
         }
     }
 }
