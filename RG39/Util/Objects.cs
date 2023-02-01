@@ -5,14 +5,15 @@ using System.Windows.Media;
 
 namespace RG39.Util
 {
+    // ToDo:
+    // Revisar que atributos son fundamentales para el archivo json.
+    // Debería "auto-construirse" solo con el path completo y el campo de activo.
+    // Crear otra clase diferente para Steam y EGS de ser necesario
     public class GenericFile
     {
-        // ToDo:
-        // Revisar que atributos son fundamentales para el archivo json.
-        // Debería "auto-construirse" solo con el path completo y el campo de activo.
-        // Crear otra clase diferente para Steam y EGS de ser necesario
-
+        [JsonIgnore]
         public int SteamGameId { get; set; }
+        [JsonIgnore]
         public string EGSGameId { get; set; }
 
         // indicates if must be filtered
@@ -47,7 +48,9 @@ namespace RG39.Util
         public string FilePath { get; set; }
 
         // example:    "C:/Folder"
+        [JsonIgnore]
         private string path;
+        [JsonIgnore]
         public string Path
         {
             get
@@ -63,6 +66,7 @@ namespace RG39.Util
         }
 
         // example: ".ext"
+        [JsonIgnore]
         public string Type
         {
             get
@@ -80,7 +84,9 @@ namespace RG39.Util
 
         // file name without extension
         // example:  "FileName", NOT "FileName.ext"
+        [JsonIgnore]
         private string fileName;
+        [JsonIgnore]
         public string FileName
         {
             get
