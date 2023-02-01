@@ -19,22 +19,21 @@ namespace RG39.Util
         // indicates if must be filtered
         public bool Active { get; set; }
 
-        [JsonIgnore]
         private ImageSource appIcon;
         [JsonIgnore]
         public ImageSource AppIcon
         {
             get
             {
-                if (From == FromLibrary.Other)
+                if (From == GameStores.FromLibrary.Other)
                 {
                     appIcon = Icon.ExtractAssociatedIcon(FilePath).ToImageSource();
                 }
-                else if (From == FromLibrary.Steam)
+                else if (From == GameStores.FromLibrary.Steam)
                 {
                     appIcon = Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
                 }
-                else if (From == FromLibrary.EpicGames)
+                else if (From == GameStores.FromLibrary.EpicGames)
                 {
                     appIcon = Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
                 }
@@ -45,17 +44,17 @@ namespace RG39.Util
 
         // example:    "C:/Folder/FileName.ext" (NOT for Steam/Epic games)
         // IMPORTANT: for Steam or EGS FilePath == Path
+        // ToDo: change this
         public string FilePath { get; set; }
 
         // example:    "C:/Folder"
-        [JsonIgnore]
         private string path;
         [JsonIgnore]
         public string Path
         {
             get
             {
-                if (From == FromLibrary.Other)
+                if (From == GameStores.FromLibrary.Other)
                 {
                     path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
                     return path;
@@ -71,7 +70,7 @@ namespace RG39.Util
         {
             get
             {
-                if (From == FromLibrary.Steam || From == FromLibrary.EpicGames)
+                if (From == GameStores.FromLibrary.Steam || From == GameStores.FromLibrary.EpicGames)
                 {
                     return ".url";
                 }
@@ -84,14 +83,13 @@ namespace RG39.Util
 
         // file name without extension
         // example:  "FileName", NOT "FileName.ext"
-        [JsonIgnore]
         private string fileName;
         [JsonIgnore]
         public string FileName
         {
             get
             {
-                if (From == FromLibrary.Other)
+                if (From == GameStores.FromLibrary.Other)
                     return fileName = FilePath.Remove(0, Path.Length)[..^4];
                 else
                     return fileName;
@@ -99,20 +97,6 @@ namespace RG39.Util
             set => fileName = value;
         }
 
-        public FromLibrary From { get; set; }
-    }
-
-    public enum FromLibrary
-    {
-        Other = 0,
-        Steam = 1,
-        EpicGames = 2
-    }
-
-    // ToDo: Intentar generar los ComboBoxItems a partir de esta enum
-    public enum Languages
-    {
-        English = 0,
-        Español = 1
+        public GameStores.FromLibrary From { get; set; }
     }
 }

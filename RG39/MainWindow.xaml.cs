@@ -20,27 +20,27 @@ namespace RG39
         {
             InitializeComponent();
 
-            gamesList.Items.AddRange(MyFunctions.ReadList());
+            gamesList.Items.AddRange(ListManager.ReadList());
             // ToDo: mostrar en una ventana aparte los juegos no existentes pero enlistados.
 
             #region Steam
-            MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
+            GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.Steam);
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
                 steamIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
-                gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.Steam));
+                gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.Steam));
             }
             else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
             #endregion
 
             #region EpicGamesStore
-            //MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+            //GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.EpicGames);
 
             //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             //{
             //    egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
-            //    this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.EpicGames));
+            //    this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
             //}
             //else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
             #endregion
@@ -80,12 +80,12 @@ namespace RG39
             {
                 FilePath = gameFileName,
                 Active = true,
-                From = FromLibrary.Other
+                From = GameStores.FromLibrary.Other
             };
 
             gamesList.Items.Add(game);
-            MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
-                                                .Where(i => i.From == FromLibrary.Other)
+            ListManager.SaveList(gamesList.Items.As<GenericFile>()
+                                                .Where(i => i.From == GameStores.FromLibrary.Other)
                                                 .ToList());
 
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
@@ -96,7 +96,7 @@ namespace RG39
             MessageBoxResult msgResult = MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
-                MyFunctions.ClearList();
+                ListManager.ClearList();
                 gamesList.Items.Clear();
                 MessageBox.Show("Ok");
             }
@@ -104,6 +104,7 @@ namespace RG39
             start_BTN.IsEnabled = false;
         }
 
+        // ToDo: change this
         private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
         {
             string gameFilePath = ((GenericFile)((Button)sender).DataContext).FilePath;
@@ -112,13 +113,13 @@ namespace RG39
             int gameIndex = (int)gamesList.Items.As<GenericFile>().FindIndexOf(g => g.FilePath == gameFilePath);
             if (gameIndex < 0) return;
 
-            if (((GenericFile)((Button)sender).DataContext).From == FromLibrary.Other)
+            if (((GenericFile)((Button)sender).DataContext).From == GameStores.FromLibrary.Other)
             {
                 MessageBoxResult res = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((GenericFile)((Button)sender).DataContext).FileName}?", "", MessageBoxButton.YesNo);
                 if (res == MessageBoxResult.Yes)
                 {
-                    MyFunctions.SaveList(gamesList.Items.As<GenericFile>()
-                                                    .Where(i => i.From == FromLibrary.Other && i.FilePath != gameFilePath)
+                    ListManager.SaveList(gamesList.Items.As<GenericFile>()
+                                                    .Where(i => i.From == GameStores.FromLibrary.Other && i.FilePath != gameFilePath)
                                                     .ToList());
                 }
                 else return;
@@ -158,7 +159,7 @@ namespace RG39
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MyFunctions.ChangeLanguage(((ComboBox)sender).SelectedIndex);
+            AppLanguage.ChangeLanguage(((ComboBox)sender).SelectedIndex);
 
             if (langSelected.IsVisible)
             {

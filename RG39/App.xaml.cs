@@ -1,6 +1,5 @@
 ﻿using RG39.Lang;
 using RG39.Properties;
-using RG39.Util;
 using System;
 using System.Threading;
 using System.Windows;
@@ -16,7 +15,7 @@ namespace RG39
 
         App()
         {
-            MyFunctions.ChangeLanguage(Settings.Default.LangIndex);
+            AppLanguage.ChangeLanguage(Settings.Default.LangIndex);
         }
 
         protected override void OnStartup(StartupEventArgs e)

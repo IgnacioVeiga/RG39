@@ -1,27 +1,16 @@
-﻿using GameFinder.RegistryUtils;
-using GameFinder.StoreHandlers.EGS;
-using GameFinder.StoreHandlers.Steam;
-using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using RG39.Lang;
 using RG39.Properties;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml;
-using WinCopies.Util;
 
 namespace RG39.Util
 {
@@ -33,7 +22,7 @@ namespace RG39.Util
             {
                 if (game is null) return;
 
-                if (game.From == FromLibrary.Other)
+                if (game.From == GameStores.FromLibrary.Other)
                     Process.Start(new ProcessStartInfo()
                     {
                         UseShellExecute = true,
@@ -41,11 +30,11 @@ namespace RG39.Util
                         WorkingDirectory = game.Path
                     });
 
-                if (game.From == FromLibrary.Steam)
+                if (game.From == GameStores.FromLibrary.Steam)
                     Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.SteamGameId}");
 
                 #region EpicGamesStore
-                if (game.From == FromLibrary.EpicGames)
+                if (game.From == GameStores.FromLibrary.EpicGames)
                 {
                     /*
                      Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
@@ -68,72 +57,6 @@ namespace RG39.Util
             }
         }
 
-        public static void LocateStoreExeFromReg(FromLibrary store)
-        {
-            if (FromLibrary.Steam == store)
-            {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
-                if (key is not null)
-                {
-                    Settings.Default.SteamPath = key.GetValue("SteamExe").ToString();
-                }
-            }
-            else if (FromLibrary.EpicGames == store)
-            {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
-                if (key is not null)
-                {
-                    Settings.Default.EGSPath = key.GetValue("ModSdkCommand").ToString();
-                }
-            }
-        }
-
-        public static List<GenericFile> GetGamesFromLib(FromLibrary from)
-        {
-            List<GenericFile> games = new();
-
-            if (FromLibrary.Steam == from)
-            {
-                // use the Windows registry on Windows
-                // Linux doesn't have a registry
-                SteamHandler handler = new(new WindowsRegistry());
-                foreach ((SteamGame game, _) in handler.FindAllGames())
-                {
-                    // ToDo: filter soundtracks
-                    if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
-                    {
-                        games.Add(new GenericFile()
-                        {
-                            Active = true,
-                            FileName = game.Name,
-                            FilePath = game.Path,
-                            From = FromLibrary.Steam,
-                            SteamGameId = game.AppId
-                        });
-                    }
-                }
-            }
-            else if (FromLibrary.EpicGames == from)
-            {
-                EGSHandler handler = new();
-                foreach ((EGSGame game, _) in handler.FindAllGames())
-                {
-                    if (game is not null)
-                    {
-                        games.Add(new GenericFile()
-                        {
-                            Active = false,
-                            FileName = game.DisplayName,
-                            FilePath = game.InstallLocation,
-                            From = FromLibrary.EpicGames,
-                            EGSGameId = game.CatalogItemId
-                        });
-                    }
-                }
-            }
-            return games;
-        }
-
         public static string SelectExecutable()
         {
             // Sirve para mostrar el dialogo selector de carpetas
@@ -152,79 +75,6 @@ namespace RG39.Util
             // Muestro la ventana para seleccionar carpeta y cargamos datos si es ok
             if (exe.ShowDialog() == CommonFileDialogResult.Ok) return exe.FileName;
             else return null;
-        }
-
-        public static void ClearList()
-        {
-            if (File.Exists(@".\list.xml"))
-                File.Delete(@".\list.xml");
-
-            if (File.Exists(@".\list.json"))
-                File.Delete(@".\list.json");
-        }
-
-        public static void SaveList(List<GenericFile> games)
-        {
-            JsonSerializerOptions options = new() { WriteIndented = true };
-            string json = JsonSerializer.Serialize(games, options);
-            File.WriteAllText(@".\list.json", json);
-        }
-
-        public static List<GenericFile> ReadList()
-        {
-            List<GenericFile> games = new();
-
-            if (File.Exists(@".\list.json"))
-            {
-                string json = File.ReadAllText(@".\list.json");
-                JsonSerializerOptions options = new() { WriteIndented = true };
-                games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json, options));
-            }
-
-            if (File.Exists(@".\list.xml"))
-            {
-                games.AddRange(ReadListLegacy(games));
-                File.Delete(@".\list.xml");
-                SaveList(games.Where(g => File.Exists(g.FilePath)).ToList());
-            }
-
-            return games.Where(g => File.Exists(g.FilePath)).ToList();
-        }
-
-        #region Legacy
-        public static List<GenericFile> ReadListLegacy(List<GenericFile> games)
-        {
-            XmlReader listXML = XmlReader.Create("list.xml");
-            listXML.ReadToFollowing("Other");
-            string json = listXML.ReadElementContentAsString();
-            games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json));
-            listXML.Close();
-            return games;
-        }
-        #endregion
-
-        /// <summary>
-        /// 0 = English
-        /// 1 = Español
-        /// </summary>
-        /// <param name="langIndex"></param>
-        public static void ChangeLanguage(int langIndex)
-        {
-            string lang = "en";
-
-            switch (langIndex)
-            {
-                case (int)Languages.Español:
-                    lang = "es";
-                    break;
-            }
-
-            // ToDo: buscar otra manera de recordar el item seleccionado del ComboBox "langSelected"
-            Settings.Default.LangIndex = langIndex;
-            Settings.Default.Save();
-
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
         }
 
         public static void RestartApp()
