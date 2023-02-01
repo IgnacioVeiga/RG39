@@ -20,23 +20,22 @@ namespace RG39
         {
             InitializeComponent();
 
-            List<GenericFile> gamesList = MyFunctions.ReadList();
-            if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
+            gamesList.Items.AddRange(MyFunctions.ReadList());
             // ToDo: mostrar en una ventana aparte los juegos no existentes pero enlistados.
 
             #region Steam
-            Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
+            MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
                 steamIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
-                this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.Steam));
+                gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.Steam));
             }
             else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
             #endregion
 
             #region EpicGamesStore
-            //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
+            //MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
             //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             //{
@@ -47,7 +46,7 @@ namespace RG39
             #endregion
 
             // En btn se activa si hay elementos en la lista
-            start_BTN.IsEnabled = this.gamesList.Items.Count > 1;
+            start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)

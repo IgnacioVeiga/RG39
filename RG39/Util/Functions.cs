@@ -44,6 +44,7 @@ namespace RG39.Util
                 if (game.From == FromLibrary.Steam)
                     Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.SteamGameId}");
 
+                #region EpicGamesStore
                 if (game.From == FromLibrary.EpicGames)
                 {
                     /*
@@ -56,6 +57,8 @@ namespace RG39.Util
                     return;
                     // Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
                 }
+                #endregion
+
                 Application.Current.Shutdown();
             }
             catch (Win32Exception ex)
@@ -65,27 +68,24 @@ namespace RG39.Util
             }
         }
 
-        public static string LocateStoreExeFromReg(FromLibrary from)
+        public static void LocateStoreExeFromReg(FromLibrary store)
         {
-            if (FromLibrary.Steam == from)
+            if (FromLibrary.Steam == store)
             {
                 using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
                 if (key is not null)
                 {
-                    object steamExeDir = key.GetValue("SteamExe");
-                    if (steamExeDir is not null) return steamExeDir as string;
+                    Settings.Default.SteamPath = key.GetValue("SteamExe").ToString();
                 }
             }
-            else if (FromLibrary.EpicGames == from)
+            else if (FromLibrary.EpicGames == store)
             {
                 using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
                 if (key is not null)
                 {
-                    object egsExeDir = key.GetValue("ModSdkCommand");
-                    if (egsExeDir is not null) return egsExeDir as string;
+                    Settings.Default.EGSPath = key.GetValue("ModSdkCommand").ToString();
                 }
             }
-            return string.Empty;
         }
 
         public static List<GenericFile> GetGamesFromLib(FromLibrary from)
@@ -96,9 +96,7 @@ namespace RG39.Util
             {
                 // use the Windows registry on Windows
                 // Linux doesn't have a registry
-                SteamHandler handler = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                    ? new SteamHandler(new WindowsRegistry())
-                    : new SteamHandler(null);
+                SteamHandler handler = new(new WindowsRegistry());
                 foreach ((SteamGame game, _) in handler.FindAllGames())
                 {
                     // ToDo: filter soundtracks
