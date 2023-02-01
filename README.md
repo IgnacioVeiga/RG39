@@ -1,5 +1,7 @@
 # RG39
-![RG39Icon](/RG39/Images/RG39.svg)</br>
+![RG39Icon](/RG39/Images/RG39.svg)
+&nbsp;&nbsp;&nbsp;&nbsp;
+[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=000099&labelColor=009900)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.exe)</br>
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
 ## Capturas:
@@ -11,16 +13,17 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - [x] Limpia la lista.
 - [x] Detecta la ubicación de `steam.exe` de froma automatica.
 - [x] Cargar de forma manual `steam.exe`.
-- [x] Guarda la lista en un archivo `.xml` (excepto libreria de steam).
+- [x] Guarda la lista en un archivo `.json` (solo los añadidos manualmente).
+- [x] Muestra los iconos de los ejecutables (solo los añadidos manualmente).
 - [x] Marcar cuales elementos quiero que participen sin quitarlos de la lista.
 - [x] Impide que se repitan los juegos añadidos.
-- [x] Mostrar iconos de los videojuegos (solo añadidos manualmente).
+- [x] Al iniciar y leer el listado filtra los juegos no encontrados.
+- [x] Idioma español e inglés.
 
 ## Incompleto:
-- [ ] Soporte para más de un idioma.
 - [ ] Permitir ordenar la lista.
 - [ ] Reconocer la biblioteca de Epic Games Store, Origin y de GOG Galaxy.
-- [ ] Mostrar iconos en la UI.
+- [ ] Mostrar iconos en la UI en vez de texto.
 - [ ] Enseñar una portada/caratula.
 - [ ] Arreglar los tamaños de los elementos.
 - [ ] Usar temas personalizados.
@@ -37,3 +40,5 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 ### Paquetes
 - GameFinder.StoreHandlers.Steam **v2.2.1**
 - WinCopies.WindowsAPICodePack.Shell **v2.12.0.2**
+
+## Compilar:

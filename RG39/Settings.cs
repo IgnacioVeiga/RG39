@@ -1,5 +1,5 @@
-﻿using System.Configuration;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Configuration;
 
 namespace RG39.Properties
 {
@@ -10,7 +10,8 @@ namespace RG39.Properties
     //  The SettingsSaving event is raised before the setting values are saved.
     public sealed partial class Settings
     {
-        public Settings() {
+        public Settings()
+        {
             // To add event handlers for saving and changing settings, uncomment the lines below:
 
             SettingChanging += SettingChangingEventHandler;
@@ -22,7 +23,8 @@ namespace RG39.Properties
             // Add code to handle the SettingChanging event here.
         }
 
-        private void SettingsSavingEventHandler(object sender, CancelEventArgs e) {
+        private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
+        {
             // Add code to handle the SettingsSaving event here.
         }
     }

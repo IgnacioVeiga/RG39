@@ -1,12 +1,17 @@
-﻿using System.Drawing;
-using System.Windows.Media;
+﻿using RG39.Properties;
+using System.Drawing;
 using System.Text.Json.Serialization;
-using RG39.Properties;
+using System.Windows.Media;
 
 namespace RG39.Util
 {
     public class GenericFile
     {
+        // ToDo:
+        // Revisar que atributos son fundamentales para el archivo json.
+        // Debería "auto-construirse" solo con el path completo y el campo de activo.
+        // Crear otra clase diferente para Steam y EGS de ser necesario
+
         public int SteamGameId { get; set; }
         public string EGSGameId { get; set; }
 
@@ -62,11 +67,7 @@ namespace RG39.Util
         {
             get
             {
-                if (From == FromLibrary.Steam)
-                {
-                    return ".url";
-                }
-                else if (From == FromLibrary.EpicGames)
+                if (From == FromLibrary.Steam || From == FromLibrary.EpicGames)
                 {
                     return ".url";
                 }
@@ -100,5 +101,12 @@ namespace RG39.Util
         Other = 0,
         Steam = 1,
         EpicGames = 2
+    }
+
+    // ToDo: Intentar generar los ComboBoxItems a partir de esta enum
+    public enum Languages
+    {
+        English = 0,
+        Español = 1
     }
 }

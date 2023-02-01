@@ -3,7 +3,6 @@ using RG39.Properties;
 using RG39.Util;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,9 +22,10 @@ namespace RG39
 
             List<GenericFile> gamesList = MyFunctions.ReadList();
             if (gamesList is not null) this.gamesList.Items.AddRange(gamesList);
+            // ToDo: mostrar en una ventana aparte los juegos no existentes pero enlistados.
 
+            #region Steam
             Settings.Default.SteamPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.Steam);
-            //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
@@ -33,6 +33,10 @@ namespace RG39
                 this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.Steam));
             }
             else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
+            #endregion
+
+            #region EpicGamesStore
+            //Settings.Default.EGSPath = MyFunctions.LocateStoreExeFromReg(FromLibrary.EpicGames);
 
             //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             //{
@@ -40,6 +44,7 @@ namespace RG39
             //    this.gamesList.Items.AddRange(MyFunctions.GetGamesFromLib(FromLibrary.EpicGames));
             //}
             //else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+            #endregion
 
             // En btn se activa si hay elementos en la lista
             start_BTN.IsEnabled = this.gamesList.Items.Count > 1;
@@ -92,13 +97,12 @@ namespace RG39
             MessageBoxResult msgResult = MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
-                if (File.Exists(@".\list.xml"))
-                    File.Delete(@".\list.xml");
+                MyFunctions.ClearList();
                 gamesList.Items.Clear();
                 MessageBox.Show("Ok");
             }
 
-            start_BTN.IsEnabled = gamesList.Items.Count > 1;
+            start_BTN.IsEnabled = false;
         }
 
         private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
@@ -123,14 +127,6 @@ namespace RG39
 
             gamesList.Items.RemoveAt(gameIndex);
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
-        }
-
-        private void ToggleLang_Click(object sender, RoutedEventArgs e)
-        {
-            if (Settings.Default.Lang == "en")
-                Settings.Default.Lang = "es";
-            else
-                Settings.Default.Lang = "en";
         }
 
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
@@ -159,6 +155,17 @@ namespace RG39
         {
             GenericFile game = ((Button)sender).DataContext as GenericFile;
             MyFunctions.RunGame(game);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MyFunctions.ChangeLanguage(((ComboBox)sender).SelectedIndex);
+
+            if (langSelected.IsVisible)
+            {
+                MessageBox.Show(strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                MyFunctions.RestartApp();
+            }
         }
     }
 }

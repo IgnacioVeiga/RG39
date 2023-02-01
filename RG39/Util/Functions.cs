@@ -1,23 +1,27 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System.Collections.Generic;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-using GameFinder.StoreHandlers.Steam;
+﻿using GameFinder.RegistryUtils;
 using GameFinder.StoreHandlers.EGS;
-using System.Runtime.InteropServices;
-using GameFinder.RegistryUtils;
+using GameFinder.StoreHandlers.Steam;
 using Microsoft.Win32;
-using System.Xml;
-using System.IO;
-using System.Text.Json;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using RG39.Lang;
 using RG39.Properties;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Threading;
+using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Xml;
+using WinCopies.Util;
 
 namespace RG39.Util
 {
@@ -152,30 +156,90 @@ namespace RG39.Util
             else return null;
         }
 
-        public static void SaveList(List<GenericFile> games)
+        public static void ClearList()
         {
             if (File.Exists(@".\list.xml"))
                 File.Delete(@".\list.xml");
-            XmlWriter list = XmlWriter.Create("list.xml");
-            list.WriteStartElement("MyGames");
-            list.WriteElementString("Other", JsonSerializer.Serialize(games));
-            list.WriteEndElement();
-            list.Close();
+
+            if (File.Exists(@".\list.json"))
+                File.Delete(@".\list.json");
+        }
+
+        public static void SaveList(List<GenericFile> games)
+        {
+            JsonSerializerOptions options = new() { WriteIndented = true };
+            string json = JsonSerializer.Serialize(games, options);
+            File.WriteAllText(@".\list.json", json);
         }
 
         public static List<GenericFile> ReadList()
         {
-            List<GenericFile> gamesList = new();
+            List<GenericFile> games = new();
+
+            if (File.Exists(@".\list.json"))
+            {
+                string json = File.ReadAllText(@".\list.json");
+                JsonSerializerOptions options = new() { WriteIndented = true };
+                games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json, options));
+            }
+
             if (File.Exists(@".\list.xml"))
             {
-                XmlReader listXML = XmlReader.Create("list.xml");
-                listXML.ReadToFollowing("Other");
-                string json = listXML.ReadElementContentAsString();
-                List<GenericFile> games = JsonSerializer.Deserialize<List<GenericFile>>(json);
-                gamesList.AddRange(games);
-                listXML.Close();
+                games.AddRange(ReadListLegacy(games));
+                File.Delete(@".\list.xml");
+                SaveList(games.Where(g => File.Exists(g.FilePath)).ToList());
             }
-            return gamesList;
+
+            return games.Where(g => File.Exists(g.FilePath)).ToList();
+        }
+
+        #region Legacy
+        public static List<GenericFile> ReadListLegacy(List<GenericFile> games)
+        {
+            XmlReader listXML = XmlReader.Create("list.xml");
+            listXML.ReadToFollowing("Other");
+            string json = listXML.ReadElementContentAsString();
+            games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json));
+            listXML.Close();
+            return games;
+        }
+        #endregion
+
+        /// <summary>
+        /// 0 = English
+        /// 1 = Español
+        /// </summary>
+        /// <param name="langIndex"></param>
+        public static void ChangeLanguage(int langIndex)
+        {
+            string lang = "en";
+
+            switch (langIndex)
+            {
+                case (int)Languages.Español:
+                    lang = "es";
+                    break;
+            }
+
+            // ToDo: buscar otra manera de recordar el item seleccionado del ComboBox "langSelected"
+            Settings.Default.LangIndex = langIndex;
+            Settings.Default.Save();
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+        }
+
+        public static void RestartApp()
+        {
+            try
+            {
+                Process.Start(Environment.ProcessPath);
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 

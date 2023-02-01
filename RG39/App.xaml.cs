@@ -1,7 +1,7 @@
 ﻿using RG39.Lang;
 using RG39.Properties;
+using RG39.Util;
 using System;
-using System.Globalization;
 using System.Threading;
 using System.Windows;
 
@@ -16,7 +16,7 @@ namespace RG39
 
         App()
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Lang);
+            MyFunctions.ChangeLanguage(Settings.Default.LangIndex);
         }
 
         protected override void OnStartup(StartupEventArgs e)
