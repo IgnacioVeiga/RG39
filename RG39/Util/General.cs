@@ -4,19 +4,13 @@ using RG39.Properties;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace RG39.Util
 {
-    public static class MyFunctions
+    internal static class General
     {
-        public static void RunGame(GenericFile game)
+        internal static void RunGame(GenericFile game)
         {
             try
             {
@@ -52,12 +46,12 @@ namespace RG39.Util
             }
             catch (Win32Exception ex)
             {
-                string msg = ex.Message + "\n" + JsonSerializer.Serialize(game, new JsonSerializerOptions() { WriteIndented = true });
+                string msg = ex.Message + "\n" + game.FilePath;
                 MessageBox.Show(msg);
             }
         }
 
-        public static string SelectExecutable()
+        internal static string SelectExecutable()
         {
             // Sirve para mostrar el dialogo selector de carpetas
             CommonOpenFileDialog exe = new()
@@ -75,43 +69,6 @@ namespace RG39.Util
             // Muestro la ventana para seleccionar carpeta y cargamos datos si es ok
             if (exe.ShowDialog() == CommonFileDialogResult.Ok) return exe.FileName;
             else return null;
-        }
-
-        public static void RestartApp()
-        {
-            try
-            {
-                Process.Start(Environment.ProcessPath);
-                Application.Current.Shutdown();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-    }
-
-    // source: https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource
-    internal static class IconUtilities
-    {
-        [DllImport("gdi32.dll", SetLastError = true)]
-        private static extern bool DeleteObject(IntPtr hObject);
-
-        public static ImageSource ToImageSource(this Icon icon)
-        {
-            Bitmap bitmap = icon.ToBitmap();
-            IntPtr hBitmap = bitmap.GetHbitmap();
-
-            ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(
-                hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-
-            if (!DeleteObject(hBitmap)) throw new Win32Exception();
-
-            return wpfBitmap;
         }
     }
 }

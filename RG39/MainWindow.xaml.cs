@@ -57,7 +57,7 @@ namespace RG39
                 int index = new Random().Next(list.Count());
                 GenericFile game = list.ToArray()[index];
 
-                MyFunctions.RunGame(game);
+                General.RunGame(game);
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace RG39
 
         private void AddGameToList_Click(object sender, RoutedEventArgs e)
         {
-            string gameFileName = MyFunctions.SelectExecutable();
+            string gameFileName = General.SelectExecutable();
             if (gameFileName is null) return;
 
             if (gamesList.Items.As<GenericFile>().Any(g => g.FilePath == gameFileName))
@@ -154,7 +154,7 @@ namespace RG39
         private void StartItemFromList_Click(object sender, RoutedEventArgs e)
         {
             GenericFile game = ((Button)sender).DataContext as GenericFile;
-            MyFunctions.RunGame(game);
+            General.RunGame(game);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -164,7 +164,7 @@ namespace RG39
             if (langSelected.IsVisible)
             {
                 MessageBox.Show(strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
-                MyFunctions.RestartApp();
+                App.RestartApp();
             }
         }
     }
