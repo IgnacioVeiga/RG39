@@ -1,7 +1,10 @@
 ﻿using RG39.Properties;
 using System.Drawing;
+using System.IO;
 using System.Text.Json.Serialization;
+using System.Windows.Forms;
 using System.Windows.Media;
+using WinCopies.Linq;
 
 namespace RG39.Util
 {
@@ -98,5 +101,44 @@ namespace RG39.Util
         }
 
         public GameStores.FromLibrary From { get; set; }
+    }
+
+    // ToDo: reemplazar la clase de arriba por esta
+    public class Game
+    {
+        public Game(GameStores.FromLibrary from, string gameId, string path)
+        {
+            Active = true;
+            From = from;
+            GameId = gameId;
+
+            Folder = path[..(path.LastIndexOf(@"\") + 1)];
+            Name = path.Remove(0, Folder.Length)[..^4];
+            Type = path.Remove(0, path.Length - 4);
+
+            switch (From)
+            {
+                case GameStores.FromLibrary.Other:
+                    AppIcon = Icon.ExtractAssociatedIcon(path).ToImageSource();
+                    break;
+                case GameStores.FromLibrary.Steam:
+                    AppIcon = Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
+                    break;
+                case GameStores.FromLibrary.EpicGames:
+                    AppIcon = Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                    break;
+            }
+        }
+
+        public bool Active { get; set; }
+        public readonly string GameId;
+        public readonly GameStores.FromLibrary From;
+
+        public readonly string Folder;
+        public readonly string Name;
+        public readonly string Type;
+
+        [JsonIgnore]
+        public readonly ImageSource AppIcon;
     }
 }

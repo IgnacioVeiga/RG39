@@ -4,6 +4,7 @@ using GameFinder.StoreHandlers.Steam;
 using Microsoft.Win32;
 using RG39.Properties;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RG39.Util
 {
@@ -39,11 +40,10 @@ namespace RG39.Util
         internal static List<GenericFile> GetGamesFromLib(FromLibrary from)
         {
             List<GenericFile> games = new();
+            //List<Game> mygames = new();
 
             if (FromLibrary.Steam == from)
             {
-                // use the Windows registry on Windows
-                // Linux doesn't have a registry
                 SteamHandler handler = new(new WindowsRegistry());
                 foreach ((SteamGame game, _) in handler.FindAllGames())
                 {
@@ -58,6 +58,10 @@ namespace RG39.Util
                             From = FromLibrary.Steam,
                             SteamGameId = game.AppId
                         });
+
+                        // ToDo: terminar de implementar y probar
+                        //string path = game.Path + game.Name + ".url";
+                        //mygames.Add(new Game(from, game.AppId.ToString(), path));
                     }
                 }
             }
@@ -76,6 +80,10 @@ namespace RG39.Util
                             From = FromLibrary.EpicGames,
                             EGSGameId = game.CatalogItemId
                         });
+
+                        // ToDo: terminar de implementar y probar
+                        //string path = game.InstallLocation + game.DisplayName + ".url";
+                        //mygames.Add(new Game(from, game.CatalogItemId, path));
                     }
                 }
             }
