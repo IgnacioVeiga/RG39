@@ -17,8 +17,7 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - [x] Elimina individualmente a elementos de la lista.
 - [x] Limpia la lista.
 - [x] Detecta la ubicación de `steam.exe` de froma automatica.
-- [x] Cargar de forma manual `steam.exe`.
-- [x] Guarda la lista en un archivo `.json` (solo los añadidos manualmente).
+- [x] Guarda la lista en un archivo `list.json` (solo los añadidos manualmente).
 - [x] Muestra los iconos de los ejecutables (solo los añadidos manualmente).
 - [x] Marcar cuales elementos quiero que participen sin quitarlos de la lista.
 - [x] Impide que se repitan los juegos añadidos.
