@@ -1,112 +1,74 @@
 ﻿using RG39.Properties;
 using System.Drawing;
+using System.IO;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
 
 namespace RG39.Util
 {
-    public class GenericFile
+    public class Game
     {
-        // ToDo:
-        // Revisar que atributos son fundamentales para el archivo json.
-        // Debería "auto-construirse" solo con el path completo y el campo de activo.
-        // Crear otra clase diferente para Steam y EGS de ser necesario
+        /// <summary>
+        /// Game constructor
+        /// </summary>
+        /// <param name="from">From library ...</param>
+        /// <param name="gameId">String ID used by the library. For manually added games it can be empty.</param>
+        /// <param name="path">A full path such as 'C:\Mydir\GameTitle.exe'. This will be a fake path in case the game is coming from Steam or Epic Games.</param>
+        public Game(GameStores.FromLibrary from, string gameId, string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                Active = true;
+                From = from;
+                GameId = gameId;
+                FilePath = path;
+            }
+        }
 
-        public int SteamGameId { get; set; }
-        public string EGSGameId { get; set; }
+        [JsonConstructor] public Game() { }
 
-        // indicates if must be filtered
+        [JsonPropertyName("Active")]
         public bool Active { get; set; }
 
         [JsonIgnore]
-        private ImageSource appIcon;
+        public string GameId { get; set; }
+
+        [JsonPropertyName("From")]
+        public GameStores.FromLibrary From { get; set; }
+
         [JsonIgnore]
-        public ImageSource AppIcon
-        {
-            get
-            {
-                if (From == FromLibrary.Other)
-                {
-                    appIcon = Icon.ExtractAssociatedIcon(FilePath).ToImageSource();
-                }
-                else if (From == FromLibrary.Steam)
-                {
-                    appIcon = Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
-                }
-                else if (From == FromLibrary.EpicGames)
-                {
-                    appIcon = Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
-                }
-                return appIcon;
-            }
-            set => appIcon = value;
-        }
+        public string Folder { get; set; }
 
-        // example:    "C:/Folder/FileName.ext" (NOT for Steam/Epic games)
-        // IMPORTANT: for Steam or EGS FilePath == Path
-        public string FilePath { get; set; }
+        [JsonIgnore]
+        public string Name { get; set; }
 
-        // example:    "C:/Folder"
-        private string path;
-        public string Path
-        {
-            get
-            {
-                if (From == FromLibrary.Other)
-                {
-                    path = FilePath[..(FilePath.LastIndexOf(@"\") + 1)];
-                    return path;
-                }
-                return FilePath;
-            }
-            set => path = value;
-        }
+        [JsonIgnore]
+        public string Type { get; set; }
 
-        // example: ".ext"
-        public string Type
+        [JsonPropertyName("FilePath")]
+        public string FilePath
         {
-            get
+            get => Folder + Name + Type;
+            set
             {
-                if (From == FromLibrary.Steam || From == FromLibrary.EpicGames)
-                {
-                    return ".url";
-                }
-                else
-                {
-                    return FilePath.Remove(0, FilePath.Length - 4);
-                }
+                //GetDirectoryName('C:\MyDir\MySubDir\myfile.ext') returns 'C:\MyDir\MySubDir'
+                Folder = Path.GetDirectoryName(value) + Path.DirectorySeparatorChar;
+
+                // GetFileNameWithoutExtension('C:\mydir\myfile.ext') returns 'myfile'
+                Name = Path.GetFileNameWithoutExtension(value);
+
+                // GetExtension('C:\mydir.old\myfile.ext') returns '.ext'
+                Type = Path.GetExtension(value);
             }
         }
 
-        // file name without extension
-        // example:  "FileName", NOT "FileName.ext"
-        private string fileName;
-        public string FileName
+        [JsonIgnore]
+        public ImageSource AppIcon => From switch
         {
-            get
-            {
-                if (From == FromLibrary.Other)
-                    return fileName = FilePath.Remove(0, Path.Length)[..^4];
-                else
-                    return fileName;
-            }
-            set => fileName = value;
-        }
-
-        public FromLibrary From { get; set; }
-    }
-
-    public enum FromLibrary
-    {
-        Other = 0,
-        Steam = 1,
-        EpicGames = 2
-    }
-
-    // ToDo: Intentar generar los ComboBoxItems a partir de esta enum
-    public enum Languages
-    {
-        English = 0,
-        Español = 1
+            GameStores.FromLibrary.Other => Icon.ExtractAssociatedIcon(FilePath).ToImageSource(),
+            GameStores.FromLibrary.Steam => Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource(),
+            GameStores.FromLibrary.EpicGames => Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource(),
+            _ => null,
+        };
     }
 }

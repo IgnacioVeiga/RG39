@@ -1,5 +1,5 @@
 # RG39
-![RG39Icon](/RG39/Images/RG39.svg)
+![RG39Icon](/RG39/Assets/Images/RG39.svg)
 &nbsp;&nbsp;&nbsp;&nbsp;
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=000099&labelColor=009900)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.exe)</br>
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
@@ -30,7 +30,7 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 
 ## Requerido:
 - Windows 7 o superior (Recomendado Windows 10/11)
-- SDK .NET 6.0 (LTS)
+- SDK .NET 6.0 (LTS) solo para compilar
 
 ## Dependencias:
 ### Frameworks

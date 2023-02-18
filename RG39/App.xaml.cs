@@ -1,7 +1,7 @@
 ﻿using RG39.Lang;
 using RG39.Properties;
-using RG39.Util;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 
@@ -16,7 +16,20 @@ namespace RG39
 
         App()
         {
-            MyFunctions.ChangeLanguage(Settings.Default.LangIndex);
+            AppLanguage.ChangeLanguage(Settings.Default.LangIndex);
+        }
+
+        internal static void RestartApp()
+        {
+            try
+            {
+                Process.Start(Environment.ProcessPath);
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)

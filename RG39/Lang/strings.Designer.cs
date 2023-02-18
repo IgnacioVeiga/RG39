@@ -115,11 +115,11 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File name.
+        ///   Looks up a localized string similar to Folder.
         /// </summary>
-        public static string FILENAME_COL {
+        public static string FOLDER_COL {
             get {
-                return ResourceManager.GetString("FILENAME_COL", resourceCulture);
+                return ResourceManager.GetString("FOLDER_COL", resourceCulture);
             }
         }
         
@@ -147,6 +147,15 @@ namespace RG39.Lang {
         public static string MULTI_INSTANCE_MSG {
             get {
                 return ResourceManager.GetString("MULTI_INSTANCE_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string NAME_COL {
+            get {
+                return ResourceManager.GetString("NAME_COL", resourceCulture);
             }
         }
         
