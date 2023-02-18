@@ -1,6 +1,5 @@
 # RG39
 ![RG39Icon](/RG39/Assets/Images/RG39.svg)
-
 &nbsp;&nbsp;&nbsp;&nbsp;
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=000099&labelColor=009900)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.exe)
 [![Deploy RG39 Project](https://github.com/IgnacioVeiga/RG39/actions/workflows/deploy-project.yml/badge.svg)](https://github.com/IgnacioVeiga/RG39/actions/workflows/deploy-project.yml)
