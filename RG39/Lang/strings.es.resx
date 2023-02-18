@@ -123,7 +123,7 @@
   <data name="SEL_EXE_TITLE" xml:space="preserve">
     <value>Seleccionar ejecutable</value>
   </data>
-  <data name="FILENAME_COL" xml:space="preserve">
+  <data name="NAME_COL" xml:space="preserve">
     <value>Nombre</value>
   </data>
   <data name="TYPE_COL" xml:space="preserve">
@@ -173,5 +173,8 @@
   </data>
   <data name="TOGGLE_LANG_MSG" xml:space="preserve">
     <value>El idioma cambiará cuando se reinicie la aplicación.</value>
+  </data>
+  <data name="FOLDER_COL" xml:space="preserve">
+    <value>Carpeta</value>
   </data>
 </root>

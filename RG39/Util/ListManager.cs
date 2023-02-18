@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Xml;
 
 namespace RG39.Util
 {
@@ -10,51 +9,31 @@ namespace RG39.Util
     {
         internal static void ClearList()
         {
-            if (File.Exists(@".\list.xml"))
-                File.Delete(@".\list.xml");
-
-            if (File.Exists(@".\list.json"))
-                File.Delete(@".\list.json");
+            if (File.Exists($".{Path.DirectorySeparatorChar}list.json"))
+                File.Delete($".{Path.DirectorySeparatorChar}list.json");
         }
 
-        internal static void SaveList(List<GenericFile> games)
+        internal static void SaveList(List<Game> games)
         {
             JsonSerializerOptions options = new() { WriteIndented = true };
             string json = JsonSerializer.Serialize(games, options);
-            File.WriteAllText(@".\list.json", json);
+            File.WriteAllText($".{Path.DirectorySeparatorChar}list.json", json);
         }
 
-        internal static List<GenericFile> ReadList()
+        internal static List<Game> ReadList()
         {
-            List<GenericFile> games = new();
+            List<Game> games = new();
 
-            if (File.Exists(@".\list.json"))
+            if (File.Exists($".{Path.DirectorySeparatorChar}list.json"))
             {
-                string json = File.ReadAllText(@".\list.json");
+                string json = File.ReadAllText($".{Path.DirectorySeparatorChar}list.json");
                 JsonSerializerOptions options = new() { WriteIndented = true };
-                games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json, options));
-            }
-
-            if (File.Exists(@".\list.xml"))
-            {
-                games.AddRange(ReadListLegacy(games));
-                File.Delete(@".\list.xml");
-                SaveList(games.Where(g => File.Exists(g.FilePath)).ToList());
+                List<Game> list = JsonSerializer.Deserialize<List<Game>>(json, options);
+                games.AddRange(list);
             }
 
             return games.Where(g => File.Exists(g.FilePath)).ToList();
         }
 
-        #region Legacy
-        internal static List<GenericFile> ReadListLegacy(List<GenericFile> games)
-        {
-            XmlReader listXML = XmlReader.Create("list.xml");
-            listXML.ReadToFollowing("Other");
-            string json = listXML.ReadElementContentAsString();
-            games.AddRange(JsonSerializer.Deserialize<List<GenericFile>>(json));
-            listXML.Close();
-            return games;
-        }
-        #endregion
     }
 }

@@ -4,7 +4,6 @@ using GameFinder.StoreHandlers.Steam;
 using Microsoft.Win32;
 using RG39.Properties;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace RG39.Util
 {
@@ -37,10 +36,9 @@ namespace RG39.Util
             }
         }
 
-        internal static List<GenericFile> GetGamesFromLib(FromLibrary from)
+        internal static List<Game> GetGamesFromLib(FromLibrary from)
         {
-            List<GenericFile> games = new();
-            //List<Game> mygames = new();
+            List<Game> mygames = new();
 
             if (FromLibrary.Steam == from)
             {
@@ -50,18 +48,8 @@ namespace RG39.Util
                     // ToDo: filter soundtracks
                     if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
                     {
-                        games.Add(new GenericFile()
-                        {
-                            Active = true,
-                            FileName = game.Name,
-                            FilePath = game.Path,
-                            From = FromLibrary.Steam,
-                            SteamGameId = game.AppId
-                        });
-
-                        // ToDo: terminar de implementar y probar
-                        //string path = game.Path + game.Name + ".url";
-                        //mygames.Add(new Game(from, game.AppId.ToString(), path));
+                        string path = game.Path + System.IO.Path.DirectorySeparatorChar + game.Name + ".url";
+                        mygames.Add(new Game(from, game.AppId.ToString(), path));
                     }
                 }
             }
@@ -72,22 +60,12 @@ namespace RG39.Util
                 {
                     if (game is not null)
                     {
-                        games.Add(new GenericFile()
-                        {
-                            Active = false,
-                            FileName = game.DisplayName,
-                            FilePath = game.InstallLocation,
-                            From = FromLibrary.EpicGames,
-                            EGSGameId = game.CatalogItemId
-                        });
-
-                        // ToDo: terminar de implementar y probar
-                        //string path = game.InstallLocation + game.DisplayName + ".url";
-                        //mygames.Add(new Game(from, game.CatalogItemId, path));
+                        string path = game.InstallLocation + System.IO.Path.DirectorySeparatorChar + game.DisplayName + ".url";
+                        mygames.Add(new Game(from, game.CatalogItemId, path));
                     }
                 }
             }
-            return games;
+            return mygames;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace RG39.Util
 {
     internal static class General
     {
-        internal static void RunGame(GenericFile game)
+        internal static void RunGame(Game game)
         {
             try
             {
@@ -20,12 +20,12 @@ namespace RG39.Util
                     Process.Start(new ProcessStartInfo()
                     {
                         UseShellExecute = true,
-                        FileName = game.FileName + game.Type,
-                        WorkingDirectory = game.Path
+                        FileName = game.Name + game.Type,
+                        WorkingDirectory = game.Folder
                     });
 
                 if (game.From == GameStores.FromLibrary.Steam)
-                    Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.SteamGameId}");
+                    Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.GameId}");
 
                 #region EpicGamesStore
                 if (game.From == GameStores.FromLibrary.EpicGames)
@@ -36,9 +36,9 @@ namespace RG39.Util
                      El EGSGameId es 283080ad58e64fd084d30413888a571c
                      ToDo: encontrar los otros 2 parametros que lo rodean
                      */
-                    MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.FileName}\".");
+                    MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.Name}\".");
                     return;
-                    // Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.EGSGameId}AAAAAAAAAAAAA?action=launch&silent=true");
+                    // Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.gameId}AAAAAAAAAAAAA?action=launch&silent=true");
                 }
                 #endregion
 
@@ -46,7 +46,7 @@ namespace RG39.Util
             }
             catch (Win32Exception ex)
             {
-                string msg = ex.Message + "\n" + game.FilePath;
+                string msg = ex.Message + "\n-> " + game.Name + "´<-";
                 MessageBox.Show(msg);
             }
         }
