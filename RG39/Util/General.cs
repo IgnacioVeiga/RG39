@@ -31,9 +31,9 @@ namespace RG39.Util
                 if (game.From == GameStores.FromLibrary.EpicGames)
                 {
                     /*
-                     Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{EGSGameId}{parametro}?action=launch&silent=true
+                     Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{gameId}{parametro}?action=launch&silent=true
                      Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
-                     El EGSGameId es 283080ad58e64fd084d30413888a571c
+                     El gameId es 283080ad58e64fd084d30413888a571c
                      ToDo: encontrar los otros 2 parametros que lo rodean
                      */
                     MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.Name}\".");
