@@ -93,10 +93,8 @@ namespace RG39
             {
                 ListManager.ClearList();
                 gamesList.Items.Clear();
-                MessageBox.Show("Ok");
+                start_BTN.IsEnabled = false;
             }
-
-            start_BTN.IsEnabled = false;
         }
 
         private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
