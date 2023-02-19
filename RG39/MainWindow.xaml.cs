@@ -93,10 +93,8 @@ namespace RG39
             {
                 ListManager.ClearList();
                 gamesList.Items.Clear();
-                MessageBox.Show("Ok");
+                start_BTN.IsEnabled = false;
             }
-
-            start_BTN.IsEnabled = false;
         }
 
         private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
@@ -110,7 +108,8 @@ namespace RG39
 
             if (((Game)((Button)sender).DataContext).From == GameStores.FromLibrary.Other)
             {
-                MessageBoxResult result = MessageBox.Show($"{strings.REMOVE_GAME_MSG}\n{((Game)((Button)sender).DataContext).Name}?", "", MessageBoxButton.YesNo);
+                string msg = $"{strings.REMOVE_GAME_MSG}\n{((Game)((Button)sender).DataContext).Name}?";
+                MessageBoxResult result = MessageBox.Show(msg, "", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     List<Game> list = gamesList.Items.As<Game>().ToList();
@@ -148,8 +147,9 @@ namespace RG39
 
         private void StartItemFromList_Click(object sender, RoutedEventArgs e)
         {
-            Game game = ((Button)sender).DataContext as Game;
-            General.RunGame(game);
+            General.RunGame(
+                ((Button)sender).DataContext as Game
+            );
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
