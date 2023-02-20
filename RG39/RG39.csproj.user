@@ -4,7 +4,7 @@
     <_LastSelectedProfileId>C:\Users\ignac\Documents\repos\RG39\RG39\Properties\PublishProfiles\FolderProfile1.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Lang\strings.es.resx">
+    <EmbeddedResource Update="Lang\Strings.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">

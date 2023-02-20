@@ -29,7 +29,7 @@ namespace RG39
                 steamIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
                 gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.Steam));
             }
-            else Settings.Default.SteamPath = $"Steam: {strings.NOT_FOUND_MSG}";
+            else Settings.Default.SteamPath = $"Steam: {Strings.NOT_FOUND_MSG}";
             #endregion
 
             #region EpicGamesStore
@@ -40,7 +40,7 @@ namespace RG39
                 egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
                 //this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
             }
-            else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+            else Settings.Default.EGSPath = $"Epic Games Store: {Strings.NOT_FOUND_MSG}";
             #endregion
 
             // There has to be more than 1 game in the list for the program to make sense
@@ -72,7 +72,7 @@ namespace RG39
 
             if (gamesList.Items.As<Game>().Any(g => g.FilePath == gamePath))
             {
-                MessageBox.Show($"\"{gamePath}\"\n {strings.REPEATED_GAME_MSG}", strings.REPEATED_TITLE);
+                MessageBox.Show($"\"{gamePath}\"\n {Strings.REPEATED_GAME_MSG}", Strings.REPEATED_TITLE);
                 return;
             }
 
@@ -88,7 +88,7 @@ namespace RG39
 
         private void ClearList_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult msgResult = MessageBox.Show(strings.CLEAR_LIST_MSG, strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
+            MessageBoxResult msgResult = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
                 ListManager.ClearList();
@@ -108,7 +108,7 @@ namespace RG39
 
             if (((Game)((Button)sender).DataContext).From == GameStores.FromLibrary.Other)
             {
-                string msg = $"{strings.REMOVE_GAME_MSG}\n{((Game)((Button)sender).DataContext).Name}?";
+                string msg = $"{Strings.REMOVE_GAME_MSG}\n{((Game)((Button)sender).DataContext).Name}?";
                 MessageBoxResult result = MessageBox.Show(msg, "", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
@@ -158,7 +158,7 @@ namespace RG39
 
             if (langSelected.IsVisible)
             {
-                MessageBox.Show(strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
                 App.RestartApp();
             }
         }

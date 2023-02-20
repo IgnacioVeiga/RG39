@@ -73,7 +73,7 @@ namespace RG39.Util
         {
             CommonOpenFileDialog exe = new()
             {
-                Title = strings.SEL_EXE_TITLE,
+                Title = Strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,
                 EnsureFileExists = true,

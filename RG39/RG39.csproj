@@ -23,14 +23,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Lang\strings.es.Designer.cs">
-      <DependentUpon>strings.es.resx</DependentUpon>
+      <DependentUpon>Strings.es.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Lang\strings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>strings.resx</DependentUpon>
+      <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -44,11 +44,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Lang\strings.es.resx">
+    <EmbeddedResource Update="Lang\Strings.es.resx">
       <LastGenOutput>strings.es.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Lang\strings.resx">
+    <EmbeddedResource Update="Lang\Strings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>

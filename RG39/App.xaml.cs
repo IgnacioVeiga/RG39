@@ -24,7 +24,7 @@ namespace RG39
             try
             {
                 Process.Start(Environment.ProcessPath);
-                Application.Current.Shutdown();
+                Current.Shutdown();
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace RG39
             if (createdNew) Exit += CloseMutexHandler;
             else
             {
-                MessageBox.Show(strings.MULTI_INSTANCE_MSG);
+                MessageBox.Show(Strings.MULTI_INSTANCE_MSG);
                 Current.Shutdown();
             }
             base.OnStartup(e);
