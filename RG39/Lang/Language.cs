@@ -6,7 +6,7 @@ namespace RG39.Lang
 {
     internal static class AppLanguage
     {
-        // ToDo: Intentar generar los ComboBoxItems a partir de esta enum
+        // ToDo: Try to generate the ComboBoxItems of the language switcher from this enum
         internal enum Languages
         {
             English = 0,
@@ -29,10 +29,8 @@ namespace RG39.Lang
                     break;
             }
 
-            // ToDo: buscar otra manera de recordar el item seleccionado del ComboBox "langSelected"
             Settings.Default.LangIndex = langIndex;
             Settings.Default.Save();
-
             Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
         }

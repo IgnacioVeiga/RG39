@@ -45,7 +45,7 @@ namespace RG39.Util
                 SteamHandler handler = new(new WindowsRegistry());
                 foreach ((SteamGame game, _) in handler.FindAllGames())
                 {
-                    // ToDo: filter soundtracks
+                    // ToDo: Try to filter any soundtrack
                     if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
                     {
                         string path = game.Path + System.IO.Path.DirectorySeparatorChar + game.Name + ".url";

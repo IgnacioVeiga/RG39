@@ -51,7 +51,7 @@ namespace RG39.Util
             get => Folder + Name + Type;
             set
             {
-                //GetDirectoryName('C:\MyDir\MySubDir\myfile.ext') returns 'C:\MyDir\MySubDir'
+                // GetDirectoryName('C:\MyDir\MySubDir\myfile.ext') returns 'C:\MyDir\MySubDir'
                 Folder = Path.GetDirectoryName(value) + Path.DirectorySeparatorChar;
 
                 // GetFileNameWithoutExtension('C:\mydir\myfile.ext') returns 'myfile'
@@ -66,6 +66,8 @@ namespace RG39.Util
         public ImageSource AppIcon => From switch
         {
             GameStores.FromLibrary.Other => Icon.ExtractAssociatedIcon(FilePath).ToImageSource(),
+
+            // ToDo: Try to get the original game icons even if they are from one of these libraries
             GameStores.FromLibrary.Steam => Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource(),
             GameStores.FromLibrary.EpicGames => Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource(),
             _ => null,

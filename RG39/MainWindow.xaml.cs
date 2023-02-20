@@ -19,9 +19,7 @@ namespace RG39
         public MainWindow()
         {
             InitializeComponent();
-
             gamesList.Items.AddRange(ListManager.ReadList());
-            // ToDo: mostrar en una ventana aparte los juegos no existentes pero enlistados.
 
             #region Steam
             GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.Steam);
@@ -35,17 +33,17 @@ namespace RG39
             #endregion
 
             #region EpicGamesStore
-            //GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.EpicGames);
+            GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.EpicGames);
 
-            //if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
-            //{
-            //    egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
-            //    this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
-            //}
-            //else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
+            if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
+            {
+                egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                //this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
+            }
+            else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
             #endregion
 
-            // En btn se activa si hay elementos en la lista
+            // Tiene que existir más de 1 juego en la lista para que el programa tenga sentido
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
@@ -125,7 +123,7 @@ namespace RG39
 
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
         {
-            // ToDo: realizar esto de otra forma más simple
+            // ToDo: Do this in another more universal way and without those "magic numbers"
             if (general.Visibility == Visibility.Visible)
             {
                 general.Visibility = Visibility.Collapsed;

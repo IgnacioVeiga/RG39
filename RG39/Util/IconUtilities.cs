@@ -9,11 +9,6 @@ using System.Windows.Media.Imaging;
 
 namespace RG39.Util
 {
-    internal class Media
-    {
-        // ToDo: Acá van las funciones para mostrar imagenes, caratulas y/o sfx
-    }
-
     // source: https://stackoverflow.com/questions/1127647/convert-system-drawing-icon-to-system-media-imagesource
     internal static class IconUtilities
     {

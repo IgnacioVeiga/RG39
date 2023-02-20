@@ -16,31 +16,48 @@ namespace RG39.Util
             {
                 if (game is null) return;
 
-                if (game.From == GameStores.FromLibrary.Other)
-                    Process.Start(new ProcessStartInfo()
-                    {
-                        UseShellExecute = true,
-                        FileName = game.Name + game.Type,
-                        WorkingDirectory = game.Folder
-                    });
-
-                if (game.From == GameStores.FromLibrary.Steam)
-                    Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.GameId}");
-
-                #region EpicGamesStore
-                if (game.From == GameStores.FromLibrary.EpicGames)
+                switch (game.From)
                 {
-                    /*
-                     Ejecutar EpicGamesLauncher.exe con el parametro com.epicgames.launcher://apps/{parametro}{gameId}{parametro}?action=launch&silent=true
-                     Ejemplo: com.epicgames.launcher://apps/0bd3e505924240adb702295fa08c1eff%3A283080ad58e64fd084d30413888a571c%3Aa64dcf9b711a4a60a3c0b6f052dfc7da?action=launch&silent=true
-                     El gameId es 283080ad58e64fd084d30413888a571c
-                     ToDo: encontrar los otros 2 parametros que lo rodean
-                     */
-                    MessageBox.Show($"{strings.CANNOT_LOAD_GAME_MSG}\n\"{game.Name}\".");
-                    return;
-                    // Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/AAAAAAAAAAAAA{game.gameId}AAAAAAAAAAAAA?action=launch&silent=true");
+                    case GameStores.FromLibrary.Other:
+                        Process.Start(new ProcessStartInfo()
+                        {
+                            UseShellExecute = true,
+                            FileName = game.Name + game.Type,
+                            WorkingDirectory = game.Folder
+                        });
+                        break;
+
+                    case GameStores.FromLibrary.Steam:
+                        Process.Start($"\"{Settings.Default.SteamPath}\"", $"steam://rungameid/{game.GameId}");
+                        break;
+
+                    #region EpicGamesStore
+                    case GameStores.FromLibrary.EpicGames:
+                        /*
+                         Try to run 'EpicGamesLauncher.exe' together with the following parameter:
+                            com.epicgames.launcher://apps/{variable}{GameId}{variable}?action=launch&silent=true
+
+                         Example:
+                         'com.epicgames.launcher://apps/
+                            0bd3e505924240adb702295fa08c1eff
+                            %3A
+                            283080ad58e64fd084d30413888a571c
+                            %3A
+                            a64dcf9b711a4a60a3c0b6f052dfc7da
+                            ?action=launch&silent=true'
+
+                         Where in this case the variable 'GameId' is equal to '283080ad58e64fd084d30413888a571c'
+
+                         ToDo: Find those others 2 variables that surround the 'GameId'
+                         */
+
+                        //Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/{variable}{game.GameId}{variable}?action=launch&silent=true");
+                        break;
+                    #endregion EpicGamesStore
+
+                    default:
+                        break;
                 }
-                #endregion
 
                 Application.Current.Shutdown();
             }
@@ -51,22 +68,18 @@ namespace RG39.Util
             }
         }
 
+        // ToDo: Change this file select dialog to your own
         internal static string SelectExecutable()
         {
-            // Sirve para mostrar el dialogo selector de carpetas
             CommonOpenFileDialog exe = new()
             {
-                // ToDo: reemplazar este dialogo por el propio en creación
                 Title = strings.SEL_EXE_TITLE,
                 Multiselect = false,
                 EnsurePathExists = true,
                 EnsureFileExists = true,
-
-                // Carpeta de escritorio por defecto
                 DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
             };
 
-            // Muestro la ventana para seleccionar carpeta y cargamos datos si es ok
             if (exe.ShowDialog() == CommonFileDialogResult.Ok) return exe.FileName;
             else return null;
         }
