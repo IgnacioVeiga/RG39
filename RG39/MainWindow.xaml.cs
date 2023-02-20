@@ -43,7 +43,7 @@ namespace RG39
             else Settings.Default.EGSPath = $"Epic Games Store: {strings.NOT_FOUND_MSG}";
             #endregion
 
-            // Tiene que existir más de 1 juego en la lista para que el programa tenga sentido
+            // There has to be more than 1 game in the list for the program to make sense
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
@@ -59,6 +59,8 @@ namespace RG39
             }
             catch (Exception ex)
             {
+                // For these cases it is necessary to show a friendlier message to the end user.
+                // ToDo: Hide the original message and make it visible with a "See more" button or similar.
                 MessageBox.Show(ex.Message);
             }
         }
