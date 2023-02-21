@@ -2,7 +2,10 @@
 ![RG39Icon](/RG39/Assets/Images/RG39.svg)
 &nbsp;&nbsp;&nbsp;&nbsp;
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=000099&labelColor=009900)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.exe)
-[![Deploy RG39 Project](https://github.com/IgnacioVeiga/RG39/actions/workflows/deploy-project.yml/badge.svg)](https://github.com/IgnacioVeiga/RG39/actions/workflows/deploy-project.yml)
+![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=009900&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=darkblue&label=Latest%20release&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=009900&logo=github&style=flat-square)
+![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
 </br>
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
