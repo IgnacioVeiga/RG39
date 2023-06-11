@@ -142,14 +142,12 @@ namespace RG39
                 theWindow.MaxHeight = double.PositiveInfinity;
                 theWindow.Height = 400;
             }
-
         }
 
         private void StartItemFromList_Click(object sender, RoutedEventArgs e)
         {
-            General.RunGame(
-                ((Button)sender).DataContext as Game
-            );
+            Game game = ((Button)sender).DataContext as Game;
+            General.RunGame(game);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
