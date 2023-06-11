@@ -5,7 +5,6 @@
     <TargetFramework>net6.0-windows7.0</TargetFramework>
     <RootNamespace>RG39</RootNamespace>
     <UseWPF>true</UseWPF>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishSingleFile>true</PublishSingleFile>
     <StartupObject>RG39.App</StartupObject>
     <ApplicationIcon>Assets\Icons\icon.ico</ApplicationIcon>
