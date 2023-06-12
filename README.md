@@ -1,52 +1,82 @@
-# RG39
-![RG39Icon](/RG39/Assets/Images/RG39.svg)
-&nbsp;&nbsp;&nbsp;&nbsp;
-[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=000099&labelColor=009900)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.exe)
-![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=009900&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=darkblue&label=Latest%20release&style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=009900&logo=github&style=flat-square)
+# RG39 (Beta)
+[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=137A7F&labelColor=373B3E)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.exe)
+![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=137A7F&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=137A7F&label=Latest%20release&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=137A7F&logo=github&style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
-</br>
-Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
-## Capturas:
+<img src="/RG39/Assets/Icons/icon.ico" width="128" height="128">
+<div>
+  <span>English</span> / <a href="README_es.md">Español</a> </a>
+</div></br>
+
+It allows you to make a list of the video games you have installed and run one at random.
+
+## Screenshots:
 ![Screenshot_0000](/RG39/Assets/Images/Screenshot_0000.png "Games")
 ![Screenshot_0001](/RG39/Assets/Images/Screenshot_0001.png "Settings")
 ![Screenshot_0002](/RG39/Assets/Images/Screenshot_0002.png "Collapsed")
 
-## Funcionalidades:
-- [x] Busca y carga la libreria de Steam.
-- [x] Carga ejecutables de forma manual.
-- [x] Elimina individualmente a elementos de la lista.
-- [x] Limpia la lista.
-- [x] Detecta la ubicación de `steam.exe` de froma automatica.
-- [x] Guarda la lista en un archivo `list.json` (solo los añadidos manualmente).
-- [x] Muestra los iconos de los ejecutables (solo los añadidos manualmente).
-- [x] Marcar cuales elementos quiero que participen sin quitarlos de la lista.
-- [x] Impide que se repitan los juegos añadidos.
-- [x] Al iniciar y leer el listado filtra los juegos no encontrados.
-- [x] Idioma español e inglés.
+***
 
-## Incompleto:
-- [ ] Permitir ordenar la lista.
-- [ ] Reconocer la biblioteca de Epic Games Store, Origin y de GOG Galaxy.
-- [ ] Mostrar iconos en la UI en vez de texto.
-- [ ] Enseñar una portada/caratula.
-- [ ] Arreglar los tamaños de los elementos.
-- [ ] Usar temas personalizados.
+## Functionalities:
+- Search and load the Steam library.
+- Load executables manually.
+- Individually removes items from the list.
+- Clear the list.
+- Detects the location of `steam.exe` automatically.
+- Save the list in a `list.json` file (only those added manually).
+- Show executable icons (only those added manually).
+- Mark which elements I want to participate without removing them from the list.
+- Prevents the added games from being repeated.
+- When starting and reading the list, it filters the games not found.
+- Spanish and English language.
+- Allow to sort the list.
 
-## Requerido:
-- Windows 7 o superior (Recomendado Windows 10/11)
-- SDK .NET 6.0 (LTS) solo para compilar
+## To do:
+- Recognize the library of Epic Games Store.
+- Show icons in the UI instead of text.
+- Show a cover / cover.
+- Use custom themes.
 
-## Dependencias:
+***
+
+## How to use:
+
+***
+
+## Required:
+- Windows 7 or higher (Recommended Windows 10/11) x64.
+- .NET SDK 6 (LTS) to compile and run.
+- .NET Desktop Runtime 6 to run.
+
+***
+
+## Dependencies:
 ### Frameworks
 - Microsoft.NETCore.App **v6.0.10**
 - Microsoft.WindowsDesktop.App.WPF **v6.0.10**
 
 ### Paquetes
-- GameFinder.StoreHandlers.Steam **v2.2.1**
-- WinCopies.WindowsAPICodePack.Shell **v2.12.0.2**
+- GameFinder.StoreHandlers.Steam **(2.2.1)**
+- WinCopies.WindowsAPICodePack.Shell **(2.12.0.2)**
 
-## Compilar:
-Ejecuta el comando `dotnet build` en la raíz del repositorio. La otra opción es compilar a través de Visual Studio 2022.
+***
+
+## Languajes
+For adding/modifying languages I highly recommend the **extension** for **Visual Studio 2022** called `ResX Manager`. It makes it much easier to manage multiple languages.
+The language `.resx` files are saved in the `.\RG39\Lang\` folder.
+
+***
+
+## Compile:
+Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` command from terminal (cmd/powershell) in the root of the repository and then check inside of the `\RG39\bin\` folder.
+
+***
+
+## How contribute:
+
+***
+
+## License:
+
