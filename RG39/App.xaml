@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="./Assets/MergedDictionaries/Menu.xaml" />
                 <ResourceDictionary Source="./Assets/MergedDictionaries/PlayGameButton.xaml" />
                 <ResourceDictionary Source="./Assets/MergedDictionaries/RemoveButton.xaml" />
+                <ResourceDictionary Source="./Assets/MergedDictionaries/ScrollBar.xaml" />
                 <ResourceDictionary Source="./Assets/MergedDictionaries/StatusBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
