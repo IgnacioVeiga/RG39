@@ -25,13 +25,13 @@
     
     <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FFFFFF" />
     <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#707070" />
-    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#212121" />
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#3BBF3B" />
     <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#F3F9FF" />
     <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#5593FF" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#212121" />
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#42D842" />
     <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#D9ECFF" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#3C77DD" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#212121" />
+    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#2564AD" />
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#3082E0" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#E6E6E6" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#BCBCBC" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#707070" />
@@ -54,6 +54,7 @@
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Background="{TemplateBinding Background}"
+                                CornerRadius="1.5"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
                             <Grid x:Name="markGrid">
