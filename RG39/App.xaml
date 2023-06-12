@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="./Assets/MergedDictionaries/RemoveButton.xaml" />
                 <ResourceDictionary Source="./Assets/MergedDictionaries/DataGrid.xaml"/>
                 <ResourceDictionary Source="./Assets/MergedDictionaries/Checkbox.xaml"/>
+                <ResourceDictionary Source="./Assets/MergedDictionaries/StatusBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
