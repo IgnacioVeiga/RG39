@@ -13,6 +13,7 @@
                 </ResourceDictionary>
                 
                 <ResourceDictionary Source="./Assets/MergedDictionaries/PlayGameButton.xaml" />
+                <ResourceDictionary Source="./Assets/MergedDictionaries/DataGrid.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

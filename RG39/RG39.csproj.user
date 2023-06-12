@@ -15,5 +15,8 @@
     <Page Update="Assets\MergedDictionaries\PlayGameButton.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Assets\MergedDictionaries\DataGrid.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>

@@ -32,59 +32,59 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="ToggleVisibilityGeneral_Click"
                 Content="˄" Cursor="Arrow" />
 
-        <ListView x:Name="gamesList" Grid.Row="2" Margin="10"
-                  d:ItemsSource="{d:SampleData ItemCount=30}"
-                  Background="{DynamicResource SteamBackground}"
-                  Foreground="{DynamicResource SteamForeground}"
+        <DataGrid x:Name="gamesList" Grid.Row="2" Margin="10"
+                  AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=30}"
                   Cursor="Arrow" SelectionMode="Single">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="32">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox x:Name="active" Cursor="Hand" IsChecked="{Binding Active}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="32">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image x:Name="appIcon" Source="{Binding AppIcon}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn x:Name="folder" Width="100"
-                                    DisplayMemberBinding="{Binding Folder}"
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="32" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox x:Name="active" Cursor="Hand" IsChecked="{Binding Active}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="32">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image x:Name="appIcon" Source="{Binding AppIcon}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="folder" Width="100"
+                                    Binding="{Binding Folder}"
+                                    IsReadOnly="True"
                                     Header="{x:Static p:Strings.FOLDER_COL}" />
-                    <GridViewColumn x:Name="name" Width="120"
-                                    DisplayMemberBinding="{Binding Name}"
+                <DataGridTextColumn x:Name="name" Width="120"
+                                    Binding="{Binding Name}"
+                                    IsReadOnly="True"
                                     Header="{x:Static p:Strings.NAME_COL}" />
-                    <GridViewColumn x:Name="type" Width="50"
-                                    DisplayMemberBinding="{Binding Type}"
+                <DataGridTextColumn x:Name="type" Width="50"
+                                    Binding="{Binding Type}"
+                                    IsReadOnly="True"
                                     Header="{x:Static p:Strings.TYPE_COL}" />
-                    <GridViewColumn x:Name="from" Width="70"
-                                    DisplayMemberBinding="{Binding From}"
+                <DataGridTextColumn x:Name="from" Width="70"
+                                    Binding="{Binding From}"
+                                    IsReadOnly="True"
                                     Header="{x:Static p:Strings.FROM_COL}" />
-                    <GridViewColumn Width="30">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Width="16" Height="16" Click="RemoveItemFromList_Click"
-                                        Content="X" Cursor="Hand" FontSize="8" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="30">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Width="16" Height="16" Click="StartItemFromList_Click"
-                                        Content="▶" FontSize="8"
-                                        Style="{DynamicResource PlayGameButton}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                <DataGridTemplateColumn Width="30" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="16" Height="16" Click="RemoveItemFromList_Click"
+                                    Content="X" Cursor="Hand" FontSize="8" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="30" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="16" Height="16" Click="StartItemFromList_Click"
+                                    Content="▶" FontSize="8"
+                                    Style="{DynamicResource PlayGameButton}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <StatusBar Grid.Row="3">
             <StatusBarItem>
