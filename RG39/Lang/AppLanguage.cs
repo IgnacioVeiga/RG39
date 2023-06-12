@@ -1,38 +1,24 @@
 ﻿using RG39.Properties;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 
 namespace RG39.Lang
 {
-    internal static class AppLanguage
+    public static class AppLanguage
     {
-        // ToDo: Try to generate the ComboBoxItems of the language switcher from this enum
-        internal enum Languages
+        public static readonly Dictionary<string, string> Languages = new()
         {
-            English = 0,
-            Español = 1
-        }
+            { "en", "English" },
+            { "es", "Español" }
+        };
 
-        /// <summary>
-        /// 0 = English
-        /// 1 = Español
-        /// </summary>
-        /// <param name="langIndex"></param>
-        internal static void ChangeLanguage(int langIndex)
+        public static void ChangeLanguage(string lang)
         {
-            string lang = "en";
-
-            switch (langIndex)
-            {
-                case (int)Languages.Español:
-                    lang = "es";
-                    break;
-            }
-
-            Settings.Default.LangIndex = langIndex;
-            Settings.Default.Save();
             Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+            Settings.Default.Lang = lang;
+            Settings.Default.Save();
         }
     }
 }

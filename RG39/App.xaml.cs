@@ -2,6 +2,7 @@
 using RG39.Properties;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 
@@ -12,11 +13,12 @@ namespace RG39
     /// </summary>
     public partial class App : Application
     {
-        private static Mutex _mutex = null;
+        private static Mutex _mutex;
 
         App()
         {
-            AppLanguage.ChangeLanguage(Settings.Default.LangIndex);
+            SetDropDownMenuToBeRightAligned();
+            AppLanguage.ChangeLanguage(Settings.Default.Lang);
         }
 
         internal static void RestartApp()
@@ -49,6 +51,21 @@ namespace RG39
         protected virtual void CloseMutexHandler(object sender, EventArgs e)
         {
             _mutex?.Close();
+        }
+
+        // Source: https://stackoverflow.com/a/67114984
+        private static void SetDropDownMenuToBeRightAligned()
+        {
+            FieldInfo menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
+
+            static void setAlignmentValue(FieldInfo menuDropAlignmentField)
+            {
+                if (SystemParameters.MenuDropAlignment && menuDropAlignmentField != null) menuDropAlignmentField.SetValue(null, false);
+            }
+
+            setAlignmentValue(menuDropAlignmentField);
+
+            SystemParameters.StaticPropertyChanged += (sender, e) => setAlignmentValue(menuDropAlignmentField);
         }
     }
 }

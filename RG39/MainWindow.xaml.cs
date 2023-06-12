@@ -19,8 +19,25 @@ namespace RG39
         public MainWindow()
         {
             InitializeComponent();
-            gamesList.Items.AddRange(ListManager.ReadList());
 
+            #region Languages
+            foreach (var language in AppLanguage.Languages)
+            {
+                bool isLangSelected = Settings.Default.Lang == language.Key;
+                MenuItem menuItem = new()
+                {
+                    Tag = language.Key,
+                    Header = language.Value,
+                    IsCheckable = true,
+                    IsChecked = isLangSelected,
+                    IsEnabled = !isLangSelected
+                };
+                menuItem.Click += LanguageSelected_Click;
+                LanguagesMenu.Items.Add(menuItem);
+            }
+            #endregion Languages
+
+            gamesList.Items.AddRange(ListManager.ReadList());
             #region Steam
             GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.Steam);
 
@@ -31,13 +48,12 @@ namespace RG39
             }
             else Settings.Default.SteamPath = $"Steam: {Strings.NOT_FOUND_MSG}";
             #endregion
-
             #region EpicGamesStore
             GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.EpicGames);
 
             if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             {
-                egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                //egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
                 //this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
             }
             else Settings.Default.EGSPath = $"Epic Games Store: {Strings.NOT_FOUND_MSG}";
@@ -125,23 +141,23 @@ namespace RG39
 
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
         {
-            // ToDo: Do this in another more universal way and without those "magic numbers"
-            if (general.Visibility == Visibility.Visible)
-            {
-                general.Visibility = Visibility.Collapsed;
-                toggleVisibilityGeneralBTN.Content = "˅";
-                theWindow.MinHeight = 150;
-                theWindow.MaxHeight = 150;
-                theWindow.Height = 150;
-            }
-            else if (general.Visibility == Visibility.Collapsed)
-            {
-                general.Visibility = Visibility.Visible;
-                toggleVisibilityGeneralBTN.Content = "˄";
-                theWindow.MinHeight = 400;
-                theWindow.MaxHeight = double.PositiveInfinity;
-                theWindow.Height = 400;
-            }
+            //// ToDo: Do this in another more universal way and without those "magic numbers"
+            //if (general.Visibility == Visibility.Visible)
+            //{
+            //    general.Visibility = Visibility.Collapsed;
+            //    toggleVisibilityGeneralBTN.Content = "˅";
+            //    theWindow.MinHeight = 150;
+            //    theWindow.MaxHeight = 150;
+            //    theWindow.Height = 150;
+            //}
+            //else if (general.Visibility == Visibility.Collapsed)
+            //{
+            //    general.Visibility = Visibility.Visible;
+            //    toggleVisibilityGeneralBTN.Content = "˄";
+            //    theWindow.MinHeight = 400;
+            //    theWindow.MaxHeight = double.PositiveInfinity;
+            //    theWindow.Height = 400;
+            //}
         }
 
         private void StartItemFromList_Click(object sender, RoutedEventArgs e)
@@ -150,15 +166,13 @@ namespace RG39
             General.RunGame(game);
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LanguageSelected_Click(object sender, RoutedEventArgs e)
         {
-            AppLanguage.ChangeLanguage(((ComboBox)sender).SelectedIndex);
+            string language = (sender as MenuItem)?.Tag.ToString();
+            AppLanguage.ChangeLanguage(language);
+            MessageBox.Show(Strings.TOGGLE_LANG_MSG, "Reiniciando", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
-            if (langSelected.IsVisible)
-            {
-                MessageBox.Show(Strings.TOGGLE_LANG_MSG, "", MessageBoxButton.OK, MessageBoxImage.Information);
-                App.RestartApp();
-            }
+            App.RestartApp();
         }
     }
 }

@@ -8,8 +8,8 @@
     <Setting Name="EGSPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LangIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="Lang" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en</Value>
     </Setting>
   </Settings>
 </SettingsFile>
