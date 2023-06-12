@@ -16,14 +16,18 @@
         </Setter>
     </Style>
 
-    <SolidColorBrush x:Key="Button.Static.Background" Color="#5D6268" />
+    <SolidColorBrush x:Key="Button.Static.Background" Color="#CA2121" />
     <SolidColorBrush x:Key="Button.Static.Border" Color="Transparent" />
-    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#CA2121" />
+
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#1995F9" />
     <SolidColorBrush x:Key="Button.MouseOver.Border" Color="Transparent" />
+    
     <SolidColorBrush x:Key="Button.Pressed.Background" Color="#3082E0" />
     <SolidColorBrush x:Key="Button.Pressed.Border" Color="#2564AD" />
+    
     <SolidColorBrush x:Key="Button.Disabled.Background" Color="#2E3136" />
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#6F7682" />
+    
     <SolidColorBrush x:Key="Button.Foreground" Color="#ECF9E9" />
 
     <Style x:Key="RemoveButton" TargetType="{x:Type Button}">
