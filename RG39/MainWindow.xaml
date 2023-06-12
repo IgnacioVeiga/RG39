@@ -50,7 +50,7 @@
                 <DataGridTemplateColumn Width="32">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image x:Name="appIcon" Source="{Binding AppIcon}" />
+                            <Image x:Name="appIcon" Source="{Binding AppIcon}" d:Source="./Assets/Icons/Icon.ico" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

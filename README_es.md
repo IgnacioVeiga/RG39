@@ -35,7 +35,6 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 
 ## Para hacer:
 - Reconocer la biblioteca de Epic Games Store.
-- Mostrar iconos en la UI en vez de texto.
 - Enseñar una portada/caratula.
 - Usar temas personalizados.
 

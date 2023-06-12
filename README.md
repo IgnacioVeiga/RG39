@@ -35,7 +35,6 @@ It allows you to make a list of the video games you have installed and run one a
 
 ## To do:
 - Recognize the library of Epic Games Store.
-- Show icons in the UI instead of text.
 - Show a cover / cover.
 - Use custom themes.
 
