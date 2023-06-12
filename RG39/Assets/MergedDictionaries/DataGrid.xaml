@@ -37,8 +37,7 @@
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="GridLinesVisibility" Value="Vertical" />
-        <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+        <Setter Property="GridLinesVisibility" Value="None" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGrid}">
@@ -97,6 +96,32 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#3e4f68" />
+                            <Setter Property="BorderBrush" Value="{x:Null}" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -119,9 +144,6 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#323b4a" />
             </Trigger>
-            <!--<Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#3e4f68" />
-            </Trigger>-->
         </Style.Triggers>
     </Style>
 </ResourceDictionary>
