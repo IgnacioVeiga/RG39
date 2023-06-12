@@ -13,19 +13,19 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
-            <MenuItem Header="File">
-                <MenuItem Click="AddGameToList_Click" Header="{x:Static p:Strings.ADD_GAME_BTN}" />
-                <MenuItem Click="ClearList_Click" Header="{x:Static p:Strings.CLEAR_LIST_BTN}" />
+            <MenuItem Header="{x:Static p:Strings.GAMES}">
+                <MenuItem Click="AddGameToList_Click" Header="{x:Static p:Strings.ADD_GAME}" />
+                <MenuItem Click="ClearList_Click" Header="{x:Static p:Strings.CLEAR_LIST}" />
             </MenuItem>
-            <MenuItem Header="{x:Static p:Strings.SETTINGS_TAB}">
-                <MenuItem x:Name="LanguagesMenu" Header="Language" />
+            <MenuItem Header="{x:Static p:Strings.SETTINGS}">
+                <MenuItem x:Name="LanguagesMenu" Header="{x:Static p:Strings.LANGUAGE}" />
             </MenuItem>
-            <MenuItem Header="{x:Static p:Strings.ABOUT_TAB}" />
+            <MenuItem Header="{x:Static p:Strings.ABOUT}" />
         </Menu>
 
         <Button x:Name="start_BTN" Grid.Row="1" Margin="10"
                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="Start_Click"
-                Content="{x:Static p:Strings.START_BTN}"
+                Content="{x:Static p:Strings.PLAY_GAME}"
                 FontSize="32" FontWeight="Bold"
                 Style="{DynamicResource PlayGameButton}" />
         <!--<Button x:Name="toggleVisibilityGeneralBTN" Grid.Row="1" Margin="10,60,10,10"
@@ -53,19 +53,19 @@
                 <DataGridTextColumn x:Name="folder" Width="100"
                                     Binding="{Binding Folder}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.FOLDER_COL}" />
+                                    Header="{x:Static p:Strings.FOLDER}" />
                 <DataGridTextColumn x:Name="name" Width="120"
                                     Binding="{Binding Name}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.NAME_COL}" />
+                                    Header="{x:Static p:Strings.NAME}" />
                 <DataGridTextColumn x:Name="type" Width="50"
                                     Binding="{Binding Type}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.TYPE_COL}" />
+                                    Header="{x:Static p:Strings.TYPE}" />
                 <DataGridTextColumn x:Name="from" Width="70"
                                     Binding="{Binding From}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.FROM_COL}" />
+                                    Header="{x:Static p:Strings.FROM}" />
                 <DataGridTemplateColumn Width="30" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

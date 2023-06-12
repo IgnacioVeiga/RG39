@@ -117,29 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="START_BTN" xml:space="preserve">
-    <value>INICIAR</value>
+  <data name="PLAY_GAME" xml:space="preserve">
+    <value>▶ JUGAR</value>
   </data>
   <data name="SEL_EXE_TITLE" xml:space="preserve">
     <value>Seleccionar ejecutable</value>
   </data>
-  <data name="NAME_COL" xml:space="preserve">
+  <data name="NAME" xml:space="preserve">
     <value>Nombre</value>
   </data>
-  <data name="TYPE_COL" xml:space="preserve">
+  <data name="TYPE" xml:space="preserve">
     <value>Tipo</value>
   </data>
-  <data name="FROM_COL" xml:space="preserve">
+  <data name="FROM" xml:space="preserve">
     <value>De</value>
   </data>
-  <data name="SETTINGS_TAB" xml:space="preserve">
+  <data name="SETTINGS" xml:space="preserve">
     <value>Ajustes</value>
   </data>
-  <data name="GAMES_TAB" xml:space="preserve">
+  <data name="GAMES" xml:space="preserve">
     <value>Juegos</value>
-  </data>
-  <data name="CLEAR_LIST_TITLE" xml:space="preserve">
-    <value>Limpiar lista</value>
   </data>
   <data name="CLEAR_LIST_MSG" xml:space="preserve">
     <value>¿Quieres borrar los juegos de la lista?</value>
@@ -162,19 +159,22 @@
   <data name="REMOVE_GAME_MSG" xml:space="preserve">
     <value>¿Quitar:</value>
   </data>
-  <data name="ABOUT_TAB" xml:space="preserve">
+  <data name="ABOUT" xml:space="preserve">
     <value>Acerca de</value>
   </data>
-  <data name="CLEAR_LIST_BTN" xml:space="preserve">
+  <data name="CLEAR_LIST" xml:space="preserve">
     <value>Vaciar lista</value>
   </data>
-  <data name="ADD_GAME_BTN" xml:space="preserve">
+  <data name="ADD_GAME" xml:space="preserve">
     <value>Añadir juego</value>
   </data>
   <data name="TOGGLE_LANG_MSG" xml:space="preserve">
     <value>El idioma cambiará cuando se reinicie la aplicación.</value>
   </data>
-  <data name="FOLDER_COL" xml:space="preserve">
+  <data name="FOLDER" xml:space="preserve">
     <value>Carpeta</value>
+  </data>
+  <data name="LANGUAGE" xml:space="preserve">
+    <value>Idioma</value>
   </data>
 </root>

@@ -63,18 +63,18 @@ namespace RG39.Lang {
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
-        public static string ABOUT_TAB {
+        public static string ABOUT {
             get {
-                return ResourceManager.GetString("ABOUT_TAB", resourceCulture);
+                return ResourceManager.GetString("ABOUT", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add game.
         /// </summary>
-        public static string ADD_GAME_BTN {
+        public static string ADD_GAME {
             get {
-                return ResourceManager.GetString("ADD_GAME_BTN", resourceCulture);
+                return ResourceManager.GetString("ADD_GAME", resourceCulture);
             }
         }
         
@@ -90,9 +90,9 @@ namespace RG39.Lang {
         /// <summary>
         ///   Looks up a localized string similar to Clear list.
         /// </summary>
-        public static string CLEAR_LIST_BTN {
+        public static string CLEAR_LIST {
             get {
-                return ResourceManager.GetString("CLEAR_LIST_BTN", resourceCulture);
+                return ResourceManager.GetString("CLEAR_LIST", resourceCulture);
             }
         }
         
@@ -106,38 +106,38 @@ namespace RG39.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear list.
-        /// </summary>
-        public static string CLEAR_LIST_TITLE {
-            get {
-                return ResourceManager.GetString("CLEAR_LIST_TITLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Folder.
         /// </summary>
-        public static string FOLDER_COL {
+        public static string FOLDER {
             get {
-                return ResourceManager.GetString("FOLDER_COL", resourceCulture);
+                return ResourceManager.GetString("FOLDER", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to From.
         /// </summary>
-        public static string FROM_COL {
+        public static string FROM {
             get {
-                return ResourceManager.GetString("FROM_COL", resourceCulture);
+                return ResourceManager.GetString("FROM", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Games.
         /// </summary>
-        public static string GAMES_TAB {
+        public static string GAMES {
             get {
-                return ResourceManager.GetString("GAMES_TAB", resourceCulture);
+                return ResourceManager.GetString("GAMES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string LANGUAGE {
+            get {
+                return ResourceManager.GetString("LANGUAGE", resourceCulture);
             }
         }
         
@@ -153,9 +153,9 @@ namespace RG39.Lang {
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string NAME_COL {
+        public static string NAME {
             get {
-                return ResourceManager.GetString("NAME_COL", resourceCulture);
+                return ResourceManager.GetString("NAME", resourceCulture);
             }
         }
         
@@ -165,6 +165,15 @@ namespace RG39.Lang {
         public static string NOT_FOUND_MSG {
             get {
                 return ResourceManager.GetString("NOT_FOUND_MSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ▶ PLAY.
+        /// </summary>
+        public static string PLAY_GAME {
+            get {
+                return ResourceManager.GetString("PLAY_GAME", resourceCulture);
             }
         }
         
@@ -207,18 +216,9 @@ namespace RG39.Lang {
         /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
-        public static string SETTINGS_TAB {
+        public static string SETTINGS {
             get {
-                return ResourceManager.GetString("SETTINGS_TAB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to START.
-        /// </summary>
-        public static string START_BTN {
-            get {
-                return ResourceManager.GetString("START_BTN", resourceCulture);
+                return ResourceManager.GetString("SETTINGS", resourceCulture);
             }
         }
         
@@ -234,9 +234,9 @@ namespace RG39.Lang {
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
-        public static string TYPE_COL {
+        public static string TYPE {
             get {
-                return ResourceManager.GetString("TYPE_COL", resourceCulture);
+                return ResourceManager.GetString("TYPE", resourceCulture);
             }
         }
     }

@@ -104,7 +104,7 @@ namespace RG39
 
         private void ClearList_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult msgResult = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST_TITLE, MessageBoxButton.YesNo);
+            MessageBoxResult msgResult = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
                 ListManager.ClearList();
