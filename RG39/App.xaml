@@ -11,9 +11,11 @@
                     <SolidColorBrush x:Key="SteamBackground" Color="#24282F" />
                     <SolidColorBrush x:Key="SteamForeground" Color="#e4eaf3" />
                 </ResourceDictionary>
-                
+
                 <ResourceDictionary Source="./Assets/MergedDictionaries/PlayGameButton.xaml" />
+                <ResourceDictionary Source="./Assets/MergedDictionaries/RemoveButton.xaml" />
                 <ResourceDictionary Source="./Assets/MergedDictionaries/DataGrid.xaml"/>
+                <ResourceDictionary Source="./Assets/MergedDictionaries/Checkbox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

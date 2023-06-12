@@ -18,5 +18,11 @@
     <Page Update="Assets\MergedDictionaries\DataGrid.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Assets\MergedDictionaries\RemoveButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Assets\MergedDictionaries\Checkbox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>
