@@ -50,22 +50,22 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="folder" Width="100"
-                                    Binding="{Binding Folder}"
-                                    IsReadOnly="True"
-                                    Header="{x:Static p:Strings.FOLDER}" />
                 <DataGridTextColumn x:Name="name" Width="120"
                                     Binding="{Binding Name}"
                                     IsReadOnly="True"
                                     Header="{x:Static p:Strings.NAME}" />
-                <DataGridTextColumn x:Name="type" Width="50"
-                                    Binding="{Binding Type}"
-                                    IsReadOnly="True"
-                                    Header="{x:Static p:Strings.TYPE}" />
                 <DataGridTextColumn x:Name="from" Width="70"
                                     Binding="{Binding From}"
                                     IsReadOnly="True"
                                     Header="{x:Static p:Strings.FROM}" />
+                <DataGridTextColumn x:Name="type" Width="50"
+                                    Binding="{Binding Type}"
+                                    IsReadOnly="True"
+                                    Header="{x:Static p:Strings.TYPE}" />
+                <DataGridTextColumn x:Name="folder" Width="100"
+                                    Binding="{Binding Folder}"
+                                    IsReadOnly="True"
+                                    Header="{x:Static p:Strings.FOLDER}" />
                 <DataGridTemplateColumn Width="30" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

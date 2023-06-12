@@ -113,4 +113,15 @@
         <Setter Property="Foreground" Value="{DynamicResource SteamForeground}" />
         <Setter Property="Padding" Value="2.5,5" />
     </Style>
+
+    <Style TargetType="{x:Type DataGridRow}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#323b4a" />
+            </Trigger>
+            <!--<Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#3e4f68" />
+            </Trigger>-->
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
