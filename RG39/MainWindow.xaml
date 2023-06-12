@@ -20,7 +20,11 @@
             <MenuItem Header="{x:Static p:Strings.SETTINGS}">
                 <MenuItem x:Name="LanguagesMenu" Header="{x:Static p:Strings.LANGUAGE}" />
             </MenuItem>
-            <MenuItem Header="{x:Static p:Strings.ABOUT}" />
+            <MenuItem Header="{x:Static p:Strings.HELP}">
+                <MenuItem Header="{x:Static p:Strings.VIEW_HELP}" IsEnabled="False" />
+                <MenuItem Header="{x:Static p:Strings.CHECK_UPDATES}" IsEnabled="False" />
+                <MenuItem Header="{x:Static p:Strings.ABOUT}" IsEnabled="False" />
+            </MenuItem>
         </Menu>
 
         <Button x:Name="start_BTN" Grid.Row="1" Margin="10"

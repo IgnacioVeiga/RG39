@@ -177,4 +177,13 @@
   <data name="LANGUAGE" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="CHECK_UPDATES" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="VIEW_HELP" xml:space="preserve">
+    <value>View help</value>
+  </data>
 </root>

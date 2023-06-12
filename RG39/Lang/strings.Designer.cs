@@ -88,6 +88,15 @@ namespace RG39.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for updates.
+        /// </summary>
+        public static string CHECK_UPDATES {
+            get {
+                return ResourceManager.GetString("CHECK_UPDATES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear list.
         /// </summary>
         public static string CLEAR_LIST {
@@ -129,6 +138,15 @@ namespace RG39.Lang {
         public static string GAMES {
             get {
                 return ResourceManager.GetString("GAMES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string HELP {
+            get {
+                return ResourceManager.GetString("HELP", resourceCulture);
             }
         }
         
@@ -237,6 +255,15 @@ namespace RG39.Lang {
         public static string TYPE {
             get {
                 return ResourceManager.GetString("TYPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View help.
+        /// </summary>
+        public static string VIEW_HELP {
+            get {
+                return ResourceManager.GetString("VIEW_HELP", resourceCulture);
             }
         }
     }
