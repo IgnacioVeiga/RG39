@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd RG39/bin/Release/net6.0-windows*/win-x64/
-          7z a ../../../../../../RG39.zip -r ./*
+          7z a ../../../../../RG39.zip -r ./*
           
       - name: Upload release asset
         uses: actions/upload-artifact@v3
