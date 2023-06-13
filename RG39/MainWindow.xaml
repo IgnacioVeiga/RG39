@@ -26,7 +26,7 @@
                 <MenuItem x:Name="LanguagesMenu" Header="{x:Static l:Strings.LANGUAGE}" />
             </MenuItem>
             <MenuItem Header="{x:Static l:Strings.HELP}">
-                <MenuItem Header="{x:Static l:Strings.VIEW_HELP}" IsEnabled="False" />
+                <MenuItem Click="HowToUse_Click" Header="{x:Static l:Strings.VIEW_HELP}"/>
                 <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}" IsEnabled="False" />
                 <MenuItem Click="About_Click" Header="{x:Static l:Strings.ABOUT}" />
             </MenuItem>

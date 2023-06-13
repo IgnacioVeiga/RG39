@@ -5,6 +5,7 @@ using RG39.Properties;
 using RG39.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -165,6 +166,27 @@ namespace RG39
         private void About_Click(object sender, RoutedEventArgs e)
         {
             new About().ShowDialog();
+        }
+
+        private void HowToUse_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "https://github.com/IgnacioVeiga/RG39/blob/master/README";
+            switch (Settings.Default.Lang)
+            {
+                case "en":
+                    url += ".md#how-to-use";
+                    break;
+                case "es":
+                    url += "_es.md#como-usar";
+                    break;
+                default:
+                    return;
+            }
+            Process.Start(new ProcessStartInfo()
+            {
+                UseShellExecute = true,
+                FileName = url
+            });
         }
     }
 }
