@@ -1,0 +1,58 @@
+name: "Create new release"
+
+on:
+  push:
+    tags:
+      - "RG39/v*"
+
+env:
+  PROJECT_PATH: RG39\RG39.csproj
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=false -p:IncludeNativeLibrariesForSelfExtract=true --no-build
+
+      - name: Create release
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir release
+          7z a release/RG39.zip RG39/bin/Release/net6.0-windows*/win-x64/publish/*
+          echo "::set-output name=zip_path::release/RG39.zip"
+          
+      - name: Upload release asset
+        uses: actions/upload-artifact@v2
+        with:
+          name: Release Artifact
+          path: ${{ steps.create_release.outputs.zip_path }}
+          
+      - uses: actions/create-release@v1
+        id: create_github_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          
+      - name: Attach release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_github_release.outputs.upload_url }}
+          asset_path: ${{ steps.create_release.outputs.zip_path }}
+          asset_name: RG39.zip
+          asset_content_type: application/zip
