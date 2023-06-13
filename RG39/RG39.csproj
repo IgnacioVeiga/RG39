@@ -12,6 +12,16 @@
     <PlatformTarget>x64</PlatformTarget>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <Platforms>x64</Platforms>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
