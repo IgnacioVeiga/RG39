@@ -5,7 +5,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=3BBF3B&logo=github&style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
 
-<img src="/RG39/Assets/Icons/icon.ico" width="128" height="128">
+<img src="/RG39/Resources/Icons/icon.ico" width="128" height="128">
 <div>
   <span>English</span> / <a href="README_es.md">Español</a> </a>
 </div></br>

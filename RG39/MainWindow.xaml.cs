@@ -1,4 +1,6 @@
-﻿using RG39.Lang;
+﻿using RG39.Data;
+using RG39.Entities;
+using RG39.Language;
 using RG39.Properties;
 using RG39.Util;
 using System;
@@ -37,7 +39,7 @@ namespace RG39
             }
             #endregion Languages
 
-            gamesList.Items.AddRange(ListManager.ReadList());
+            gamesList.Items.AddRange(DAL.ReadList());
             #region Steam
             GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.Steam);
 
@@ -63,7 +65,7 @@ namespace RG39
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
         }
 
-        private void Start_Click(object sender, RoutedEventArgs e)
+        private void PlayRandomGame_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -71,7 +73,7 @@ namespace RG39
                 int index = new Random().Next(list.Count());
                 Game game = list.ToArray()[index];
 
-                General.RunGame(game);
+                Launcher.RunGame(game);
             }
             catch (Exception ex)
             {
@@ -83,7 +85,7 @@ namespace RG39
 
         private void AddGameToList_Click(object sender, RoutedEventArgs e)
         {
-            string gamePath = General.SelectExecutable();
+            string gamePath = Picker.SelectExecutable();
             if (gamePath is null) return;
 
             if (gamesList.Items.As<Game>().Any(g => g.FilePath == gamePath))
@@ -95,7 +97,7 @@ namespace RG39
             Game game = new(GameStores.FromLibrary.Other, string.Empty, gamePath);
             gamesList.Items.Add(game);
 
-            ListManager.SaveList(gamesList.Items.As<Game>()
+            DAL.SaveList(gamesList.Items.As<Game>()
                                                 .Where(i => i.From == GameStores.FromLibrary.Other)
                                                 .ToList());
 
@@ -107,13 +109,13 @@ namespace RG39
             MessageBoxResult msgResult = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
-                ListManager.ClearList();
+                DAL.ClearList();
                 gamesList.Items.Clear();
                 start_BTN.IsEnabled = false;
             }
         }
 
-        private void RemoveItemFromList_Click(object sender, RoutedEventArgs e)
+        private void RemoveGame_Click(object sender, RoutedEventArgs e)
         {
             // ToDo: Change everything below to something better
             string gamePath = ((Game)((Button)sender).DataContext).FilePath;
@@ -130,7 +132,7 @@ namespace RG39
                 {
                     List<Game> list = gamesList.Items.As<Game>().ToList();
                     list.RemoveAt(gameIndex);
-                    ListManager.SaveList(list.Where(i => i.From == GameStores.FromLibrary.Other).ToList());
+                    DAL.SaveList(list.Where(i => i.From == GameStores.FromLibrary.Other).ToList());
                 }
                 else return;
             }
@@ -160,17 +162,17 @@ namespace RG39
             //}
         }
 
-        private void StartItemFromList_Click(object sender, RoutedEventArgs e)
+        private void PlaySelectedGame_Click(object sender, RoutedEventArgs e)
         {
             Game game = ((Button)sender).DataContext as Game;
-            General.RunGame(game);
+            Launcher.RunGame(game);
         }
 
         private void LanguageSelected_Click(object sender, RoutedEventArgs e)
         {
             string language = (sender as MenuItem)?.Tag.ToString();
             AppLanguage.ChangeLanguage(language);
-            MessageBox.Show(Strings.TOGGLE_LANG_MSG, "Reiniciando", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            MessageBox.Show(Strings.TOGGLE_LANG_MSG, Strings.RESTARTING, MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
             App.RestartApp();
         }

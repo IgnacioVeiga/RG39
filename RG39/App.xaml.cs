@@ -1,4 +1,4 @@
-﻿using RG39.Lang;
+﻿using RG39.Language;
 using RG39.Properties;
 using System;
 using System.Diagnostics;

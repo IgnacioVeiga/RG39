@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RG39.Lang {
+namespace RG39.Language {
     using System;
     
     

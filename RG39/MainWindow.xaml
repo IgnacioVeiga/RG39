@@ -1,7 +1,12 @@
-﻿<Window x:Class="RG39.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:p="clr-namespace:RG39.Lang"
-        xmlns:properties="clr-namespace:RG39.Properties" x:Name="theWindow" Title="RG39"
-        Width="540" Height="500"
+﻿<Window x:Class="RG39.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:RG39.Language"
+        xmlns:properties="clr-namespace:RG39.Properties"
+        
+        Title="RG39" Width="540" Height="500"
         Background="{DynamicResource SteamBackground}"
         ResizeMode="CanResizeWithGrip" SizeToContent="Width" mc:Ignorable="d">
     <Grid>
@@ -13,23 +18,23 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
-            <MenuItem Header="{x:Static p:Strings.GAMES}">
-                <MenuItem Click="AddGameToList_Click" Header="{x:Static p:Strings.ADD_GAME}" />
-                <MenuItem Click="ClearList_Click" Header="{x:Static p:Strings.CLEAR_LIST}" />
+            <MenuItem Header="{x:Static l:Strings.GAMES}">
+                <MenuItem Click="AddGameToList_Click" Header="{x:Static l:Strings.ADD_GAME}" />
+                <MenuItem Click="ClearList_Click" Header="{x:Static l:Strings.CLEAR_LIST}" />
             </MenuItem>
-            <MenuItem Header="{x:Static p:Strings.SETTINGS}">
-                <MenuItem x:Name="LanguagesMenu" Header="{x:Static p:Strings.LANGUAGE}" />
+            <MenuItem Header="{x:Static l:Strings.SETTINGS}">
+                <MenuItem x:Name="LanguagesMenu" Header="{x:Static l:Strings.LANGUAGE}" />
             </MenuItem>
-            <MenuItem Header="{x:Static p:Strings.HELP}">
-                <MenuItem Header="{x:Static p:Strings.VIEW_HELP}" IsEnabled="False" />
-                <MenuItem Header="{x:Static p:Strings.CHECK_UPDATES}" IsEnabled="False" />
-                <MenuItem Header="{x:Static p:Strings.ABOUT}" IsEnabled="False" />
+            <MenuItem Header="{x:Static l:Strings.HELP}">
+                <MenuItem Header="{x:Static l:Strings.VIEW_HELP}" IsEnabled="False" />
+                <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}" IsEnabled="False" />
+                <MenuItem Header="{x:Static l:Strings.ABOUT}" IsEnabled="False" />
             </MenuItem>
         </Menu>
 
         <Button x:Name="start_BTN" Grid.Row="1" Margin="10"
-                HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="Start_Click"
-                Content="{x:Static p:Strings.PLAY_GAME}"
+                HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="PlayRandomGame_Click"
+                Content="{x:Static l:Strings.PLAY_GAME}"
                 FontSize="32" FontWeight="Bold"
                 Style="{DynamicResource PlayGameButton}" />
         <!--<Button x:Name="toggleVisibilityGeneralBTN" Grid.Row="1" Margin="10,60,10,10"
@@ -50,30 +55,30 @@
                 <DataGridTemplateColumn Width="32">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image x:Name="appIcon" Source="{Binding AppIcon}" d:Source="./Assets/Icons/Icon.ico" />
+                            <Image x:Name="appIcon" Source="{Binding AppIcon}" d:Source="./Resources/Icons/Icon.ico" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn x:Name="name" Width="120"
                                     Binding="{Binding Name}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.NAME}" />
+                                    Header="{x:Static l:Strings.NAME}" />
                 <DataGridTextColumn x:Name="from" Width="70"
                                     Binding="{Binding From}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.FROM}" />
+                                    Header="{x:Static l:Strings.FROM}" />
                 <DataGridTextColumn x:Name="type" Width="50"
                                     Binding="{Binding Type}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.TYPE}" />
+                                    Header="{x:Static l:Strings.TYPE}" />
                 <DataGridTextColumn x:Name="folder" Width="100"
                                     Binding="{Binding Folder}"
                                     IsReadOnly="True"
-                                    Header="{x:Static p:Strings.FOLDER}" />
+                                    Header="{x:Static l:Strings.FOLDER}" />
                 <DataGridTemplateColumn Width="30" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="16" Height="16" Click="RemoveItemFromList_Click"
+                            <Button Width="16" Height="16" Click="RemoveGame_Click"
                                     Content="X" FontSize="8"
                                     Style="{DynamicResource RemoveButton}" />
                         </DataTemplate>
@@ -82,7 +87,7 @@
                 <DataGridTemplateColumn Width="30" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="16" Height="16" Click="StartItemFromList_Click"
+                            <Button Width="16" Height="16" Click="PlaySelectedGame_Click"
                                     Content="▶" FontSize="8"
                                     Style="{DynamicResource PlayGameButton}" />
                         </DataTemplate>

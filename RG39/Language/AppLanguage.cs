@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 
-namespace RG39.Lang
+namespace RG39.Language
 {
     public static class AppLanguage
     {

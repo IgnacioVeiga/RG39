@@ -2,10 +2,14 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using RG39.Entities;
 
-namespace RG39.Util
+namespace RG39.Data
 {
-    internal static class ListManager
+    /// <summary>
+    /// DAL = Data Access Layer
+    /// </summary>
+    internal static class DAL
     {
         internal static void ClearList()
         {
@@ -34,6 +38,5 @@ namespace RG39.Util
 
             return games.Where(g => File.Exists(g.FilePath)).ToList();
         }
-
     }
 }

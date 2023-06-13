@@ -2,6 +2,7 @@
 using GameFinder.StoreHandlers.EGS;
 using GameFinder.StoreHandlers.Steam;
 using Microsoft.Win32;
+using RG39.Entities;
 using RG39.Properties;
 using System.Collections.Generic;
 

@@ -186,4 +186,7 @@
   <data name="VIEW_HELP" xml:space="preserve">
     <value>Ver ayuda</value>
   </data>
+  <data name="RESTARTING" xml:space="preserve">
+    <value>Reiniciando</value>
+  </data>
 </root>

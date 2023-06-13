@@ -12,13 +12,13 @@
                     <SolidColorBrush x:Key="SteamForeground" Color="#E4EAF3" />
                 </ResourceDictionary>
 
-                <ResourceDictionary Source="./Assets/MergedDictionaries/Checkbox.xaml" />
-                <ResourceDictionary Source="./Assets/MergedDictionaries/DataGrid.xaml" />
-                <ResourceDictionary Source="./Assets/MergedDictionaries/Menu.xaml" />
-                <ResourceDictionary Source="./Assets/MergedDictionaries/PlayGameButton.xaml" />
-                <ResourceDictionary Source="./Assets/MergedDictionaries/RemoveButton.xaml" />
-                <ResourceDictionary Source="./Assets/MergedDictionaries/ScrollBar.xaml" />
-                <ResourceDictionary Source="./Assets/MergedDictionaries/StatusBar.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/Checkbox.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/DataGrid.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/Menu.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/PlayGameButton.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/RemoveButton.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/ScrollBar.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/StatusBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

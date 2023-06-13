@@ -1,10 +1,11 @@
 ﻿using RG39.Properties;
+using RG39.Util;
 using System.Drawing;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
 
-namespace RG39.Util
+namespace RG39.Entities
 {
     public class Game
     {

@@ -7,13 +7,13 @@
     <UseWPF>true</UseWPF>
     <PublishSingleFile>true</PublishSingleFile>
     <StartupObject>RG39.App</StartupObject>
-    <ApplicationIcon>Assets\Icons\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\icon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Icons\icon.ico" />
+    <Content Include="Resources\Icons\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GameFinder.StoreHandlers.EGS" Version="2.2.1" />
@@ -21,12 +21,12 @@
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="2.12.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Lang\Strings.es.Designer.cs">
+    <Compile Update="Language\Strings.es.Designer.cs">
       <DependentUpon>Strings.es.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Lang\Strings.Designer.cs">
+    <Compile Update="Language\Strings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Strings.resx</DependentUpon>
@@ -43,11 +43,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Lang\Strings.es.resx">
-      <LastGenOutput>Strings.es.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Language\Strings.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Lang\Strings.resx">
+    <EmbeddedResource Update="Language\Strings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>

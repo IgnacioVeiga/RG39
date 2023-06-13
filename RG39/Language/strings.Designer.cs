@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RG39.Lang {
+namespace RG39.Language {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace RG39.Lang {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RG39.Lang.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RG39.Language.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -219,6 +219,15 @@ namespace RG39.Lang {
         public static string REPEATED_TITLE {
             get {
                 return ResourceManager.GetString("REPEATED_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restarting.
+        /// </summary>
+        public static string RESTARTING {
+            get {
+                return ResourceManager.GetString("RESTARTING", resourceCulture);
             }
         }
         

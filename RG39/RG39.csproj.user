@@ -4,7 +4,7 @@
     <_LastSelectedProfileId>C:\Users\ignac\Documents\repos\RG39\RG39\Properties\PublishProfiles\FolderProfile1.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Lang\Strings.es.resx">
+    <EmbeddedResource Update="Language\Strings.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
@@ -12,22 +12,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Assets\MergedDictionaries\PlayGameButton.xaml">
+    <Page Update="Resources\Styles\PlayGameButton.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Assets\MergedDictionaries\DataGrid.xaml">
+    <Page Update="Resources\Styles\DataGrid.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Assets\MergedDictionaries\RemoveButton.xaml">
+    <Page Update="Resources\Styles\RemoveButton.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Assets\MergedDictionaries\Checkbox.xaml">
+    <Page Update="Resources\Styles\Checkbox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Assets\MergedDictionaries\ScrollBar.xaml">
+    <Page Update="Resources\Styles\ScrollBar.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Assets\MergedDictionaries\StatusBar.xaml">
+    <Page Update="Resources\Styles\StatusBar.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

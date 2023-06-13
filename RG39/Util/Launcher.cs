@@ -1,14 +1,12 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using RG39.Lang;
+﻿using RG39.Entities;
 using RG39.Properties;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
 namespace RG39.Util
 {
-    internal static class General
+    internal static class Launcher
     {
         internal static void RunGame(Game game)
         {
@@ -63,25 +61,8 @@ namespace RG39.Util
             }
             catch (Win32Exception ex)
             {
-                string msg = ex.Message + "\n-> " + game.Name + "´<-";
-                MessageBox.Show(msg);
+                MessageBox.Show($"{ex.Message}\n-> '{game.Name}' <-");
             }
-        }
-
-        // ToDo: Change this file select dialog to your own
-        internal static string SelectExecutable()
-        {
-            CommonOpenFileDialog exe = new()
-            {
-                Title = Strings.SEL_EXE_TITLE,
-                Multiselect = false,
-                EnsurePathExists = true,
-                EnsureFileExists = true,
-                DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
-            };
-
-            if (exe.ShowDialog() == CommonFileDialogResult.Ok) return exe.FileName;
-            else return null;
         }
     }
 }
