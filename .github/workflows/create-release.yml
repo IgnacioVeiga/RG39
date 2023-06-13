@@ -3,7 +3,7 @@ name: "Create new release"
 on:
   push:
     tags:
-      - "RG39/v*"
+      - "v*"
 
 env:
   PROJECT_PATH: RG39\RG39.csproj
@@ -22,7 +22,7 @@ jobs:
 
       - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
 
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 --no-build
+      - run: dotnet publish ${{ env.PROJECT_PATH }} -a win-x64 -c Release --no-build
 
       - name: Create release
         id: create_release
