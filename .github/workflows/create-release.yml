@@ -13,16 +13,18 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: actions/setup-dotnet@v1
+      
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 6.0.x
 
-      - run: dotnet restore ${{ env.PROJECT_PATH }}
+      - run: cd ${{ env.PROJECT_PATH }}
 
-      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+      - run: dotnet restore
 
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -a x64 -c Release --no-build
+      - run: dotnet build -c Release --no-restore
+
+      - run: dotnet publish -a x64 -c Release --no-build
 
       - name: Create release
         id: create_release
