@@ -29,16 +29,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            mkdir release
-            cd RG39/bin/Release/net6.0-windows*/win-x64/publish/
-            7z a ../../../../../../release/RG39.zip -r ./*
-            echo "::set-output name=zip_path::release/RG39.zip"
+          mkdir release
+          cd RG39/bin/Release/net6.0-windows*/win-x64/publish/
+          7z a ../../../../../../release/RG39.zip -r ./*
+          echo "ZIP_PATH=release/RG39.zip" >> $GITHUB_ENV
           
       - name: Upload release asset
         uses: actions/upload-artifact@v2
         with:
           name: Release Artifact
-          path: ${{ steps.create_release.outputs.zip_path }}
+          path: ${{ env.ZIP_PATH }}
           
       - uses: actions/create-release@v1
         id: create_github_release
@@ -54,6 +54,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_github_release.outputs.upload_url }}
-          asset_path: ${{ steps.create_release.outputs.zip_path }}
+          asset_path: ${{ env.ZIP_PATH }}
           asset_name: RG39.zip
           asset_content_type: application/zip
