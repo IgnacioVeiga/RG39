@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using RG39.Entities;
 using RG39.Properties;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RG39.Util
 {
@@ -26,6 +27,10 @@ namespace RG39.Util
                 {
                     Settings.Default.SteamPath = key.GetValue("SteamExe").ToString();
                 }
+                else
+                {
+                    Settings.Default.SteamPath = string.Empty;
+                }
             }
             else if (FromLibrary.EpicGames == store)
             {
@@ -33,6 +38,10 @@ namespace RG39.Util
                 if (key is not null)
                 {
                     Settings.Default.EGSPath = key.GetValue("ModSdkCommand").ToString();
+                }
+                else
+                {
+                    Settings.Default.EGSPath = string.Empty;
                 }
             }
         }
@@ -43,15 +52,22 @@ namespace RG39.Util
 
             if (FromLibrary.Steam == from)
             {
-                SteamHandler handler = new(new WindowsRegistry());
-                foreach ((SteamGame game, _) in handler.FindAllGames())
+                SteamHandler steamHandler = new(new WindowsRegistry());
+                foreach ((SteamGame game, _) in steamHandler.FindAllGames())
                 {
+                    if (game.AppId == 0) continue;
+
+                    // Skip "Steamworks Common Redistributables"
+                    if (game.AppId == 228980) continue;
+
                     // ToDo: Try to filter any soundtrack
-                    if (game is not null && game.AppId != 228980 && !game.Name.Contains("Soundtrack"))
-                    {
-                        string path = game.Path + System.IO.Path.DirectorySeparatorChar + game.Name + ".url";
-                        mygames.Add(new Game(from, game.AppId.ToString(), path));
-                    }
+                    if (game.Name.Contains("Soundtrack")) continue;
+                    if (game.Name.EndsWith(" OST")) continue;
+                    if (game.Name.EndsWith("-OST")) continue;
+
+                    // This is a fake filepath
+                    string path = $"{game.Path}{Path.DirectorySeparatorChar}{game.Name}.url";
+                    mygames.Add(new Game(from, game.AppId.ToString(), path));
                 }
             }
             else if (FromLibrary.EpicGames == from)
@@ -59,11 +75,11 @@ namespace RG39.Util
                 EGSHandler handler = new();
                 foreach ((EGSGame game, _) in handler.FindAllGames())
                 {
-                    if (game is not null)
-                    {
-                        string path = game.InstallLocation + System.IO.Path.DirectorySeparatorChar + game.DisplayName + ".url";
-                        mygames.Add(new Game(from, game.CatalogItemId, path));
-                    }
+                    if (game is null) continue;
+
+                    // This is a fake filepath
+                    string path = $"{game.InstallLocation}{Path.DirectorySeparatorChar}{game.DisplayName}.url";
+                    mygames.Add(new Game(from, game.CatalogItemId, path));
                 }
             }
             return mygames;

@@ -52,9 +52,6 @@ namespace RG39.Util
                         //Process.Start($"{Settings.Default.EGSPath} com.epicgames.launcher://apps/{variable}{game.GameId}{variable}?action=launch&silent=true");
                         break;
                     #endregion EpicGamesStore
-
-                    default:
-                        break;
                 }
 
                 Application.Current.Shutdown();

@@ -22,6 +22,8 @@ namespace RG39
         {
             InitializeComponent();
 
+            gamesList.Items.AddRange(DAL.ReadList());
+
             #region Languages
             foreach (var language in AppLanguage.Languages)
             {
@@ -39,7 +41,6 @@ namespace RG39
             }
             #endregion Languages
 
-            gamesList.Items.AddRange(DAL.ReadList());
             #region Steam
             GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.Steam);
 
@@ -55,7 +56,7 @@ namespace RG39
 
             if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             {
-                //egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
+                egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
                 //this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
             }
             else Settings.Default.EGSPath = $"Epic Games Store: {Strings.NOT_FOUND_MSG}";
@@ -63,6 +64,7 @@ namespace RG39
 
             // There has to be more than 1 game in the list for the program to make sense
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
+            GamesCount.Content = $"{gamesList.Items.Count} {Strings.GAMES}";
         }
 
         private void PlayRandomGame_Click(object sender, RoutedEventArgs e)
@@ -102,6 +104,7 @@ namespace RG39
                                                 .ToList());
 
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
+            GamesCount.Content = $"{gamesList.Items.Count} {Strings.GAMES}";
         }
 
         private void ClearList_Click(object sender, RoutedEventArgs e)
@@ -112,6 +115,7 @@ namespace RG39
                 DAL.ClearList();
                 gamesList.Items.Clear();
                 start_BTN.IsEnabled = false;
+                GamesCount.Content = $"{gamesList.Items.Count} {Strings.GAMES}";
             }
         }
 
@@ -139,6 +143,7 @@ namespace RG39
 
             gamesList.Items.RemoveAt(gameIndex);
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
+            GamesCount.Content = $"{gamesList.Items.Count} {Strings.GAMES}";
         }
 
         private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)

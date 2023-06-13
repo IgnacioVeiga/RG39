@@ -98,14 +98,27 @@
 
         <StatusBar Grid.Row="3">
             <StatusBarItem>
-                <Image x:Name="steamIcon" Width="24" />
-                <!--<Image x:Name="egsIcon" Width="24"/>-->
+                <Image x:Name="steamIcon" Width="24" d:Source="./Resources/Icons/Icon.ico">
+                    <Image.ToolTip>
+                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=steamIcon}"
+                                 IsOpen="{Binding IsMouseOver, ElementName=steamIcon, Mode=OneWay}">
+                            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}" />
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock d:Text="C:\Program Files (x86)\Steam\steam.exe" Text="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}" />
-                <!--<TextBlock d:Text="C:\Program Files (x86)\Steam\steam.exe"
-                           Text="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}"/>-->
+                <Image x:Name="egsIcon" Width="24" d:Source="./Resources/Icons/Icon.ico">
+                    <Image.ToolTip>
+                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=egsIcon}"
+                                 IsOpen="{Binding IsMouseOver, ElementName=egsIcon, Mode=OneWay}">
+                            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}" />
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
             </StatusBarItem>
+            <Separator />
+            <StatusBarItem x:Name="GamesCount" d:Content="30 games"/>
         </StatusBar>
     </Grid>
 </Window>
