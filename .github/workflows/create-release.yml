@@ -31,14 +31,13 @@ jobs:
         run: |
           mkdir release
           cd RG39/bin/Release/net6.0-windows*/win-x64/publish/
-          7z a ../../../../../../release/RG39.zip -r ./*
-          echo "ZIP_PATH=release/RG39.zip" >> $GITHUB_ENV
+          7z a ../../../../../../RG39.zip -r ./*
           
       - name: Upload release asset
         uses: actions/upload-artifact@v2
         with:
           name: Release Artifact
-          path: ${{ env.ZIP_PATH }}
+          path: ./RG39.zip
           
       - uses: actions/create-release@v1
         id: create_github_release
@@ -54,6 +53,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_github_release.outputs.upload_url }}
-          asset_path: ${{ env.ZIP_PATH }}
+          asset_path: ./RG39.zip
           asset_name: RG39.zip
           asset_content_type: application/zip
