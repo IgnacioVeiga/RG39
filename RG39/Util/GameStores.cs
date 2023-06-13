@@ -55,7 +55,7 @@ namespace RG39.Util
                 SteamHandler steamHandler = new(new WindowsRegistry());
                 foreach ((SteamGame game, _) in steamHandler.FindAllGames())
                 {
-                    if (game.AppId == 0) continue;
+                    if (game is null || game.AppId == 0) continue;
 
                     // Skip "Steamworks Common Redistributables"
                     if (game.AppId == 228980) continue;
