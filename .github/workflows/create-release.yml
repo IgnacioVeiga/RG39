@@ -12,7 +12,7 @@ jobs:
   deploy:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - uses: actions/setup-dotnet@v3
         with:
@@ -29,12 +29,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir release
           cd RG39/bin/Release/net6.0-windows*/win-x64/publish/
           7z a ../../../../../../RG39.zip -r ./*
           
       - name: Upload release asset
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Release Artifact
           path: ./RG39.zip
