@@ -29,9 +29,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir release
-          7z a release/RG39.zip RG39/bin/Release/net6.0-windows*/win-x64/publish/*
-          echo "::set-output name=zip_path::release/RG39.zip"
+            mkdir release
+            cd RG39/bin/Release/net6.0-windows*/win-x64/publish/
+            7z a ../../../../release/rg39.zip -r ./*
+            echo "::set-output name=zip_path::release/rg39.zip"
           
       - name: Upload release asset
         uses: actions/upload-artifact@v2
