@@ -37,9 +37,6 @@
                 Content="{x:Static l:Strings.PLAY_GAME}"
                 FontSize="32" FontWeight="Bold"
                 Style="{DynamicResource PlayGameButton}" />
-        <!--<Button x:Name="toggleVisibilityGeneralBTN" Grid.Row="1" Margin="10,60,10,10"
-                HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="ToggleVisibilityGeneral_Click"
-                Content="˄" Cursor="Arrow" />-->
 
         <DataGrid x:Name="gamesList" Grid.Row="2" Margin="10"
                   AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=30}"
@@ -97,28 +94,28 @@
         </DataGrid>
 
         <StatusBar Grid.Row="3">
-            <StatusBarItem>
-                <Image x:Name="steamIcon" Width="24" d:Source="./Resources/Icons/Icon.ico">
+            <StatusBarItem Padding="5,0">
+                <Image x:Name="SteamIcon" Width="32" d:Source="./Resources/Icons/Steam.ico">
                     <Image.ToolTip>
-                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=steamIcon}"
-                                 IsOpen="{Binding IsMouseOver, ElementName=steamIcon, Mode=OneWay}">
+                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=SteamIcon}"
+                                 IsOpen="{Binding IsMouseOver, ElementName=SteamIcon, Mode=OneWay}">
                             <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}" />
                         </ToolTip>
                     </Image.ToolTip>
                 </Image>
             </StatusBarItem>
-            <StatusBarItem>
-                <Image x:Name="egsIcon" Width="24" d:Source="./Resources/Icons/Icon.ico">
+            <StatusBarItem Padding="5,0">
+                <Image x:Name="EpicGamesIcon" Width="32" d:Source="./Resources/Icons/EpicGames.ico">
                     <Image.ToolTip>
-                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=egsIcon}"
-                                 IsOpen="{Binding IsMouseOver, ElementName=egsIcon, Mode=OneWay}">
+                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=EpicGamesIcon}"
+                                 IsOpen="{Binding IsMouseOver, ElementName=EpicGamesIcon, Mode=OneWay}">
                             <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=EGSPath}" />
                         </ToolTip>
                     </Image.ToolTip>
                 </Image>
             </StatusBarItem>
             <Separator />
-            <StatusBarItem x:Name="GamesCount" d:Content="30 games"/>
+            <StatusBarItem x:Name="GamesCount" d:Content="30 games" HorizontalAlignment="Left"/>
         </StatusBar>
     </Grid>
 </Window>

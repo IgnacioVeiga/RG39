@@ -46,21 +46,22 @@ namespace RG39
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
-                steamIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.SteamPath).ToImageSource();
                 gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.Steam));
             }
             else Settings.Default.SteamPath = $"Steam: {Strings.NOT_FOUND_MSG}";
-            #endregion
-            #region EpicGamesStore
+            SteamIcon.Source = Properties.Resources.Steam.ToImageSource();
+            #endregion Steam
+
+            #region EpicGames
             GameStores.LocateStoreExeFromReg(GameStores.FromLibrary.EpicGames);
 
             if (!string.IsNullOrEmpty(Settings.Default.EGSPath))
             {
-                egsIcon.Source = System.Drawing.Icon.ExtractAssociatedIcon(Settings.Default.EGSPath).ToImageSource();
                 //this.gamesList.Items.AddRange(GameStores.GetGamesFromLib(GameStores.FromLibrary.EpicGames));
             }
             else Settings.Default.EGSPath = $"Epic Games Store: {Strings.NOT_FOUND_MSG}";
-            #endregion
+            EpicGamesIcon.Source = Properties.Resources.EpicGames.ToImageSource();
+            #endregion EpicsGames
 
             // There has to be more than 1 game in the list for the program to make sense
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
@@ -144,27 +145,6 @@ namespace RG39
             gamesList.Items.RemoveAt(gameIndex);
             start_BTN.IsEnabled = gamesList.Items.Count > 1;
             GamesCount.Content = $"{gamesList.Items.Count} {Strings.GAMES}";
-        }
-
-        private void ToggleVisibilityGeneral_Click(object sender, RoutedEventArgs e)
-        {
-            //// ToDo: Do this in another more universal way and without those "magic numbers"
-            //if (general.Visibility == Visibility.Visible)
-            //{
-            //    general.Visibility = Visibility.Collapsed;
-            //    toggleVisibilityGeneralBTN.Content = "˅";
-            //    theWindow.MinHeight = 150;
-            //    theWindow.MaxHeight = 150;
-            //    theWindow.Height = 150;
-            //}
-            //else if (general.Visibility == Visibility.Collapsed)
-            //{
-            //    general.Visibility = Visibility.Visible;
-            //    toggleVisibilityGeneralBTN.Content = "˄";
-            //    theWindow.MinHeight = 400;
-            //    theWindow.MaxHeight = double.PositiveInfinity;
-            //    theWindow.Height = 400;
-            //}
         }
 
         private void PlaySelectedGame_Click(object sender, RoutedEventArgs e)
