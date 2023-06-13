@@ -13,9 +13,9 @@
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
 ## Capturas de pantalla:
-![Screenshot_0000](/RG39/Assets/Images/Screenshot_0000.png "Screenshot_0000")</br>
-![Screenshot_0001](/RG39/Assets/Images/Screenshot_0001.png "Screenshot_0001")</br>
-![Screenshot_0002](/RG39/Assets/Images/Screenshot_0002.png "Screenshot_0002")
+![Screenshot_0000](/RG39/Resources/Images/Screenshot_0000.png "Screenshot_0000")</br>
+![Screenshot_0001](/RG39/Resources/Images/Screenshot_0001.png "Screenshot_0001")</br>
+![Screenshot_0002](/RG39/Resources/Images/Screenshot_0002.png "Screenshot_0002")
 
 ***
 

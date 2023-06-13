@@ -161,5 +161,10 @@ namespace RG39
 
             App.RestartApp();
         }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            new About().ShowDialog();
+        }
     }
 }

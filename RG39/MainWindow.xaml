@@ -28,7 +28,7 @@
             <MenuItem Header="{x:Static l:Strings.HELP}">
                 <MenuItem Header="{x:Static l:Strings.VIEW_HELP}" IsEnabled="False" />
                 <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}" IsEnabled="False" />
-                <MenuItem Header="{x:Static l:Strings.ABOUT}" IsEnabled="False" />
+                <MenuItem Click="About_Click" Header="{x:Static l:Strings.ABOUT}" />
             </MenuItem>
         </Menu>
 
@@ -52,7 +52,7 @@
                 <DataGridTemplateColumn Width="32">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image x:Name="appIcon" Source="{Binding AppIcon}" d:Source="./Resources/Icons/Icon.ico" />
+                            <Image x:Name="appIcon" Source="{Binding AppIcon}" d:Source="./Resources/Icons/icon.ico" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

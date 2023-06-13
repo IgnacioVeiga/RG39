@@ -4,6 +4,11 @@
     <_LastSelectedProfileId>C:\Users\ignac\Documents\repos\RG39\RG39\Properties\PublishProfiles\FolderProfile1.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="About.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Update="Language\Strings.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -12,6 +17,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="About.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\Styles\PlayGameButton.xaml">
       <SubType>Designer</SubType>
     </Page>

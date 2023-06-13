@@ -13,9 +13,9 @@
 It allows you to make a list of the video games you have installed and run one at random.
 
 ## Screenshots:
-![Screenshot_0000](/RG39/Assets/Images/Screenshot_0000.png "Games")
-![Screenshot_0001](/RG39/Assets/Images/Screenshot_0001.png "Settings")
-![Screenshot_0002](/RG39/Assets/Images/Screenshot_0002.png "Collapsed")
+![Screenshot_0000](/RG39/Resources/Images/Screenshot_0000.png "Games")
+![Screenshot_0001](/RG39/Resources/Images/Screenshot_0001.png "Settings")
+![Screenshot_0002](/RG39/Resources/Images/Screenshot_0002.png "Collapsed")
 
 ***
 
