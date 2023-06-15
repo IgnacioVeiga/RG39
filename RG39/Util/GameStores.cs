@@ -60,7 +60,7 @@ namespace RG39.Util
                     // Skip "Steamworks Common Redistributables"
                     if (game.AppId == 228980) continue;
 
-                    // ToDo: Try to filter any soundtrack
+                    // Try to filter any soundtrack
                     if (game.Name.Contains("Soundtrack")) continue;
                     if (game.Name.EndsWith(" OST")) continue;
                     if (game.Name.EndsWith("-OST")) continue;

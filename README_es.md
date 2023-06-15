@@ -55,14 +55,17 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - Microsoft.WindowsDesktop.App.WPF **(6.0.x)**
 
 ### Paquetes
-- GameFinder.StoreHandlers.Steam **(2.2.1)**
+- Microsoft.EntityFrameworkCore.Design **(7.0.7)**
+- Microsoft.EntityFrameworkCore.Sqlite **(7.0.7)**
+- GameFinder.StoreHandlers.Steam **(2.5.0)**
+- GameFinder.StoreHandlers.EGS **(2.5.0)**
 - WinCopies.WindowsAPICodePack.Shell **(2.12.0.2)**
 
 ***
 
 ## Idiomas
 Para añadir/modificar idiomas recomiendo ampliamente la **extensión** para **Visual Studio 2022** llamada `ResX Manager`. Hace mucho más facil manejar varios idiomas.
-Los arhivos `.resx` de idioma se guardan en la carpeta `.\RG39\Lang\`.
+Los arhivos `.resx` de idioma se guardan en la carpeta `.\RG39\Language\`.
 
 ***
 

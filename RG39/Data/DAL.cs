@@ -11,20 +11,20 @@ namespace RG39.Data
     /// </summary>
     internal static class DAL
     {
-        internal static void ClearList()
+        internal static void ClearList_Legacy()
         {
             if (File.Exists($".{Path.DirectorySeparatorChar}list.json"))
                 File.Delete($".{Path.DirectorySeparatorChar}list.json");
         }
 
-        internal static void SaveList(List<Game> games)
+        internal static void SaveList_Legacy(List<Game> games)
         {
             JsonSerializerOptions options = new() { WriteIndented = true };
             string json = JsonSerializer.Serialize(games, options);
             File.WriteAllText($".{Path.DirectorySeparatorChar}list.json", json);
         }
 
-        internal static List<Game> ReadList()
+        internal static List<Game> ReadList_Legacy()
         {
             List<Game> games = new();
 

@@ -51,18 +51,21 @@ It allows you to make a list of the video games you have installed and run one a
 
 ## Dependencies:
 ### Frameworks
-- Microsoft.NETCore.App **v6.0.10**
-- Microsoft.WindowsDesktop.App.WPF **v6.0.10**
+- Microsoft.NETCore.App **(6.0.x)**.
+- Microsoft.WindowsDesktop.App.WPF **(6.0.x)**
 
 ### Paquetes
-- GameFinder.StoreHandlers.Steam **(2.2.1)**
+- Microsoft.EntityFrameworkCore.Design **(7.0.7)**
+- Microsoft.EntityFrameworkCore.Sqlite **(7.0.7)**
+- GameFinder.StoreHandlers.Steam **(2.5.0)**
+- GameFinder.StoreHandlers.EGS **(2.5.0)**
 - WinCopies.WindowsAPICodePack.Shell **(2.12.0.2)**
 
 ***
 
 ## Languajes
 For adding/modifying languages I highly recommend the **extension** for **Visual Studio 2022** called `ResX Manager`. It makes it much easier to manage multiple languages.
-The language `.resx` files are saved in the `.\RG39\Lang\` folder.
+The language `.resx` files are saved in the `.\RG39\Language\` folder.
 
 ***
 

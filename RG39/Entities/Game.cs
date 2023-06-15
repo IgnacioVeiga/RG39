@@ -68,7 +68,7 @@ namespace RG39.Entities
         {
             GameStores.FromLibrary.Other => Icon.ExtractAssociatedIcon(FilePath).ToImageSource(),
 
-            // ToDo: Try to get the original game icons even if they are from one of these libraries
+            // TODO: Try to get the original game icons even if they are from one of these libraries
             GameStores.FromLibrary.Steam => Resources.Steam.ToImageSource(),
             GameStores.FromLibrary.EpicGames => Resources.EpicGames.ToImageSource(),
             _ => null,

@@ -23,7 +23,7 @@ namespace RG39
         {
             InitializeComponent();
 
-            gamesList.Items.AddRange(DAL.ReadList());
+            gamesList.Items.AddRange(DAL.ReadList_Legacy());
 
             #region Languages
             foreach (var language in AppLanguage.Languages)
@@ -82,7 +82,7 @@ namespace RG39
             catch (Exception ex)
             {
                 // For these cases it is necessary to show a friendlier message to the end user.
-                // ToDo: Hide the original message and make it visible with a "See more" button or similar.
+                // TODO: Hide the original message and make it visible with a "See more" button or similar.
                 MessageBox.Show(ex.Message);
             }
         }
@@ -101,7 +101,7 @@ namespace RG39
             Game game = new(GameStores.FromLibrary.Other, string.Empty, gamePath);
             gamesList.Items.Add(game);
 
-            DAL.SaveList(gamesList.Items.As<Game>()
+            DAL.SaveList_Legacy(gamesList.Items.As<Game>()
                                                 .Where(i => i.From == GameStores.FromLibrary.Other)
                                                 .ToList());
 
@@ -114,7 +114,7 @@ namespace RG39
             MessageBoxResult msgResult = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST, MessageBoxButton.YesNo);
             if (msgResult == MessageBoxResult.Yes)
             {
-                DAL.ClearList();
+                DAL.ClearList_Legacy();
                 gamesList.Items.Clear();
                 start_BTN.IsEnabled = false;
                 GamesCount.Content = $"{gamesList.Items.Count} {Strings.GAMES}";
@@ -123,7 +123,7 @@ namespace RG39
 
         private void RemoveGame_Click(object sender, RoutedEventArgs e)
         {
-            // ToDo: Change everything below to something better
+            // TODO: Change everything below to something better
             string gamePath = ((Game)((Button)sender).DataContext).FilePath;
             if (gamePath is null) return;
 
@@ -138,7 +138,7 @@ namespace RG39
                 {
                     List<Game> list = gamesList.Items.As<Game>().ToList();
                     list.RemoveAt(gameIndex);
-                    DAL.SaveList(list.Where(i => i.From == GameStores.FromLibrary.Other).ToList());
+                    DAL.SaveList_Legacy(list.Where(i => i.From == GameStores.FromLibrary.Other).ToList());
                 }
                 else return;
             }
