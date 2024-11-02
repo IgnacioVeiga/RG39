@@ -12,4 +12,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="GameFinder" Version="4.3.3" />
+  </ItemGroup>
+
 </Project>
