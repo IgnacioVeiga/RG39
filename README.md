@@ -1,4 +1,4 @@
-# RG39 (Beta)
+# RandomGameLauncher
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.zip)
 ![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=3BBF3B&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=3BBF3B&label=Latest%20release&style=flat-square)
@@ -44,22 +44,22 @@ It allows you to make a list of the video games you have installed and run one a
 
 ## Required:
 - Windows 7 or higher (Recommended Windows 10/11) x64.
-- .NET SDK 6 (LTS) to compile and run.
-- .NET Desktop Runtime 6 to run.
+- .NET SDK 8 (LTS) to compile and run.
+- .NET Desktop Runtime 8 (LTS) to run.
 
 ***
 
 ## Dependencies:
 ### Frameworks
-- Microsoft.NETCore.App **(6.0.x)**.
-- Microsoft.WindowsDesktop.App.WPF **(6.0.x)**
+- Microsoft.NETCore.App
+- Microsoft.WindowsDesktop.App.WPF
 
 ### Paquetes
-- Microsoft.EntityFrameworkCore.Design **(7.0.7)**
-- Microsoft.EntityFrameworkCore.Sqlite **(7.0.7)**
-- GameFinder.StoreHandlers.Steam **(2.5.0)**
-- GameFinder.StoreHandlers.EGS **(2.5.0)**
-- WinCopies.WindowsAPICodePack.Shell **(2.12.0.2)**
+- Microsoft.EntityFrameworkCore.Design
+- Microsoft.EntityFrameworkCore.Sqlite
+- GameFinder.StoreHandlers.Steam
+- GameFinder.StoreHandlers.EGS
+- WinCopies.WindowsAPICodePack.Shell
 
 ***
 
