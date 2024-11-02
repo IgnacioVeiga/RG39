@@ -12,7 +12,7 @@ namespace RandomGameLauncher.Models
         /// <param name="from">From library ...</param>
         /// <param name="gameId">String ID used by the library. For manually added games it can be empty.</param>
         /// <param name="path">A full path such as 'C:\Mydir\GameTitle.exe'. This will be a fake path in case the game is coming from Steam or Epic Games.</param>
-        public Game(FromLibrary from, string gameId, string path)
+        public Game(LibraryEnum from, string gameId, string path)
         {
             if (!string.IsNullOrEmpty(path))
             {
@@ -32,7 +32,7 @@ namespace RandomGameLauncher.Models
         public string GameId { get; set; }
 
         [JsonPropertyName("From")]
-        public FromLibrary From { get; set; }
+        public LibraryEnum From { get; set; }
 
         [JsonIgnore]
         public string Folder { get; set; }

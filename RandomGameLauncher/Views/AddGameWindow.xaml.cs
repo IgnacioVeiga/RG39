@@ -14,7 +14,7 @@ namespace RandomGameLauncher.Views
         {
             InitializeComponent();
             DataContext = this;
-            Libraries = Enum.GetValues(typeof(FromLibrary));
+            Libraries = Enum.GetValues(typeof(LibraryEnum));
             NewGame = new Game();
         }
 

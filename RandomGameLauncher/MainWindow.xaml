@@ -4,20 +4,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RandomGameLauncher"
+        xmlns:properties="clr-namespace:RandomGameLauncher.Properties"
+        xmlns:l="clr-namespace:RandomGameLauncher.Resources.Language"
         mc:Ignorable="d"
         Title="Random Game Launcher" Height="450" Width="800">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Games">
-                <MenuItem Header="Add Game" Command="{Binding AddGameCommand}" />
+            <MenuItem Header="{x:Static l:Strings.GAMES}">
+                <MenuItem Header="{x:Static l:Strings.ADD_GAME}" Command="{Binding AddGameCommand}" />
+                <MenuItem Header="{x:Static l:Strings.CLEAR_LIST}" Command="{Binding DeleteGameCommand}" />
             </MenuItem>
 
-            <MenuItem Header="Settings" />
-            <MenuItem Header="Help" />
+            <MenuItem Header="{x:Static l:Strings.SETTINGS}">
+                <MenuItem Header="{x:Static l:Strings.LANGUAGE}" />
+            </MenuItem>
+            
+            <MenuItem Header="{x:Static l:Strings.HELP}">
+                <MenuItem Header="{x:Static l:Strings.VIEW_HELP}"/>
+                <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}"/>
+                <MenuItem Header="{x:Static l:Strings.ABOUT}" />
+            </MenuItem>
         </Menu>
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Content="Play Random Game" Width="200" Height="50" Command="{Binding PlayRandomGameCommand}" />
+            <Button Content="{x:Static l:Strings.PLAY_GAME}" Width="200" Height="50" Command="{Binding PlayRandomGameCommand}" />
 
             <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="False" Height="200" Width="500" Margin="10">
                 <DataGrid.Columns>

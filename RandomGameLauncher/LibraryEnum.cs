@@ -1,6 +1,6 @@
 ﻿namespace RandomGameLauncher
 {
-    public enum FromLibrary
+    public enum LibraryEnum
     {
         Other = 0,
         Steam = 1,
