@@ -54,7 +54,7 @@ It allows you to make a list of the video games you have installed and run one a
 - Microsoft.NETCore.App
 - Microsoft.WindowsDesktop.App.WPF
 
-### Paquetes
+### Packages
 - Microsoft.EntityFrameworkCore.Design
 - Microsoft.EntityFrameworkCore.Sqlite
 - GameFinder.StoreHandlers.Steam
