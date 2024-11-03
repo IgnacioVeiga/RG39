@@ -79,6 +79,15 @@ namespace RandomGameLauncher.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CANCEL {
+            get {
+                return ResourceManager.GetString("CANCEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load this game:.
         /// </summary>
         public static string CANNOT_LOAD_GAME_MSG {

@@ -4,21 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RandomGameLauncher"
-        mc:Ignorable="d"
-        Title="Add New Game" Height="250" Width="400">
+        xmlns:l="clr-namespace:RandomGameLauncher.Resources.Language"
+        
+        mc:Ignorable="d"        
+        Background="{DynamicResource SteamBackground}"
+        Foreground="{DynamicResource SteamForeground}"
+        ResizeMode="NoResize" Title="Add New Game" Height="150" Width="500">
     <StackPanel Margin="10">
-        <TextBlock Text="Game Name:" />
-        <TextBox Text="{Binding NewGame.Name}" />
-
         <TextBlock Text="Path to Executable:" />
         <TextBox Text="{Binding NewGame.FilePath}" />
-
-        <TextBlock Text="Library:" />
-        <ComboBox ItemsSource="{Binding Libraries}" SelectedItem="{Binding NewGame.From}" />
         
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Cancel" Click="Cancel_Click" Margin="0,0,10,0"/>
-            <Button Content="Add" Click="Add_Click" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="{x:Static l:Strings.CANCEL}" Click="Cancel_Click" Margin="60,0,30,0"
+                Style="{DynamicResource RemoveButton}" />
+
+            <Button Content="{x:Static l:Strings.ADD_GAME}" Click="Add_Click" Margin="30,0,60,0"
+                Style="{DynamicResource PlayGameButton}" />
         </StackPanel>
     </StackPanel>
 </Window>

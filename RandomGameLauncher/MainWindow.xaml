@@ -7,48 +7,112 @@
         xmlns:properties="clr-namespace:RandomGameLauncher.Properties"
         xmlns:l="clr-namespace:RandomGameLauncher.Resources.Language"
         mc:Ignorable="d"
-        Title="Random Game Launcher" Height="450" Width="800">
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        Background="{DynamicResource SteamBackground}"
+        Title="Random Game Launcher" Width="600" Height="500"
+        ResizeMode="CanResizeWithGrip" SizeToContent="Width" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
             <MenuItem Header="{x:Static l:Strings.GAMES}">
                 <MenuItem Header="{x:Static l:Strings.ADD_GAME}" Command="{Binding AddGameCommand}" />
-                <MenuItem Header="{x:Static l:Strings.CLEAR_LIST}" Command="{Binding DeleteGameCommand}" />
+                <MenuItem Header="{x:Static l:Strings.CLEAR_LIST}" Command="{Binding ClearListCommand}" />
             </MenuItem>
 
             <MenuItem Header="{x:Static l:Strings.SETTINGS}">
                 <MenuItem Header="{x:Static l:Strings.LANGUAGE}" />
             </MenuItem>
-            
+
             <MenuItem Header="{x:Static l:Strings.HELP}">
-                <MenuItem Header="{x:Static l:Strings.VIEW_HELP}"/>
+                <MenuItem Header="{x:Static l:Strings.VIEW_HELP}" Command="{Binding HelpCommand}"/>
                 <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}"/>
-                <MenuItem Header="{x:Static l:Strings.ABOUT}" />
+                <MenuItem Header="{x:Static l:Strings.ABOUT}" Command="{Binding AboutCommand}"/>
             </MenuItem>
         </Menu>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Content="{x:Static l:Strings.PLAY_GAME}" Width="200" Height="50" Command="{Binding PlayRandomGameCommand}" />
+        <Button Grid.Row="1" Content="{x:Static l:Strings.PLAY_GAME}"
+                HorizontalAlignment="Stretch" VerticalAlignment="Top" 
+                    FontSize="32" FontWeight="Bold" Margin="10"
+                    Command="{Binding PlayRandomGameCommand}"
+                    Style="{DynamicResource PlayGameButton}" />
 
-            <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="False" Height="200" Width="500" Margin="10">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Path" Binding="{Binding FilePath}" />
-                    <DataGridTextColumn Header="Library" Binding="{Binding From}" />
+        <DataGrid Grid.Row="2" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding Games}" CanUserAddRows="False"
+                  HorizontalAlignment="Center" d:ItemsSource="{d:SampleData ItemCount=30}" Cursor="Arrow" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="32" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox Cursor="Hand" IsChecked="{Binding Active}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Actions">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="Run" Command="{Binding DataContext.RunGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                CommandParameter="{Binding}" />
-                                    <Button Content="Delete" Command="{Binding DataContext.DeleteGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                CommandParameter="{Binding}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
-    </DockPanel>
+                <DataGridTemplateColumn Width="32">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding AppIcon}" d:Source="./Resources/Icons/icon.ico" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Width="120" Binding="{Binding Name}"
+                                    IsReadOnly="True" Header="{x:Static l:Strings.NAME}" />
+
+                <DataGridTextColumn Width="70" Binding="{Binding From}"
+                                    IsReadOnly="True" Header="{x:Static l:Strings.FROM}" />
+
+                <DataGridTextColumn Width="50" Binding="{Binding Type}"
+                                    IsReadOnly="True" Header="{x:Static l:Strings.TYPE}" />
+
+                <DataGridTextColumn Width="100" Binding="{Binding Folder}"
+                                    IsReadOnly="True" Header="{x:Static l:Strings.FOLDER}" />
+
+
+                <DataGridTemplateColumn Width="60" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Width="16" Height="16" Content="▶" FontSize="8" Margin="0,0,10,0"
+                                            Command="{Binding DataContext.RunGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}" Style="{DynamicResource PlayGameButton}" />
+
+                                <Button Width="16" Height="16" Content="X" FontSize="8"
+                                            Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}" Style="{DynamicResource RemoveButton}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StatusBar Grid.Row="3">
+            <StatusBarItem Padding="5,0">
+                <Image x:Name="SteamIcon" Width="32" Source="{Binding SteamIcon}" d:Source="./Resources/Icons/Steam.ico">
+                    <Image.ToolTip>
+                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=SteamIcon}"
+                                 IsOpen="{Binding IsMouseOver, ElementName=SteamIcon, Mode=OneWay}">
+                            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=SteamPath}" />
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+            </StatusBarItem>
+            <StatusBarItem Padding="5,0">
+                <Image x:Name="EpicGamesIcon" Width="32" Source="{Binding EpicGamesIcon}" d:Source="./Resources/Icons/EpicGames.ico">
+                    <Image.ToolTip>
+                        <ToolTip Placement="Mouse" PlacementTarget="{Binding ElementName=EpicGamesIcon}"
+                                 IsOpen="{Binding IsMouseOver, ElementName=EpicGamesIcon, Mode=OneWay}">
+                            <TextBlock Text="{Binding Source={x:Static properties:Settings.Default}, Path=EpicGamesPath}" />
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+            </StatusBarItem>
+            <StatusBarItem Padding="5,0" d:Content="30 games" HorizontalAlignment="Right" Content="{Binding GamesCount}"/>
+        </StatusBar>
+    </Grid>
 </Window>

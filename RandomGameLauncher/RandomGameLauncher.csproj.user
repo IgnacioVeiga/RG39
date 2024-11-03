@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\AboutWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\AddGameWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Styles\StatusBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AddGameWindow.xaml">

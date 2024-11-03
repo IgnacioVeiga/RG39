@@ -189,4 +189,7 @@
   <data name="RESTARTING" xml:space="preserve">
     <value>Restarting</value>
   </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

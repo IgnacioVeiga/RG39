@@ -1,4 +1,9 @@
-﻿using Microsoft.Win32;
+﻿using GameFinder.Common;
+using GameFinder.RegistryUtils;
+using GameFinder.StoreHandlers.EGS;
+using GameFinder.StoreHandlers.Steam;
+using Microsoft.Win32;
+using NexusMods.Paths;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Properties;
 using System.IO;
@@ -38,40 +43,51 @@ namespace RandomGameLauncher.Services
 
         public static List<Game> GetGamesFromLib(LibraryEnum from)
         {
-            List<Game> mygames = new();
+            List<Game> mygames = [];
 
             if (LibraryEnum.Steam == from)
             {
-                var steamHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
-                foreach ((var game, _) in steamHandler.FindAllGames())
+                SteamHandler steam_handler = new(FileSystem.Shared, WindowsRegistry.Shared);
+                var steam_games = steam_handler.FindAllGamesById(out ErrorMessage[]? errors);
+
+                foreach (var error in errors)
                 {
-                    if (game is null || game.AppId == 0) continue;
+                    // TODO: log and show errors
+                }
+                foreach (var steam_game in steam_games)
+                {
+                    // If app id is 0
+                    if (steam_game.Key == 0) continue;
 
-            //        // Skip "Steamworks Common Redistributables"
-            //        if (game.AppId == 228980) continue;
+                    // Skip "Steamworks Common Redistributables"
+                    if (steam_game.Key == 228980) continue;
 
-            //        // Try to filter any soundtrack
-            //        if (game.Name.Contains("Soundtrack")) continue;
-            //        if (game.Name.EndsWith(" OST")) continue;
-            //        if (game.Name.EndsWith("-OST")) continue;
+                    // Try to filter any soundtrack
+                    if (steam_game.Value.Name.Contains("Soundtrack")) continue;
+                    if (steam_game.Value.Name.EndsWith(" OST")) continue;
+                    if (steam_game.Value.Name.EndsWith("-OST")) continue;
 
-            //        // This is a fake filepath
-            //        string path = $"{game.Path}{Path.DirectorySeparatorChar}{game.Name}.url";
-            //        mygames.Add(new Game(from, game.AppId.ToString(), path));
-            //    }
-            //}
-            //else if (LibraryEnum.EpicGames == from)
-            //{
-            //    EGSHandler handler = new();
-            //    foreach ((EGSGame game, _) in handler.FindAllGames())
-            //    {
-            //        if (game is null) continue;
+                    // This is a fake filepath
+                    string path = $"{steam_game.Value.Path}{Path.DirectorySeparatorChar}{steam_game.Value.Name}.url";
+                    mygames.Add(new Game(from, steam_game.Key.ToString(), path));
+                }
+            }
+            else if (LibraryEnum.EpicGames == from)
+            {
+                EGSHandler epicgames_handler = new(WindowsRegistry.Shared, FileSystem.Shared);
+                var egs_games = epicgames_handler.FindAllGamesById(out ErrorMessage[]? errors);
 
-            //        // This is a fake filepath
-            //        string path = $"{game.InstallLocation}{Path.DirectorySeparatorChar}{game.DisplayName}.url";
-            //        mygames.Add(new Game(from, game.CatalogItemId, path));
-            //    }
-            //}
+                foreach (var error in errors)
+                {
+                    // TODO: log and show errors
+                }
+                foreach (var egs_game in egs_games)
+                {
+                    // This is a fake filepath
+                    string path = $"{egs_game.Value.InstallLocation}{Path.DirectorySeparatorChar}{egs_game.Value.DisplayName}.url";
+                    mygames.Add(new Game(from, egs_game.Value.CatalogItemId.ToString(), path));
+                }
+            }
             return mygames;
         }
 

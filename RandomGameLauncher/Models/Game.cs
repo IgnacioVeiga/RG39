@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json.Serialization;
-using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace RandomGameLauncher.Models
 {
@@ -60,15 +60,36 @@ namespace RandomGameLauncher.Models
             }
         }
 
-    //    [JsonIgnore]
-    //    public ImageSource AppIcon => From switch
-    //    {
-    //        GameStores.FromLibrary.Other => Icon.ExtractAssociatedIcon(FilePath).ToImageSource(),
+        // filepath is the key
+        private static readonly Dictionary<string, BitmapImage> IconCache = [];
 
-    //        // TODO: Try to get the original game icons even if they are from one of these libraries
-    //        GameStores.FromLibrary.Steam => Resources.Steam.ToImageSource(),
-    //        GameStores.FromLibrary.EpicGames => Resources.EpicGames.ToImageSource(),
-    //        _ => null,
-    //    };
+        [JsonIgnore]
+        public BitmapImage? AppIcon => From switch
+        {
+            LibraryEnum.Other => GetIconWithCache(FilePath),
+
+            // TODO: Try to get the original game icons even if they are from one of these libraries
+            LibraryEnum.Steam => Utils.ByteArrayToImage(Properties.Resources.Steam),
+            LibraryEnum.EpicGames => Utils.ByteArrayToImage(Properties.Resources.EpicGames),
+            _ => null,
+        };
+
+        private BitmapImage? GetIconWithCache(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return null;
+
+            if (IconCache.ContainsKey(filePath))
+            {
+                return IconCache[filePath];
+            }
+
+            var icon = Utils.ExtractIconFromExe(filePath);
+            if (icon != null)
+            {
+                IconCache[filePath] = icon;
+            }
+            return icon;
+        }
     }
 }

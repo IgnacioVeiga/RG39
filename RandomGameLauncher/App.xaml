@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:RandomGameLauncher"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!--<ResourceDictionary>
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="SteamBackground" Color="#24282F" />
@@ -19,6 +19,6 @@
                 <ResourceDictionary Source="./Resources/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="./Resources/Styles/StatusBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
