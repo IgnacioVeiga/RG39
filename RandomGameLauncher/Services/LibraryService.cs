@@ -40,12 +40,12 @@ namespace RandomGameLauncher.Services
         {
             List<Game> mygames = new();
 
-            //if (LibraryEnum.Steam == from)
-            //{
-            //    SteamHandler steamHandler = new(new WindowsRegistry());
-            //    foreach ((SteamGame game, _) in steamHandler.FindAllGames())
-            //    {
-            //        if (game is null || game.AppId == 0) continue;
+            if (LibraryEnum.Steam == from)
+            {
+                var steamHandler = new SteamHandler(FileSystem.Shared, WindowsRegistry.Shared);
+                foreach ((var game, _) in steamHandler.FindAllGames())
+                {
+                    if (game is null || game.AppId == 0) continue;
 
             //        // Skip "Steamworks Common Redistributables"
             //        if (game.AppId == 228980) continue;
