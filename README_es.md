@@ -5,7 +5,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=3BBF3B&logo=github&style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
 
-<img src="/RG39/Resources/Icons/icon.ico" width="128" height="128">
+<img src="/RandomGameLauncher/Resources/Icons/icon.ico" width="128" height="128">
 <div>
   <a href="README.md">English</a> / <span>Español</span></a>
 </div></br>
@@ -13,7 +13,7 @@
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
 ## Capturas de pantalla:
-![Screenshot](/RG39/Resources/Images/Screenshot_es.png "Ventana principal")
+// Add here ///
 
 ***
 
