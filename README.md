@@ -1,11 +1,11 @@
-# RG39 (Beta)
+# RandomGameLauncher
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.zip)
 ![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=3BBF3B&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=3BBF3B&label=Latest%20release&style=flat-square)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=3BBF3B&logo=github&style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
 
-<img src="/RG39/Resources/Icons/icon.ico" width="128" height="128">
+<img src="/RandomGameLauncher/Resources/Icons/icon.ico" width="128" height="128">
 <div>
   <span>English</span> / <a href="README_es.md">Español</a> </a>
 </div></br>
@@ -13,7 +13,7 @@
 It allows you to make a list of the video games you have installed and run one at random.
 
 ## Screenshots:
-![Screenshot](/RG39/Resources/Images/Screenshot.png "Main window")
+// Add here ///
 
 ***
 
@@ -39,33 +39,30 @@ It allows you to make a list of the video games you have installed and run one a
 ***
 
 ## How to use:
-
+When the program starts it will automatically try to make a list of installed Steam (and soon Epic Games) games, if it doesn't find anything it continues loading a list called `list.json` if it exists. After that it displays the list with the found games, to add manually you have to go to `Games` > `Add games` and load the executable.
 ***
 
 ## Required:
 - Windows 7 or higher (Recommended Windows 10/11) x64.
-- .NET SDK 6 (LTS) to compile and run.
-- .NET Desktop Runtime 6 to run.
+- .NET SDK 8 (LTS) to compile and run.
+- .NET Desktop Runtime 8 (LTS) to run.
 
 ***
 
 ## Dependencies:
 ### Frameworks
-- Microsoft.NETCore.App **(6.0.x)**.
-- Microsoft.WindowsDesktop.App.WPF **(6.0.x)**
+- Microsoft.NETCore.App
+- Microsoft.WindowsDesktop.App.WPF
 
-### Paquetes
-- Microsoft.EntityFrameworkCore.Design **(7.0.7)**
-- Microsoft.EntityFrameworkCore.Sqlite **(7.0.7)**
-- GameFinder.StoreHandlers.Steam **(2.5.0)**
-- GameFinder.StoreHandlers.EGS **(2.5.0)**
-- WinCopies.WindowsAPICodePack.Shell **(2.12.0.2)**
+### Packages
+- System.Drawing.Common
+- GameFinder
 
 ***
 
 ## Languajes
-For adding/modifying languages I highly recommend the **extension** for **Visual Studio 2022** called `ResX Manager`. It makes it much easier to manage multiple languages.
-The language `.resx` files are saved in the `.\RG39\Language\` folder.
+For adding/modifying languages I recommend the **extension** for **Visual Studio 2022** called `ResX Manager`.
+The language `.resx` files are saved in the `.\RandomGameLauncher\Resources\Language\` folder.
 
 ***
 
@@ -75,8 +72,4 @@ Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` c
 ***
 
 ## How contribute:
-
-***
-
-## License:
-
+Fork the repository and create a pull request with your changes.
