@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using NexusMods.Paths;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Properties;
+using RandomGameLauncher.Resources.Language;
 using System.IO;
 using System.Text.Json;
 
@@ -90,6 +91,29 @@ namespace RandomGameLauncher.Services
             }
             return mygames;
         }
+
+        public static string? SelectExecutableFile()
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = Strings.SEL_EXE_TITLE,
+                Filter = "(*.exe)|*.exe",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
+
+            bool? result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                return openFileDialog.FileName;
+            }
+
+            return null;
+        }
+
 
         public static void ClearList()
         {

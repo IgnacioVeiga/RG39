@@ -1,4 +1,5 @@
 ﻿using RandomGameLauncher.Models;
+using RandomGameLauncher.ViewModels;
 using System.Windows;
 
 namespace RandomGameLauncher.Views
@@ -8,17 +9,13 @@ namespace RandomGameLauncher.Views
     /// </summary>
     public partial class AddGameWindow : Window
     {
-        public Game NewGame { get; private set; }
-
         public AddGameWindow()
         {
             InitializeComponent();
-            DataContext = this;
-            Libraries = Enum.GetValues(typeof(LibraryEnum));
-            NewGame = new Game(LibraryEnum.Other, "", "");
+            DataContext = new AddGameViewModel();
         }
 
-        public Array Libraries { get; }
+        public Game NewGame => ((AddGameViewModel)DataContext).NewGame;
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {

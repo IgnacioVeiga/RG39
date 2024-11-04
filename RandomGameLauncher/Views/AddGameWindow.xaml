@@ -9,17 +9,31 @@
         mc:Ignorable="d"        
         Background="{DynamicResource SteamBackground}"
         Foreground="{DynamicResource SteamForeground}"
-        ResizeMode="NoResize" Title="Add New Game" Height="150" Width="500">
-    <StackPanel Margin="10">
-        <TextBlock Text="Path to Executable:" />
-        <TextBox Text="{Binding NewGame.FilePath}" />
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+        ResizeMode="NoResize" Title="Add New Game" Height="150" Width="600">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="520" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Path to Executable:" />
+
+        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding NewGame.FilePath}"/>
+
+        <Button Grid.Row="1" Grid.Column="1" Content="Select" Command="{Binding OpenDialogCommand}"
+                Style="{DynamicResource PlayGameButton}" />
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20">
             <Button Content="{x:Static l:Strings.CANCEL}" Click="Cancel_Click" Margin="60,0,30,0"
                 Style="{DynamicResource RemoveButton}" />
 
-            <Button Content="{x:Static l:Strings.ADD_GAME}" Click="Add_Click" Margin="30,0,60,0"
+        <Button Content="{x:Static l:Strings.ADD_GAME}" Click="Add_Click" Margin="30,0,60,0"
                 Style="{DynamicResource PlayGameButton}" />
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Window>

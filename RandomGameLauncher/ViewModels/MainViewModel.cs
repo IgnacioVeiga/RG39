@@ -87,13 +87,16 @@ namespace RandomGameLauncher.ViewModels
         private void AddGame()
         {
             AddGameWindow addGameWindow = new();
-            if (addGameWindow.ShowDialog() == true)
-            {
-                Game new_game = addGameWindow.NewGame;
-                Games.Add(new_game);
-                LibraryService.SaveList(Games.ToList());
-            }
+            bool? dialog_result = addGameWindow.ShowDialog();
+            if (dialog_result != true) return;
+
+            Game new_game = addGameWindow.NewGame;
+            if (new_game == null) return;
+
+            Games.Add(new_game);
+            LibraryService.SaveList(Games.ToList());
         }
+
         private void RunGame(Game game)
         {
             if (game == null) return;
