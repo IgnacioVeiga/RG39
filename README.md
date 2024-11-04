@@ -39,7 +39,7 @@ It allows you to make a list of the video games you have installed and run one a
 ***
 
 ## How to use:
-
+When the program starts it will automatically try to make a list of installed Steam (and soon Epic Games) games, if it doesn't find anything it continues loading a list called `list.json` if it exists. After that it displays the list with the found games, to add manually you have to go to `Games` > `Add games` and load the executable.
 ***
 
 ## Required:
@@ -55,17 +55,14 @@ It allows you to make a list of the video games you have installed and run one a
 - Microsoft.WindowsDesktop.App.WPF
 
 ### Packages
-- Microsoft.EntityFrameworkCore.Design
-- Microsoft.EntityFrameworkCore.Sqlite
-- GameFinder.StoreHandlers.Steam
-- GameFinder.StoreHandlers.EGS
-- WinCopies.WindowsAPICodePack.Shell
+- System.Drawing.Common
+- GameFinder
 
 ***
 
 ## Languajes
-For adding/modifying languages I highly recommend the **extension** for **Visual Studio 2022** called `ResX Manager`. It makes it much easier to manage multiple languages.
-The language `.resx` files are saved in the `.\RG39\Language\` folder.
+For adding/modifying languages I recommend the **extension** for **Visual Studio 2022** called `ResX Manager`.
+The language `.resx` files are saved in the `.\RandomGameLauncher\Resources\Language\` folder.
 
 ***
 
@@ -75,8 +72,4 @@ Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` c
 ***
 
 ## How contribute:
-
-***
-
-## License:
-
+Fork the repository and create a pull request with your changes.

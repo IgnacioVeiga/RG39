@@ -39,7 +39,7 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 ***
 
 ## Como usar:
-
+Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam (y próximamente Epic Games) instalados, si no encuentra nada continúa cargando una lista llamada `list.json` si es que este existe. Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
 ***
 
 ## Requerido:
@@ -55,17 +55,14 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - Microsoft.WindowsDesktop.App.WPF
 
 ### Paquetes
-- Microsoft.EntityFrameworkCore.Design
-- Microsoft.EntityFrameworkCore.Sqlite
-- GameFinder.StoreHandlers.Steam
-- GameFinder.StoreHandlers.EGS
-- WinCopies.WindowsAPICodePack.Shell
+- System.Drawing.Common
+- GameFinder
 
 ***
 
 ## Idiomas
-Para añadir/modificar idiomas recomiendo ampliamente la **extensión** para **Visual Studio 2022** llamada `ResX Manager`. Hace mucho más facil manejar varios idiomas.
-Los arhivos `.resx` de idioma se guardan en la carpeta `.\RG39\Language\`.
+Para añadir/modificar idiomas recomiendo la **extensión** para **Visual Studio 2022** llamada `ResX Manager`.
+Los arhivos `.resx` de idioma se guardan en la carpeta `.\RandomGameLauncher\Resources\Language\`.
 
 ***
 
@@ -75,7 +72,4 @@ Compilar a través de **Visual Studio 2022**. La otra forma es ejecutar el coman
 ***
 
 ## Como contribuir:
-
-***
-
-## Licencia:
+Realiza un "Fork" del repositorio y crea una "Pull Request" con tus cambios.
