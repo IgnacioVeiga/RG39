@@ -70,6 +70,15 @@ namespace RandomGameLauncher.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This software is open source under the GPL-3 license. For more information and contributions, visit the repository on GitHub..
+        /// </summary>
+        public static string ABOUT_DESCRIPTION {
+            get {
+                return ResourceManager.GetString("ABOUT_DESCRIPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add game.
         /// </summary>
         public static string ADD_GAME {

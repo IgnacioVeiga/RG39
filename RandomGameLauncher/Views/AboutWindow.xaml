@@ -27,15 +27,12 @@
                Width="128" Height="128" Margin="10,0"
                d:Source="../Resources/Icons/icon.ico" />
 
-        <TextBlock Grid.Column="1" Margin="0,20,0,0"
-                   HorizontalAlignment="Center" FontSize="32" FontWeight="Bold"
-                   Text="RG39" />
+        <TextBlock Grid.Column="1" Margin="0,20,0,0" VerticalAlignment="Center"
+                   HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"
+                   Text="Random Game Launcher" />
 
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="12" Margin="20,0"
-                   TextAlignment="Center" TextWrapping="Wrap">
-            Este software es de código libre bajo la licencia GPL-3.
-            Para más información y contribuciones, visita el repositorio en GitHub.
-        </TextBlock>
+                   TextAlignment="Center" TextWrapping="Wrap" Text="{x:Static l:Strings.ABOUT_DESCRIPTION}" />
 
         <Button Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,20"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Click="GoToRepo_Click"

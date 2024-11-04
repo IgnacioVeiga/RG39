@@ -192,4 +192,7 @@
   <data name="CANCEL" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="ABOUT_DESCRIPTION" xml:space="preserve">
+    <value>Este software es de código libre bajo la licencia GPL-3. Para más información y contribuciones, visita el repositorio en GitHub.</value>
+  </data>
 </root>
