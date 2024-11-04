@@ -15,7 +15,7 @@ namespace RandomGameLauncher.Services
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
-            Settings.Default.Lang = lang;
+            Settings.Default.Language = lang;
             Settings.Default.Save();
         }
     }

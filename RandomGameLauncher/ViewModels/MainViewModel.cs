@@ -168,7 +168,7 @@ namespace RandomGameLauncher.ViewModels
         private void HowToUse()
         {
             string url = "https://github.com/IgnacioVeiga/RG39/blob/master/README";
-            switch (Settings.Default.Lang)
+            switch (Settings.Default.Language)
             {
                 case "en":
                     url += ".md#how-to-use";

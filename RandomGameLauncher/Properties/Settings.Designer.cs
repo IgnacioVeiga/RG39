@@ -26,12 +26,12 @@ namespace RandomGameLauncher.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("en")]
-        public string Lang {
+        public string Language {
             get {
-                return ((string)(this["Lang"]));
+                return ((string)(this["Language"]));
             }
             set {
-                this["Lang"] = value;
+                this["Language"] = value;
             }
         }
         
