@@ -67,7 +67,7 @@ The language `.resx` files are saved in the `.\RandomGameLauncher\Resources\Lang
 ***
 
 ## Compile:
-Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` command from terminal (cmd/powershell) in the root of the repository and then check inside of the `\RG39\bin\` folder.
+Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` command from terminal (cmd/powershell) in the root of the repository and then check inside of the `\RandomGameLauncher\bin\` folder.
 
 ***
 
