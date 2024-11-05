@@ -18,16 +18,17 @@ namespace RandomGameLauncher.ViewModels
         public BitmapImage EpicGamesIcon => Utils.ByteArrayToImage(Properties.Resources.EpicGames);
         public BitmapImage SteamIcon => Utils.ByteArrayToImage(Properties.Resources.Steam);
 
-        private bool _isButtonEnabled;
-        public bool IsButtonEnabled
+        private bool _isAllActiveChecked;
+        public bool IsAllActiveChecked
         {
-            get => _isButtonEnabled;
-            private set
+            get => _isAllActiveChecked;
+            set
             {
-                if (_isButtonEnabled != value)
+                if (_isAllActiveChecked != value)
                 {
-                    _isButtonEnabled = value;
-                    OnPropertyChanged(nameof(IsButtonEnabled));
+                    _isAllActiveChecked = value;
+                    ToggleActive(value);
+                    OnPropertyChanged(nameof(IsAllActiveChecked));
                 }
             }
         }
@@ -158,6 +159,17 @@ namespace RandomGameLauncher.ViewModels
                 Games.Clear();
                 // TODO: remove only with LibraryEnum = Other
             }
+        }
+
+        private void ToggleActive(bool isChecked)
+        {
+            ObservableCollectionEx<Game> templist = [.. Games];
+            foreach (Game game in templist)
+            {
+                game.Active = isChecked;
+            }
+            Games.Clear();
+            Games.AddRange(templist);
         }
 
         private void About()

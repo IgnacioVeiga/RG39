@@ -43,5 +43,22 @@ namespace RandomGameLauncher
 
             App.RestartApp();
         }
+
+        private void HeaderCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.IsAllActiveChecked = true;
+            }
+        }
+
+        private void HeaderCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.IsAllActiveChecked = false;
+            }
+        }
+
     }
 }

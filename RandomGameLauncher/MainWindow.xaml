@@ -47,9 +47,13 @@
                   d:ItemsSource="{d:SampleData ItemCount=30}" Cursor="Arrow" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="32" IsReadOnly="True">
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox IsChecked="{Binding IsAllActiveChecked, Mode=TwoWay}"
+                                  Checked="HeaderCheckBox_Checked" Unchecked="HeaderCheckBox_Unchecked"/>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox Cursor="Hand" IsChecked="{Binding Active}" />
+                            <CheckBox Cursor="Hand" IsChecked="{Binding Active, Mode=TwoWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
