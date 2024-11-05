@@ -8,7 +8,8 @@
         xmlns:l="clr-namespace:RandomGameLauncher.Resources.Language"
         mc:Ignorable="d"
         Background="{DynamicResource SteamBackground}"
-        Title="Random Game Launcher" Width="600" Height="500"
+        Title="Random Game Launcher" MinWidth="600" MinHeight="500"
+        d:Width="600" d:Height="500"
         ResizeMode="CanResizeWithGrip" SizeToContent="Width" >
     <Grid>
         <Grid.RowDefinitions>
@@ -41,8 +42,9 @@
                     Command="{Binding PlayRandomGameCommand}"
                     Style="{DynamicResource PlayGameButton}" />
 
-        <DataGrid Grid.Row="2" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding Games}" CanUserAddRows="False"
-                  HorizontalAlignment="Center" d:ItemsSource="{d:SampleData ItemCount=30}" Cursor="Arrow" SelectionMode="Single">
+        <DataGrid Grid.Row="2" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding Games}"
+                  CanUserAddRows="False" HorizontalAlignment="Center" EnableRowVirtualization="False"
+                  d:ItemsSource="{d:SampleData ItemCount=30}" Cursor="Arrow" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="32" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
@@ -52,7 +54,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="32">
+                <DataGridTemplateColumn Width="32" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Source="{Binding AppIcon}" d:Source="./Resources/Icons/icon.ico" />
@@ -60,7 +62,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Width="120" Binding="{Binding Name}"
+                <DataGridTextColumn Width="Auto" d:Width="120" Binding="{Binding Name}"
                                     IsReadOnly="True" Header="{x:Static l:Strings.NAME}" />
 
                 <DataGridTextColumn Width="70" Binding="{Binding From}"
@@ -69,7 +71,7 @@
                 <DataGridTextColumn Width="50" Binding="{Binding Type}"
                                     IsReadOnly="True" Header="{x:Static l:Strings.TYPE}" />
 
-                <DataGridTextColumn Width="100" Binding="{Binding Folder}"
+                <DataGridTextColumn Width="Auto" d:Width="100" Binding="{Binding Folder}"
                                     IsReadOnly="True" Header="{x:Static l:Strings.FOLDER}" />
 
 
