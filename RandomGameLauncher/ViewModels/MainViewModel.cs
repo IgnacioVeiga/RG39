@@ -120,7 +120,7 @@ namespace RandomGameLauncher.ViewModels
                         break;
 
                     case LibraryEnum.EpicGames:
-                        //Process.Start($"{Settings.Default.EpicGamesPath} com.epicgames.launcher://apps/{variable}{game.GameId}{variable}?action=launch&silent=true");
+                        Process.Start($"{Settings.Default.EpicGamesPath} com.epicgames.launcher://apps/{game.GameId}?action=launch&silent=true");
                         break;
                 }
 

@@ -2,6 +2,7 @@
 using GameFinder.RegistryUtils;
 using GameFinder.StoreHandlers.EGS;
 using GameFinder.StoreHandlers.Steam;
+using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
 using Microsoft.Win32;
 using NexusMods.Paths;
 using RandomGameLauncher.Models;
@@ -85,8 +86,24 @@ namespace RandomGameLauncher.Services
                 foreach (var egs_game in egs_games)
                 {
                     // This is a fake filepath
+                    // TODO: get CatalogNamespace and AppName, can be found in the manifest file of each game
+
+                    /*
+                     Example of .url shortcut file (Sonic Mania):
+                     'com.epicgames.launcher://apps/
+                        45e7cf3c49054f2fb20b673d9b0ae69e    // CatalogNamespace
+                        %3A                                 // :
+                        f08663635fd84c33bfc62ea3bac000e6    // CatalogItemId
+                        %3A                                 // :
+                        818447bb519b46d48d365d5753362796    // AppName
+                        ?action=launch&silent=true'
+                     */
+                    string CatalogNamespace = "";
+                    string AppName = "";
+                    string game_id = CatalogNamespace + "%3A" + egs_game.Value.CatalogItemId + "%3A" + AppName;
+
                     string path = $"{egs_game.Value.InstallLocation}{Path.DirectorySeparatorChar}{egs_game.Value.DisplayName}.url";
-                    mygames.Add(new Game(from, egs_game.Value.CatalogItemId.ToString(), path));
+                    mygames.Add(new Game(from, game_id, path));
                 }
             }
             return mygames;
