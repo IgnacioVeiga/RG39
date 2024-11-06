@@ -1,4 +1,4 @@
-# RandomGameLauncher
+# Random Game Launcher
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Descargar&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.zip)
 ![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=3BBF3B&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=3BBF3B&label=Latest%20release&style=flat-square)
@@ -12,12 +12,12 @@
 
 Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
 
-## Capturas de pantalla:
+## Capturas de pantalla
 // Add here ///
 
 ***
 
-## Funcionalidades:
+## Funcionalidades
 - Busca y carga la libreria de Steam.
 - Carga ejecutables de forma manual.
 - Elimina individualmente a elementos de la lista.
@@ -31,25 +31,25 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - Permitir ordenar la lista.
 - Idioma español e inglés.
 
-## Para hacer:
+## Por hacer
 - Reconocer la biblioteca de Epic Games Store.
 - Enseñar una portada/caratula.
 - Usar temas personalizados.
 
 ***
 
-## Como usar:
+## Como usar
 Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam (y próximamente Epic Games) instalados, si no encuentra nada continúa cargando una lista llamada `list.json` si es que este existe. Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
 ***
 
-## Requerido:
+## Requerido
 - Windows 7 o superior (Recomendado Windows 10/11) x64.
 - .NET SDK 8 (LTS) para compilar y ejecutar.
 - Entorno de ejecución de escritorio de .NET 8 (LTS) solo si es para ejecutar.
 
 ***
 
-## Dependencias:
+## Dependencias
 ### Frameworks
 - Microsoft.NETCore.App
 - Microsoft.WindowsDesktop.App.WPF
@@ -66,10 +66,10 @@ Los arhivos `.resx` de idioma se guardan en la carpeta `.\RandomGameLauncher\Res
 
 ***
 
-## Compilar:
+## Compilar
 Compilar a través de **Visual Studio 2022**. La otra forma es ejecutar el comando `dotnet build` desde el terminal (cmd/powershell) en la raíz del repositorio y luego comprobar dentro de la carpeta `\RG39\bin\`.
 
 ***
 
-## Como contribuir:
+## Contribuir
 Realiza un "Fork" del repositorio y crea una "Pull Request" con tus cambios.
