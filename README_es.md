@@ -67,7 +67,7 @@ Los arhivos `.resx` de idioma se guardan en la carpeta `.\RandomGameLauncher\Res
 ***
 
 ## Compilar
-Compilar a través de **Visual Studio 2022**. La otra forma es ejecutar el comando `dotnet build` desde el terminal (cmd/powershell) en la raíz del repositorio y luego comprobar dentro de la carpeta `\RG39\bin\`.
+Compilar a través de **Visual Studio 2022**. La otra forma es ejecutar el comando `dotnet build` desde el terminal (cmd/powershell) en la raíz del repositorio y luego comprobar dentro de la carpeta `\RandomGameLauncher\bin\`.
 
 ***
 
