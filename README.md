@@ -1,4 +1,4 @@
-# RandomGameLauncher
+# Random Game Launcher
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.zip)
 ![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=3BBF3B&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=3BBF3B&label=Latest%20release&style=flat-square)
@@ -12,12 +12,12 @@
 
 It allows you to make a list of the video games you have installed and run one at random.
 
-## Screenshots:
+## Screenshots
 // Add here ///
 
 ***
 
-## Functionalities:
+## Functionalities
 - Search and load the Steam library.
 - Load executables manually.
 - Individually removes items from the list.
@@ -31,25 +31,25 @@ It allows you to make a list of the video games you have installed and run one a
 - Spanish and English language.
 - Allow to sort the list.
 
-## To do:
+## To do
 - Recognize the library of Epic Games Store.
 - Show a cover / cover.
 - Use custom themes.
 
 ***
 
-## How to use:
+## How to use
 When the program starts it will automatically try to make a list of installed Steam (and soon Epic Games) games, if it doesn't find anything it continues loading a list called `list.json` if it exists. After that it displays the list with the found games, to add manually you have to go to `Games` > `Add games` and load the executable.
 ***
 
-## Required:
+## Required
 - Windows 7 or higher (Recommended Windows 10/11) x64.
 - .NET SDK 8 (LTS) to compile and run.
 - .NET Desktop Runtime 8 (LTS) to run.
 
 ***
 
-## Dependencies:
+## Dependencies
 ### Frameworks
 - Microsoft.NETCore.App
 - Microsoft.WindowsDesktop.App.WPF
@@ -60,16 +60,16 @@ When the program starts it will automatically try to make a list of installed St
 
 ***
 
-## Languajes
+## Languages
 For adding/modifying languages I recommend the **extension** for **Visual Studio 2022** called `ResX Manager`.
 The language `.resx` files are saved in the `.\RandomGameLauncher\Resources\Language\` folder.
 
 ***
 
-## Compile:
+## Compile
 Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` command from terminal (cmd/powershell) in the root of the repository and then check inside of the `\RandomGameLauncher\bin\` folder.
 
 ***
 
-## How contribute:
+## Contribute
 Fork the repository and create a pull request with your changes.
