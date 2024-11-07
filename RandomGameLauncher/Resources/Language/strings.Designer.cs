@@ -79,6 +79,15 @@ namespace RandomGameLauncher.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string ADD {
+            get {
+                return ResourceManager.GetString("ADD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add game.
         /// </summary>
         public static string ADD_GAME {
@@ -205,6 +214,15 @@ namespace RandomGameLauncher.Resources.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path to executable.
+        /// </summary>
+        public static string PATH_EXE {
+            get {
+                return ResourceManager.GetString("PATH_EXE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ▶ PLAY.
         /// </summary>
         public static string PLAY_GAME {
@@ -246,6 +264,15 @@ namespace RandomGameLauncher.Resources.Language {
         public static string RESTARTING {
             get {
                 return ResourceManager.GetString("RESTARTING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SEARCH {
+            get {
+                return ResourceManager.GetString("SEARCH", resourceCulture);
             }
         }
         

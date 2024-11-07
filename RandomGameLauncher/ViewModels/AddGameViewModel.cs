@@ -10,7 +10,6 @@ namespace RandomGameLauncher.ViewModels
         public Game NewGame { get; private set; }
 
         public ICommand OpenDialogCommand { get; }
-        public ICommand AddGameCommand { get; }
 
         public AddGameViewModel()
         {
@@ -30,7 +29,7 @@ namespace RandomGameLauncher.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

@@ -15,8 +15,8 @@ namespace RandomGameLauncher.ViewModels
     {
         public ObservableCollectionEx<Game> Games { get; set; }
         public string GamesCount { get => Games.Count + " " + Strings.GAMES.ToLower(); }
-        public BitmapImage EpicGamesIcon => Utils.ByteArrayToImage(Properties.Resources.EpicGames);
-        public BitmapImage SteamIcon => Utils.ByteArrayToImage(Properties.Resources.Steam);
+        public static BitmapImage EpicGamesIcon => Utils.ByteArrayToImage(Properties.Resources.EpicGames);
+        public static BitmapImage SteamIcon => Utils.ByteArrayToImage(Properties.Resources.Steam);
 
         private bool _isAllActiveChecked;
         public bool IsAllActiveChecked
@@ -81,7 +81,7 @@ namespace RandomGameLauncher.ViewModels
             {
                 // FIXME: The checkboxes for each game do not work correctly, they are not updated in the list when checked individually.
                 // TODO: Use only active games
-                int index = new Random().Next(Games.Count());
+                int index = new Random().Next(Games.Count);
                 Game random_game = Games[index];
                 RunGame(random_game);
             }
@@ -99,7 +99,7 @@ namespace RandomGameLauncher.ViewModels
                 MessageBox.Show($"\"{new_game.FilePath}\"\n {Strings.REPEATED_GAME_MSG}", Strings.REPEATED_TITLE);
 
             Games.Add(new_game);
-            LibraryService.SaveList(Games.ToList());
+            LibraryService.SaveList([.. Games]);
         }
 
         private void RunGame(Game game)
@@ -202,7 +202,7 @@ namespace RandomGameLauncher.ViewModels
             });
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

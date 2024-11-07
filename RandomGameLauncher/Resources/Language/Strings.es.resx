@@ -195,4 +195,13 @@
   <data name="ABOUT_DESCRIPTION" xml:space="preserve">
     <value>Este software es de código libre bajo la licencia GPL-3. Para más información y contribuciones, visita el repositorio en GitHub.</value>
   </data>
+  <data name="PATH_EXE" xml:space="preserve">
+    <value>Ubicación del ejecutable</value>
+  </data>
+  <data name="ADD" xml:space="preserve">
+    <value>Añadir</value>
+  </data>
+  <data name="SEARCH" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
 </root>

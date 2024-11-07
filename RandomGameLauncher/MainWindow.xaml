@@ -31,7 +31,7 @@
 
             <MenuItem Header="{x:Static l:Strings.HELP}">
                 <MenuItem Header="{x:Static l:Strings.VIEW_HELP}" Command="{Binding HelpCommand}"/>
-                <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}"/>
+                <MenuItem Header="{x:Static l:Strings.CHECK_UPDATES}" IsEnabled="False"/>
                 <MenuItem Header="{x:Static l:Strings.ABOUT}" Command="{Binding AboutCommand}"/>
             </MenuItem>
         </Menu>

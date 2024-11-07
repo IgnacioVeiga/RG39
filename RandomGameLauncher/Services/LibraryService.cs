@@ -1,5 +1,4 @@
-﻿using GameFinder.Common;
-using GameFinder.RegistryUtils;
+﻿using GameFinder.RegistryUtils;
 using GameFinder.StoreHandlers.Steam;
 using Microsoft.Win32;
 using NexusMods.Paths;
@@ -18,12 +17,12 @@ namespace RandomGameLauncher.Services
         {
             if (LibraryEnum.Steam == library)
             {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
                 Settings.Default.SteamPath = (key is not null) ? key.GetValue("SteamExe") as string : string.Empty;
             }
             else if (LibraryEnum.EpicGames == library)
             {
-                using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
                 Settings.Default.EpicGamesPath = (key is not null) ? key.GetValue("ModSdkCommand") as string : string.Empty;
             }
         }
@@ -33,7 +32,7 @@ namespace RandomGameLauncher.Services
         {
             List<Game> egs_list = [];
 
-            using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
+            using RegistryKey? key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
             
             // TODO: use a default directory if the key is null
             string? registryMetadataDir = (key is not null) ? key.GetValue("ModSdkMetadataDir") as string : string.Empty;
@@ -43,7 +42,7 @@ namespace RandomGameLauncher.Services
             foreach (AbsolutePath itemFile in itemFiles)
             {
                 using Stream stream = FileSystem.Shared.ReadFile(itemFile);
-                EGSGameEx game = JsonSerializer.Deserialize<EGSGameEx>(stream);
+                EGSGameEx? game = JsonSerializer.Deserialize<EGSGameEx>(stream);
                 if (game is null) continue;
 
                 /*
@@ -92,7 +91,7 @@ namespace RandomGameLauncher.Services
 
         public static string? SelectExecutableFile()
         {
-            var openFileDialog = new OpenFileDialog
+            OpenFileDialog openFileDialog = new()
             {
                 Title = Strings.SEL_EXE_TITLE,
                 Filter = "(*.exe)|*.exe",
@@ -102,12 +101,8 @@ namespace RandomGameLauncher.Services
                 DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
             };
 
-            bool? result = openFileDialog.ShowDialog();
-
-            if (result == true)
-            {
+            if (openFileDialog.ShowDialog() is true)
                 return openFileDialog.FileName;
-            }
 
             return null;
         }
@@ -115,14 +110,13 @@ namespace RandomGameLauncher.Services
 
         public static void ClearList()
         {
-            if (File.Exists($".{Path.DirectorySeparatorChar}list.json"))
+            if (ExistsListJSON)
                 File.Delete($".{Path.DirectorySeparatorChar}list.json");
         }
 
         public static void SaveList(List<Game> games)
         {
-            JsonSerializerOptions options = new() { WriteIndented = true };
-            string json = JsonSerializer.Serialize(games, options);
+            string json = JsonSerializer.Serialize(games);
             File.WriteAllText($".{Path.DirectorySeparatorChar}list.json", json);
         }
 
@@ -130,15 +124,17 @@ namespace RandomGameLauncher.Services
         {
             List<Game> games = [];
 
-            if (File.Exists($".{Path.DirectorySeparatorChar}list.json"))
+            if (ExistsListJSON)
             {
                 string json = File.ReadAllText($".{Path.DirectorySeparatorChar}list.json");
-                JsonSerializerOptions options = new() { WriteIndented = true };
-                List<Game> list = JsonSerializer.Deserialize<List<Game>>(json, options);
+                List<Game>? list = JsonSerializer.Deserialize<List<Game>>(json);
+                if (list is null) return [];
                 games.AddRange(list);
             }
 
             return games.Where(g => File.Exists(g.FilePath)).ToList();
         }
+
+        private static bool ExistsListJSON => File.Exists($".{Path.DirectorySeparatorChar}list.json");
     }
 }

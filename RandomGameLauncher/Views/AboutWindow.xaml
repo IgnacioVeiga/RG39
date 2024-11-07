@@ -27,11 +27,11 @@
                Width="128" Height="128" Margin="10,0"
                d:Source="../Resources/Icons/icon.ico" />
 
-        <TextBlock Grid.Column="1" Margin="0,20,0,0" VerticalAlignment="Center"
+        <TextBlock Grid.Column="1" Margin="0,30,0,0" VerticalAlignment="Center"
                    HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"
                    Text="Random Game Launcher" />
 
-        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="12" Margin="20,0"
+        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="12" Margin="10,0" VerticalAlignment="Top"
                    TextAlignment="Center" TextWrapping="Wrap" Text="{x:Static l:Strings.ABOUT_DESCRIPTION}" />
 
         <Button Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,20"
