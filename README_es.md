@@ -18,28 +18,31 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 ***
 
 ## Funcionalidades
-- Busca y carga la libreria de Steam.
+- Carga la libreria de Steam y de Epic Games.
 - Carga ejecutables de forma manual.
 - Elimina individualmente a elementos de la lista.
-- Limpia la lista.
-- Detecta la ubicación de `steam.exe` de froma automatica.
+- Limpia la lista completa.
+- Detecta la ubicación de `Steam` y de `Epic Games Store` de froma automatica.
 - Guarda la lista en un archivo `list.json` (solo los añadidos manualmente).
-- Muestra los iconos de los ejecutables (solo los añadidos manualmente).
+- Muestra los iconos de los ejecutables (solo los añadidos manualmente, por ahora).
 - Marcar cuales elementos quiero que participen sin quitarlos de la lista.
 - Impide que se repitan los juegos añadidos.
 - Al iniciar y leer el listado filtra los juegos no encontrados.
-- Permitir ordenar la lista.
+- Permite ordenar la lista.
 - Idioma español e inglés.
 
 ## Por hacer
-- Reconocer la biblioteca de Epic Games Store.
 - Enseñar una portada/caratula.
 - Usar temas personalizados.
+- Agrupar juegos marcados en distintas configuraciones.
+- Buscar actualizaciones de si mismo.
+- Verificar el funcionamiento con diversos juegos de la Epic Games Store (todavia está en fase experimental).
+- Añadir soporte a parametros de lanzamiento (solo añadidos manualmente)
 
 ***
 
 ## Como usar
-Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam (y próximamente Epic Games) instalados, si no encuentra nada continúa cargando una lista llamada `list.json` si es que este existe. Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
+Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam y de Epic Games instalados, si no encuentra nada continúa cargando una lista llamada `list.json` si es que este existe. Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
 ***
 
 ## Requerido

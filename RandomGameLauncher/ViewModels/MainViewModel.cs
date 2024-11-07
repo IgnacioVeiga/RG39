@@ -51,7 +51,7 @@ namespace RandomGameLauncher.ViewModels
 
             if (!string.IsNullOrEmpty(Settings.Default.SteamPath))
             {
-                Games.AddRange(LibraryService.GetGamesFromLib(LibraryEnum.Steam));
+                Games.AddRange(LibraryService.GetSteamGames());
             }
             else Settings.Default.SteamPath = $"Steam: {Strings.NOT_FOUND_MSG}";
             #endregion Steam
@@ -61,7 +61,7 @@ namespace RandomGameLauncher.ViewModels
 
             if (!string.IsNullOrEmpty(Settings.Default.EpicGamesPath))
             {
-                //Games.AddRange(LibraryService.GetGamesFromLib(LibraryEnum.EpicGames));
+                Games.AddRange(LibraryService.GetEGSGames());
             }
             else Settings.Default.EpicGamesPath = $"Epic Games Store: {Strings.NOT_FOUND_MSG}";
             #endregion EpicsGames
@@ -79,7 +79,9 @@ namespace RandomGameLauncher.ViewModels
         {
             if (Games.Count > 0)
             {
-                int index = new Random().Next(Games.Count);
+                // FIXME: The checkboxes for each game do not work correctly, they are not updated in the list when checked individually.
+                // TODO: Use only active games
+                int index = new Random().Next(Games.Count());
                 Game random_game = Games[index];
                 RunGame(random_game);
             }
@@ -93,6 +95,8 @@ namespace RandomGameLauncher.ViewModels
 
             Game new_game = addGameWindow.NewGame;
             if (new_game == null) return;
+            if (Games.Contains(new_game))
+                MessageBox.Show($"\"{new_game.FilePath}\"\n {Strings.REPEATED_GAME_MSG}", Strings.REPEATED_TITLE);
 
             Games.Add(new_game);
             LibraryService.SaveList(Games.ToList());
@@ -120,7 +124,7 @@ namespace RandomGameLauncher.ViewModels
                         break;
 
                     case LibraryEnum.EpicGames:
-                        Process.Start($"{Settings.Default.EpicGamesPath} com.epicgames.launcher://apps/{game.GameId}?action=launch&silent=true");
+                        Process.Start($"\"{Settings.Default.EpicGamesPath}\"", $"com.epicgames.launcher://apps/{game.GameId}?action=launch&silent=true");
                         break;
                 }
 

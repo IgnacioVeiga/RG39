@@ -18,23 +18,28 @@ It allows you to make a list of the video games you have installed and run one a
 ***
 
 ## Functionalities
-- Search and load the Steam library.
-- Load executables manually.
-- Individually removes items from the list.
+- Loads Steam and Epic Games libraries.
+- Manually loads executables.
+- Removes individual items from the list.
 - Clear the list.
-- Detects the location of `steam.exe` automatically.
-- Save the list in a `list.json` file (only those added manually).
-- Show executable icons (only those added manually).
-- Mark which elements I want to participate without removing them from the list.
+- Detects the location of `Steam` and `Epic Games Store` automatically.
+- Saves the list to a `list.json` file (only manually added items).
+- Show the icons of the executables (only the manually added ones, for now).
+- Mark which items I want to participate without removing them from the list.
 - Prevents the added games from being repeated.
 - When starting and reading the list, it filters the games not found.
-- Spanish and English language.
-- Allow to sort the list.
+- Allows to sort the list.
+- English and Spanish language.
 
 ## To do
-- Recognize the library of Epic Games Store.
-- Show a cover / cover.
+- Show a cover/cover.
 - Use custom themes.
+- Group marked games in different configurations.
+- Check for updates to itself.
+- Verify operation with various Epic Games Store games (still in experimental phase).
+- Add support for launch parameters (only manually added).
+
+Translated with DeepL.com (free version)
 
 ***
 

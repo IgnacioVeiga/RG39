@@ -1,8 +1,6 @@
 ﻿using GameFinder.Common;
 using GameFinder.RegistryUtils;
-using GameFinder.StoreHandlers.EGS;
 using GameFinder.StoreHandlers.Steam;
-using GameFinder.StoreHandlers.Steam.Models.ValueTypes;
 using Microsoft.Win32;
 using NexusMods.Paths;
 using RandomGameLauncher.Models;
@@ -13,6 +11,7 @@ using System.Text.Json;
 
 namespace RandomGameLauncher.Services
 {
+    // TODO: refactor
     public static class LibraryService
     {
         public static void LocateStoreExeFromReg(LibraryEnum library)
@@ -20,91 +19,73 @@ namespace RandomGameLauncher.Services
             if (LibraryEnum.Steam == library)
             {
                 using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam");
-                if (key is not null)
-                {
-                    Settings.Default.SteamPath = key.GetValue("SteamExe").ToString();
-                }
-                else
-                {
-                    Settings.Default.SteamPath = string.Empty;
-                }
+                Settings.Default.SteamPath = (key is not null) ? key.GetValue("SteamExe") as string : string.Empty;
             }
             else if (LibraryEnum.EpicGames == library)
             {
                 using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
-                if (key is not null)
-                {
-                    Settings.Default.EpicGamesPath = key.GetValue("ModSdkCommand").ToString();
-                }
-                else
-                {
-                    Settings.Default.EpicGamesPath = string.Empty;
-                }
+                Settings.Default.EpicGamesPath = (key is not null) ? key.GetValue("ModSdkCommand") as string : string.Empty;
             }
         }
 
-        public static List<Game> GetGamesFromLib(LibraryEnum from)
+        public record EGSGameEx(string CatalogNamespace, string CatalogItemId, string AppName, string DisplayName, string InstallLocation);
+        public static List<Game> GetEGSGames()
+        {
+            List<Game> egs_list = [];
+
+            using RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Epic Games\\EOS");
+            
+            // TODO: use a default directory if the key is null
+            string? registryMetadataDir = (key is not null) ? key.GetValue("ModSdkMetadataDir") as string : string.Empty;
+            AbsolutePath manifestFolder = FileSystem.Shared.FromUnsanitizedFullPath(registryMetadataDir);
+            AbsolutePath[] itemFiles = FileSystem.Shared.EnumerateFiles(manifestFolder, "*.item").ToArray();
+
+            foreach (AbsolutePath itemFile in itemFiles)
+            {
+                using Stream stream = FileSystem.Shared.ReadFile(itemFile);
+                EGSGameEx game = JsonSerializer.Deserialize<EGSGameEx>(stream);
+                if (game is null) continue;
+
+                /*
+                 Example of .url shortcut file (Sonic Mania):
+                 'com.epicgames.launcher://apps/
+                    45e7cf3c49054f2fb20b673d9b0ae69e    // CatalogNamespace
+                    %3A                                 // :
+                    f08663635fd84c33bfc62ea3bac000e6    // CatalogItemId
+                    %3A                                 // :
+                    818447bb519b46d48d365d5753362796    // AppName
+                    ?action=launch&silent=true'
+                 */
+
+                string game_id = game.CatalogNamespace + "%3A" + game.CatalogItemId + "%3A" + game.AppName;
+                string path = $"{game.InstallLocation}{Path.DirectorySeparatorChar}{game.DisplayName}.url";
+                egs_list.Add(new Game(LibraryEnum.EpicGames, game_id, path));
+            }
+            return egs_list;
+        }
+
+        public static List<Game> GetSteamGames()
         {
             List<Game> mygames = [];
+            SteamHandler steam_handler = new(FileSystem.Shared, WindowsRegistry.Shared);
+            var steam_games = steam_handler.FindAllGamesById(out _);
 
-            if (LibraryEnum.Steam == from)
+            foreach (var steam_game in steam_games)
             {
-                SteamHandler steam_handler = new(FileSystem.Shared, WindowsRegistry.Shared);
-                var steam_games = steam_handler.FindAllGamesById(out ErrorMessage[]? errors);
+                // If app id is 0
+                if (steam_game.Key == 0) continue;
 
-                foreach (var error in errors)
-                {
-                    // TODO: log and show errors
-                }
-                foreach (var steam_game in steam_games)
-                {
-                    // If app id is 0
-                    if (steam_game.Key == 0) continue;
+                // Skip "Steamworks Common Redistributables"
+                if (steam_game.Key == 228980) continue;
 
-                    // Skip "Steamworks Common Redistributables"
-                    if (steam_game.Key == 228980) continue;
+                // Try to filter any soundtrack
+                if (steam_game.Value.Name.Contains("Soundtrack")) continue;
+                if (steam_game.Value.Name.EndsWith(" OST")) continue;
+                if (steam_game.Value.Name.EndsWith("-OST")) continue;
 
-                    // Try to filter any soundtrack
-                    if (steam_game.Value.Name.Contains("Soundtrack")) continue;
-                    if (steam_game.Value.Name.EndsWith(" OST")) continue;
-                    if (steam_game.Value.Name.EndsWith("-OST")) continue;
-
-                    // This is a fake filepath
-                    string path = $"{steam_game.Value.Path}{Path.DirectorySeparatorChar}{steam_game.Value.Name}.url";
-                    mygames.Add(new Game(from, steam_game.Key.ToString(), path));
-                }
-            }
-            else if (LibraryEnum.EpicGames == from)
-            {
-                EGSHandler epicgames_handler = new(WindowsRegistry.Shared, FileSystem.Shared);
-                var egs_games = epicgames_handler.FindAllGamesById(out ErrorMessage[]? errors);
-
-                foreach (var error in errors)
-                {
-                    // TODO: log and show errors
-                }
-                foreach (var egs_game in egs_games)
-                {
-                    // This is a fake filepath
-                    // TODO: get CatalogNamespace and AppName, can be found in the manifest file of each game
-
-                    /*
-                     Example of .url shortcut file (Sonic Mania):
-                     'com.epicgames.launcher://apps/
-                        45e7cf3c49054f2fb20b673d9b0ae69e    // CatalogNamespace
-                        %3A                                 // :
-                        f08663635fd84c33bfc62ea3bac000e6    // CatalogItemId
-                        %3A                                 // :
-                        818447bb519b46d48d365d5753362796    // AppName
-                        ?action=launch&silent=true'
-                     */
-                    string CatalogNamespace = "";
-                    string AppName = "";
-                    string game_id = CatalogNamespace + "%3A" + egs_game.Value.CatalogItemId + "%3A" + AppName;
-
-                    string path = $"{egs_game.Value.InstallLocation}{Path.DirectorySeparatorChar}{egs_game.Value.DisplayName}.url";
-                    mygames.Add(new Game(from, game_id, path));
-                }
+                // This is a fake filepath
+                string path = $"{steam_game.Value.Path}{Path.DirectorySeparatorChar}{steam_game.Value.Name}.url";
+                mygames.Add(new Game(LibraryEnum.Steam, steam_game.Key.ToString(), path));
             }
             return mygames;
         }
