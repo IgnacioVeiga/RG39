@@ -1,8 +1,7 @@
-﻿namespace RandomGameLauncher
-{
-    using System;
-    using System.Windows.Input;
+﻿using System.Windows.Input;
 
+namespace RandomGameLauncher
+{
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
