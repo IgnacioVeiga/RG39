@@ -1,55 +1,81 @@
-name: "Create new release"
+name: Release
 
 on:
   push:
-    branches:
-      - master
     tags:
       - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
+  DOTNET_VERSION: 8.0.x
   PROJECT_PATH: RandomGameLauncher/RandomGameLauncher.csproj
+  PUBLISH_DIR: RandomGameLauncher/bin/Release/net8.0-windows/win-x64/publish
+  ARTIFACT_ZIP: RandomGameLauncher.zip
+  ARTIFACT_SHA: RandomGameLauncher.zip.sha256
 
 jobs:
-  deploy:
+  release:
     runs-on: windows-latest
+    timeout-minutes: 30
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - uses: actions/setup-dotnet@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - run: dotnet restore ${{ env.PROJECT_PATH }}
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
 
-      - run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore -r win-x64
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Test core
+        run: dotnet test RandomGameLauncher.Core.Tests/RandomGameLauncher.Core.Tests.csproj -c Release
+
+      - name: Publish app
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --no-restore -r win-x64 --self-contained false
 
       - name: Package release
+        shell: pwsh
         run: |
-          cd RandomGameLauncher/bin/Release/net8.0-windows*/win-x64/
-          7z a ../../../../../RandomGameLauncher.zip -r ./*
+          Compress-Archive -Path "${{ env.PUBLISH_DIR }}/*" -DestinationPath "${{ env.ARTIFACT_ZIP }}" -Force
 
-      - name: Upload release artifact
-        uses: actions/upload-artifact@v3
+      - name: Generate checksum
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash "${{ env.ARTIFACT_ZIP }}" -Algorithm SHA256).Hash.ToLower()
+          "$hash  ${{ env.ARTIFACT_ZIP }}" | Out-File -FilePath "${{ env.ARTIFACT_SHA }}" -Encoding ascii
+
+      - name: Upload pipeline artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: Release Artifact
-          path: ./RandomGameLauncher.zip
+          name: release-assets-${{ github.ref_name }}
+          path: |
+            ${{ env.ARTIFACT_ZIP }}
+            ${{ env.ARTIFACT_SHA }}
 
       - name: Create GitHub release
-        id: create_github_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-
-      - name: Attach release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_github_release.outputs.upload_url }}
-          asset_path: ./RandomGameLauncher.zip
-          asset_name: RandomGameLauncher.zip
-          asset_content_type: application/zip
+          files: |
+            ${{ env.ARTIFACT_ZIP }}
+            ${{ env.ARTIFACT_SHA }}
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
