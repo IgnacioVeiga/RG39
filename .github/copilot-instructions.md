@@ -28,4 +28,4 @@
 ## Pull request hygiene
 - Keep commit messages short and in English.
 - Keep changes scoped and avoid broad unrelated edits.
-- Update docs in `docs/` when architecture, workflows, or behavior changes.
+- Update docs in `docs/en/` and `docs/es/` when architecture, workflows, or behavior changes.

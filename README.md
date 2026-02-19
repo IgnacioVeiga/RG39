@@ -2,18 +2,18 @@
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RandomGameLauncher/releases/latest/download/RandomGameLauncher.zip)
 ![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&label=Latest%20release&style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RandomGameLauncher/create-release.yml?color=3BBF3B&logo=github&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RandomGameLauncher/build-and-test.yml?color=3BBF3B&logo=github&style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RandomGameLauncher?style=flat-square)
 
-<img src="/RandomGameLauncher/Resources/Icons/icon.ico" width="128" height="128">
+<img src="RandomGameLauncher/Resources/Icons/icon.png" width="128" height="128">
 <div>
-  <span>English</span> / <a href="README_es.md">Español</a> </a>
+  <span>English</span> / <a href="README_es.md">Español</a>
 </div></br>
 
-It allows you to make a list of the video games you have installed and run one at random.
+It allows you to build a list of installed games and launch one at random.
 
 ## Screenshots
-// Add here ///
+![Main window](RandomGameLauncher/Resources/Images/Screenshot.png "Main window")
 
 ***
 
@@ -24,32 +24,33 @@ It allows you to make a list of the video games you have installed and run one a
 - Clear the list.
 - Detects the location of `Steam` and `Epic Games Store` automatically.
 - Saves manually added games to `%LocalAppData%\RandomGameLauncher\list.json`.
-- Show the icons of the executables (only the manually added ones, for now).
-- Mark which items I want to participate without removing them from the list.
+- Shows icons of executables (manual entries).
+- Allows marking which items participate without removing them.
 - Supports launch parameters for manually added games.
-- Prevents the added games from being repeated.
-- When starting and reading the list, it filters the games not found.
-- Allows to sort the list.
+- Prevents repeated random picks until a cycle is complete.
+- Filters games not found when loading the list.
+- Allows sorting the list.
 - English and Spanish language.
 
 ## To do
-- Show a cover/cover.
+- Show game cover art.
 - Use custom themes.
 - Group marked games in different configurations.
-- Check for updates to itself.
-- Verify operation with various Epic Games Store games (still in experimental phase).
-
-Translated with DeepL.com (free version)
+- Check for updates.
+- Verify operation with more Epic Games Store titles.
 
 ***
 
 ## How to use
-When the program starts it will automatically try to make a list of installed Steam (and soon Epic Games) games, if it doesn't find anything it loads manually added games from `%LocalAppData%\RandomGameLauncher\list.json` (migrating legacy `list.json` from the old location when present). After that it displays the list with the found games, to add manually you have to go to `Games` > `Add games` and load the executable.
+When the program starts, it tries to load installed Steam and Epic Games titles. It also loads manual entries from `%LocalAppData%\RandomGameLauncher\list.json` (migrating legacy `list.json` from old location when present).
+
+To add a manual game, go to `Games` > `Add game`, choose the executable and (optionally) launch arguments.
+
 ***
 
 ## Required
-- Windows 7 or higher (Recommended Windows 10/11) x64.
-- .NET SDK 8 (LTS) to compile and run.
+- Windows 7 or higher (recommended Windows 10/11) x64.
+- .NET SDK 8 (LTS) to compile.
 - .NET Desktop Runtime 8 (LTS) to run.
 
 ***
@@ -66,21 +67,45 @@ When the program starts it will automatically try to make a list of installed St
 ***
 
 ## Languages
-For adding/modifying languages I recommend the **extension** for **Visual Studio 2022** called `ResX Manager`.
-The language `.resx` files are saved in the `.\RandomGameLauncher\Resources\Language\` folder.
+For adding/modifying languages, I recommend the **Visual Studio 2022** extension `ResX Manager`.
+Language `.resx` files are in `RandomGameLauncher/Resources/Language/`.
 
 ***
 
-## Documentation
-- [Architecture](docs/ARCHITECTURE.md)
-- [Development](docs/DEVELOPMENT.md)
-- [Release process](docs/RELEASE.md)
-- [Roadmap](docs/ROADMAP.md)
+## Documentation (English)
+- [Architecture](docs/en/ARCHITECTURE.md)
+- [Development](docs/en/DEVELOPMENT.md)
+- [Release process](docs/en/RELEASE.md)
+- [Roadmap](docs/en/ROADMAP.md)
+
+## Documentation (Spanish)
+- [Arquitectura](docs/es/ARCHITECTURE.md)
+- [Desarrollo](docs/es/DEVELOPMENT.md)
+- [Proceso de release](docs/es/RELEASE.md)
+- [Roadmap](docs/es/ROADMAP.md)
+
+***
+
+## Release (GitHub Actions, beginner-friendly)
+A release is created **only** when you push a Git tag that starts with `v`.
+
+Example:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+After that, GitHub Actions runs the `Release` workflow and automatically:
+1. Restores and tests the project.
+2. Publishes the app for `win-x64`.
+3. Creates `RandomGameLauncher.zip` and `RandomGameLauncher.zip.sha256`.
+4. Creates a GitHub Release and uploads both files.
 
 ***
 
 ## Compile
-Compile via **Visual Studio 2022**. The other way is to run the `dotnet build` command from terminal (cmd/powershell) in the root of the repository and then check inside of the `\RandomGameLauncher\bin\` folder.
+Compile via **Visual Studio 2022**.
+You can also run `dotnet build` from terminal (cmd/powershell) in repository root and check `RandomGameLauncher/bin/`.
 
 ***
 

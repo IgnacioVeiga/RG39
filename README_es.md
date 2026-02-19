@@ -2,53 +2,57 @@
 [![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Descargar&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RandomGameLauncher/releases/latest/download/RandomGameLauncher.zip)
 ![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&label=Latest%20release&style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RandomGameLauncher/create-release.yml?color=3BBF3B&logo=github&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RandomGameLauncher/build-and-test.yml?color=3BBF3B&logo=github&style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RandomGameLauncher?style=flat-square)
 
-<img src="/RandomGameLauncher/Resources/Icons/icon.ico" width="128" height="128">
+<img src="RandomGameLauncher/Resources/Icons/icon.png" width="128" height="128">
 <div>
-  <a href="README.md">English</a> / <span>Español</span></a>
+  <a href="README.md">English</a> / <span>Español</span>
 </div></br>
 
-Permite realizar un listado de los videojuegos que tengas instalados y ejecutar uno al azar.
+Permite crear un listado de videojuegos instalados y ejecutar uno al azar.
 
 ## Capturas de pantalla
-// Add here ///
+![Ventana principal](RandomGameLauncher/Resources/Images/Screenshot_es.png "Ventana principal")
 
 ***
 
 ## Funcionalidades
-- Carga la libreria de Steam y de Epic Games.
-- Carga ejecutables de forma manual.
-- Elimina individualmente a elementos de la lista.
-- Limpia la lista completa.
-- Detecta la ubicación de `Steam` y de `Epic Games Store` de froma automatica.
-- Guarda los juegos añadidos manualmente en `%LocalAppData%\RandomGameLauncher\list.json`.
-- Muestra los iconos de los ejecutables (solo los añadidos manualmente, por ahora).
-- Marcar cuales elementos quiero que participen sin quitarlos de la lista.
-- Soporta parámetros de lanzamiento para juegos añadidos manualmente.
-- Impide que se repitan los juegos añadidos.
-- Al iniciar y leer el listado filtra los juegos no encontrados.
+- Carga la biblioteca de Steam y Epic Games.
+- Carga ejecutables manualmente.
+- Elimina elementos individualmente.
+- Limpia la lista.
+- Detecta automáticamente la ubicación de `Steam` y `Epic Games Store`.
+- Guarda juegos manuales en `%LocalAppData%\RandomGameLauncher\list.json`.
+- Muestra iconos de ejecutables (entradas manuales).
+- Permite marcar qué juegos participan sin quitarlos de la lista.
+- Soporta parámetros de lanzamiento para juegos manuales.
+- Evita repeticiones hasta completar un ciclo.
+- Filtra juegos no encontrados al cargar la lista.
 - Permite ordenar la lista.
 - Idioma español e inglés.
 
 ## Por hacer
-- Enseñar una portada/caratula.
+- Mostrar carátulas.
 - Usar temas personalizados.
-- Agrupar juegos marcados en distintas configuraciones.
-- Buscar actualizaciones de si mismo.
-- Verificar el funcionamiento con diversos juegos de la Epic Games Store (todavia está en fase experimental).
+- Agrupar juegos marcados en configuraciones.
+- Buscar actualizaciones.
+- Verificar funcionamiento con más juegos de Epic Games Store.
 
 ***
 
-## Como usar
-Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam y de Epic Games instalados, si no encuentra nada carga los juegos manuales desde `%LocalAppData%\RandomGameLauncher\list.json` (migrando automáticamente el `list.json` legado de la ubicación anterior si existe). Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
+## Cómo usar
+Al iniciar, el programa intenta cargar juegos instalados de Steam y Epic Games.
+También carga juegos manuales desde `%LocalAppData%\RandomGameLauncher\list.json` (migrando automáticamente el `list.json` legado si existe).
+
+Para agregar un juego manual, ve a `Juegos` > `Añadir juego`, selecciona el ejecutable y (opcional) parámetros de lanzamiento.
+
 ***
 
 ## Requerido
-- Windows 7 o superior (Recomendado Windows 10/11) x64.
-- .NET SDK 8 (LTS) para compilar y ejecutar.
-- Entorno de ejecución de escritorio de .NET 8 (LTS) solo si es para ejecutar.
+- Windows 7 o superior (recomendado Windows 10/11) x64.
+- .NET SDK 8 (LTS) para compilar.
+- Entorno de ejecución de escritorio .NET 8 (LTS) para ejecutar.
 
 ***
 
@@ -64,23 +68,47 @@ Al iniciar el programa automáticamente intentará hacer un listado de juegos de
 ***
 
 ## Idiomas
-Para añadir/modificar idiomas recomiendo la **extensión** para **Visual Studio 2022** llamada `ResX Manager`.
-Los arhivos `.resx` de idioma se guardan en la carpeta `.\RandomGameLauncher\Resources\Language\`.
+Para agregar/modificar idiomas, recomiendo la extensión `ResX Manager` para **Visual Studio 2022**.
+Los `.resx` están en `RandomGameLauncher/Resources/Language/`.
 
 ***
 
-## Documentación
-- [Arquitectura](docs/ARCHITECTURE.md)
-- [Desarrollo](docs/DEVELOPMENT.md)
-- [Proceso de release](docs/RELEASE.md)
-- [Roadmap](docs/ROADMAP.md)
+## Documentación en inglés
+- [Architecture](docs/en/ARCHITECTURE.md)
+- [Development](docs/en/DEVELOPMENT.md)
+- [Release process](docs/en/RELEASE.md)
+- [Roadmap](docs/en/ROADMAP.md)
+
+## Documentación en español
+- [Arquitectura](docs/es/ARCHITECTURE.md)
+- [Desarrollo](docs/es/DEVELOPMENT.md)
+- [Proceso de release](docs/es/RELEASE.md)
+- [Roadmap](docs/es/ROADMAP.md)
+
+***
+
+## Release (GitHub Actions, explicado fácil)
+Se crea una release **solo** cuando haces push de un tag que empiece con `v`.
+
+Ejemplo:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Después, GitHub Actions ejecuta el workflow `Release` y automáticamente:
+1. Restaura y prueba el proyecto.
+2. Publica la app para `win-x64`.
+3. Crea `RandomGameLauncher.zip` y `RandomGameLauncher.zip.sha256`.
+4. Crea la GitHub Release y sube ambos archivos.
 
 ***
 
 ## Compilar
-Compilar a través de **Visual Studio 2022**. La otra forma es ejecutar el comando `dotnet build` desde el terminal (cmd/powershell) en la raíz del repositorio y luego comprobar dentro de la carpeta `\RandomGameLauncher\bin\`.
+Compila con **Visual Studio 2022**.
+También puedes ejecutar `dotnet build` desde terminal (cmd/powershell) en la raíz y revisar `RandomGameLauncher/bin/`.
 
 ***
 
 ## Contribuir
-Realiza un "Fork" del repositorio y crea una "Pull Request" con tus cambios.
+Haz un fork del repositorio y crea una pull request con tus cambios.
