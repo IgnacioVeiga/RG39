@@ -52,7 +52,7 @@ jobs:
         run: dotnet restore RandomGameLauncher.Core.Tests/RandomGameLauncher.Core.Tests.csproj
 
       - name: Build
-        run: dotnet build RandomGameLauncher.Core/RandomGameLauncher.Core.csproj -c Release --no-restore
+        run: dotnet build RandomGameLauncher.Core.Tests/RandomGameLauncher.Core.Tests.csproj -c Release --no-restore
 
       - name: Test
         run: dotnet test RandomGameLauncher.Core.Tests/RandomGameLauncher.Core.Tests.csproj -c Release --no-build --logger trx --results-directory TestResults
@@ -87,7 +87,7 @@ jobs:
             nuget-${{ runner.os }}-
 
       - name: Restore
-        run: dotnet restore RandomGameLauncher/RandomGameLauncher.csproj
+        run: dotnet restore RandomGameLauncher/RandomGameLauncher.csproj -r win-x64
 
       - name: Build
         run: dotnet build RandomGameLauncher/RandomGameLauncher.csproj -c Release --no-restore -r win-x64

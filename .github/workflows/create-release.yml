@@ -43,7 +43,7 @@ jobs:
             nuget-${{ runner.os }}-
 
       - name: Restore
-        run: dotnet restore ${{ env.PROJECT_PATH }}
+        run: dotnet restore ${{ env.PROJECT_PATH }} -r win-x64
 
       - name: Test core
         run: dotnet test RandomGameLauncher.Core.Tests/RandomGameLauncher.Core.Tests.csproj -c Release
