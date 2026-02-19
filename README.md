@@ -1,9 +1,9 @@
 # Random Game Launcher
-[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.zip)
-![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=3BBF3B&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=3BBF3B&label=Latest%20release&style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=3BBF3B&logo=github&style=flat-square)
-![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
+[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Download&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RandomGameLauncher/releases/latest/download/RandomGameLauncher.zip)
+![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&label=Latest%20release&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RandomGameLauncher/create-release.yml?color=3BBF3B&logo=github&style=flat-square)
+![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RandomGameLauncher?style=flat-square)
 
 <img src="/RandomGameLauncher/Resources/Icons/icon.ico" width="128" height="128">
 <div>
@@ -23,9 +23,10 @@ It allows you to make a list of the video games you have installed and run one a
 - Removes individual items from the list.
 - Clear the list.
 - Detects the location of `Steam` and `Epic Games Store` automatically.
-- Saves the list to a `list.json` file (only manually added items).
+- Saves manually added games to `%LocalAppData%\RandomGameLauncher\list.json`.
 - Show the icons of the executables (only the manually added ones, for now).
 - Mark which items I want to participate without removing them from the list.
+- Supports launch parameters for manually added games.
 - Prevents the added games from being repeated.
 - When starting and reading the list, it filters the games not found.
 - Allows to sort the list.
@@ -37,14 +38,13 @@ It allows you to make a list of the video games you have installed and run one a
 - Group marked games in different configurations.
 - Check for updates to itself.
 - Verify operation with various Epic Games Store games (still in experimental phase).
-- Add support for launch parameters (only manually added).
 
 Translated with DeepL.com (free version)
 
 ***
 
 ## How to use
-When the program starts it will automatically try to make a list of installed Steam (and soon Epic Games) games, if it doesn't find anything it continues loading a list called `list.json` if it exists. After that it displays the list with the found games, to add manually you have to go to `Games` > `Add games` and load the executable.
+When the program starts it will automatically try to make a list of installed Steam (and soon Epic Games) games, if it doesn't find anything it loads manually added games from `%LocalAppData%\RandomGameLauncher\list.json` (migrating legacy `list.json` from the old location when present). After that it displays the list with the found games, to add manually you have to go to `Games` > `Add games` and load the executable.
 ***
 
 ## Required
@@ -68,6 +68,14 @@ When the program starts it will automatically try to make a list of installed St
 ## Languages
 For adding/modifying languages I recommend the **extension** for **Visual Studio 2022** called `ResX Manager`.
 The language `.resx` files are saved in the `.\RandomGameLauncher\Resources\Language\` folder.
+
+***
+
+## Documentation
+- [Architecture](docs/ARCHITECTURE.md)
+- [Development](docs/DEVELOPMENT.md)
+- [Release process](docs/RELEASE.md)
+- [Roadmap](docs/ROADMAP.md)
 
 ***
 

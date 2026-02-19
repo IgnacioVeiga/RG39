@@ -1,9 +1,9 @@
 # Random Game Launcher
-[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Descargar&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RG39/releases/latest/download/RG39.zip)
-![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RG39?color=3BBF3B&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RG39?color=3BBF3B&label=Latest%20release&style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RG39/deploy-project.yml?color=3BBF3B&logo=github&style=flat-square)
-![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RG39?style=flat-square)
+[![Download](https://img.shields.io/static/v1?style=flat-square&logo=windows&label=Descargar&message=windows-x64&color=3BBF3B&labelColor=24282F)](https://github.com/IgnacioVeiga/RandomGameLauncher/releases/latest/download/RandomGameLauncher.zip)
+![GitHub last commit](https://img.shields.io/github/last-commit/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/IgnacioVeiga/RandomGameLauncher?color=3BBF3B&label=Latest%20release&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/IgnacioVeiga/RandomGameLauncher/create-release.yml?color=3BBF3B&logo=github&style=flat-square)
+![GitHub license](https://img.shields.io/github/license/IgnacioVeiga/RandomGameLauncher?style=flat-square)
 
 <img src="/RandomGameLauncher/Resources/Icons/icon.ico" width="128" height="128">
 <div>
@@ -23,9 +23,10 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - Elimina individualmente a elementos de la lista.
 - Limpia la lista completa.
 - Detecta la ubicación de `Steam` y de `Epic Games Store` de froma automatica.
-- Guarda la lista en un archivo `list.json` (solo los añadidos manualmente).
+- Guarda los juegos añadidos manualmente en `%LocalAppData%\RandomGameLauncher\list.json`.
 - Muestra los iconos de los ejecutables (solo los añadidos manualmente, por ahora).
 - Marcar cuales elementos quiero que participen sin quitarlos de la lista.
+- Soporta parámetros de lanzamiento para juegos añadidos manualmente.
 - Impide que se repitan los juegos añadidos.
 - Al iniciar y leer el listado filtra los juegos no encontrados.
 - Permite ordenar la lista.
@@ -37,12 +38,11 @@ Permite realizar un listado de los videojuegos que tengas instalados y ejecutar 
 - Agrupar juegos marcados en distintas configuraciones.
 - Buscar actualizaciones de si mismo.
 - Verificar el funcionamiento con diversos juegos de la Epic Games Store (todavia está en fase experimental).
-- Añadir soporte a parametros de lanzamiento (solo añadidos manualmente)
 
 ***
 
 ## Como usar
-Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam y de Epic Games instalados, si no encuentra nada continúa cargando una lista llamada `list.json` si es que este existe. Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
+Al iniciar el programa automáticamente intentará hacer un listado de juegos de Steam y de Epic Games instalados, si no encuentra nada carga los juegos manuales desde `%LocalAppData%\RandomGameLauncher\list.json` (migrando automáticamente el `list.json` legado de la ubicación anterior si existe). Luego de eso se visualiza la lista con los juegos encontrados, para añadir manualmente hay que ir a `Juegos` > `Añadir juegos` y cargar el ejecutable.
 ***
 
 ## Requerido
@@ -66,6 +66,14 @@ Al iniciar el programa automáticamente intentará hacer un listado de juegos de
 ## Idiomas
 Para añadir/modificar idiomas recomiendo la **extensión** para **Visual Studio 2022** llamada `ResX Manager`.
 Los arhivos `.resx` de idioma se guardan en la carpeta `.\RandomGameLauncher\Resources\Language\`.
+
+***
+
+## Documentación
+- [Arquitectura](docs/ARCHITECTURE.md)
+- [Desarrollo](docs/DEVELOPMENT.md)
+- [Proceso de release](docs/RELEASE.md)
+- [Roadmap](docs/ROADMAP.md)
 
 ***
 
