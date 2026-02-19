@@ -48,8 +48,7 @@
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="32" IsReadOnly="True">
                     <DataGridTemplateColumn.Header>
-                        <CheckBox IsChecked="{Binding IsAllActiveChecked, Mode=TwoWay}"
-                                  Checked="HeaderCheckBox_Checked" Unchecked="HeaderCheckBox_Unchecked"/>
+                        <CheckBox IsChecked="{Binding IsAllActiveChecked, Mode=TwoWay}" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -74,6 +73,9 @@
 
                 <DataGridTextColumn Width="50" Binding="{Binding Type}"
                                     IsReadOnly="True" Header="{x:Static l:Strings.TYPE}" />
+
+                <DataGridTextColumn Width="120" Binding="{Binding LaunchArguments}"
+                                    IsReadOnly="True" Header="Args" />
 
                 <DataGridTextColumn Width="Auto" d:Width="100" Binding="{Binding Folder}"
                                     IsReadOnly="True" Header="{x:Static l:Strings.FOLDER}" />

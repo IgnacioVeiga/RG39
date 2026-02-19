@@ -19,7 +19,7 @@ namespace RandomGameLauncher.Views
             Process.Start(new ProcessStartInfo()
             {
                 UseShellExecute = true,
-                FileName = "https://github.com/IgnacioVeiga/RG39"
+                FileName = "https://github.com/IgnacioVeiga/RandomGameLauncher"
             });
         }
     }

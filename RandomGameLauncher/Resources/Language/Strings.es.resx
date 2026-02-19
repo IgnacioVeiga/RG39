@@ -198,6 +198,9 @@
   <data name="PATH_EXE" xml:space="preserve">
     <value>Ubicación del ejecutable</value>
   </data>
+  <data name="LAUNCH_ARGS" xml:space="preserve">
+    <value>Parámetros de lanzamiento (opcional)</value>
+  </data>
   <data name="ADD" xml:space="preserve">
     <value>Añadir</value>
   </data>

@@ -1,95 +1,240 @@
-﻿using System.IO;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Windows.Media.Imaging;
 
-namespace RandomGameLauncher.Models
+namespace RandomGameLauncher.Models;
+
+public class Game : INotifyPropertyChanged
 {
-    public class Game
+    private bool _active;
+    private string _gameId = string.Empty;
+    private LibraryEnum _from;
+    private string _launchArguments = string.Empty;
+    private string _folder = string.Empty;
+    private string _name = string.Empty;
+    private string _type = string.Empty;
+
+    public Game(LibraryEnum from, string gameId, string path)
     {
-        /// <summary>
-        /// Game constructor
-        /// </summary>
-        /// <param name="from">From library ...</param>
-        /// <param name="gameId">String ID used by the library. For manually added games it can be empty.</param>
-        /// <param name="path">A full path such as 'C:\Mydir\GameTitle.exe'. This will be a fake path in case the game is coming from Steam or Epic Games.</param>
-        public Game(LibraryEnum from, string gameId, string path)
+        From = from;
+        GameId = gameId;
+
+        if (!string.IsNullOrWhiteSpace(path))
         {
-            if (!string.IsNullOrEmpty(path))
-            {
-                Active = true;
-                From = from;
-                GameId = gameId;
-                FilePath = path;
-            }
-        }
-
-        [JsonConstructor] public Game() { }
-
-        [JsonPropertyName("Active")]
-        public bool Active { get; set; }
-
-        [JsonIgnore]
-        public string GameId { get; set; }
-
-        [JsonPropertyName("From")]
-        public LibraryEnum From { get; set; }
-
-        [JsonIgnore]
-        public string Folder { get; set; }
-
-        [JsonIgnore]
-        public string Name { get; set; }
-
-        [JsonIgnore]
-        public string Type { get; set; }
-
-        [JsonPropertyName("FilePath")]
-        public string FilePath
-        {
-            get => Folder + Name + Type;
-            set
-            {
-                // GetDirectoryName('C:\MyDir\MySubDir\myfile.ext') returns 'C:\MyDir\MySubDir'
-                Folder = Path.GetDirectoryName(value) + Path.DirectorySeparatorChar;
-
-                // GetFileNameWithoutExtension('C:\mydir\myfile.ext') returns 'myfile'
-                Name = Path.GetFileNameWithoutExtension(value);
-
-                // GetExtension('C:\mydir.old\myfile.ext') returns '.ext'
-                Type = Path.GetExtension(value);
-            }
-        }
-
-        // filepath is the key
-        private static readonly Dictionary<string, BitmapImage> IconCache = [];
-
-        [JsonIgnore]
-        public BitmapImage? AppIcon => From switch
-        {
-            LibraryEnum.Other => GetIconWithCache(FilePath),
-
-            // TODO: Try to get the original game icons even if they are from one of these libraries
-            LibraryEnum.Steam => Utils.ByteArrayToImage(Properties.Resources.Steam),
-            LibraryEnum.EpicGames => Utils.ByteArrayToImage(Properties.Resources.EpicGames),
-            _ => null,
-        };
-
-        private BitmapImage? GetIconWithCache(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                return null;
-
-            if (IconCache.ContainsKey(filePath))
-            {
-                return IconCache[filePath];
-            }
-
-            var icon = Utils.ExtractIconFromExe(filePath);
-            if (icon != null)
-            {
-                IconCache[filePath] = icon;
-            }
-            return icon;
+            FilePath = path;
+            Active = true;
         }
     }
+
+    [JsonConstructor]
+    public Game()
+    {
+    }
+
+    [JsonPropertyName("Active")]
+    public bool Active
+    {
+        get => _active;
+        set
+        {
+            if (_active == value)
+            {
+                return;
+            }
+
+            _active = value;
+            OnPropertyChanged(nameof(Active));
+        }
+    }
+
+    [JsonIgnore]
+    public string GameId
+    {
+        get => _gameId;
+        set
+        {
+            string normalizedValue = value ?? string.Empty;
+
+            if (string.Equals(_gameId, normalizedValue, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _gameId = normalizedValue;
+            OnPropertyChanged(nameof(GameId));
+        }
+    }
+
+    [JsonPropertyName("From")]
+    public LibraryEnum From
+    {
+        get => _from;
+        set
+        {
+            if (_from == value)
+            {
+                return;
+            }
+
+            _from = value;
+            OnPropertyChanged(nameof(From));
+            OnPropertyChanged(nameof(AppIcon));
+        }
+    }
+
+    [JsonIgnore]
+    public string LaunchArguments
+    {
+        get => _launchArguments;
+        set
+        {
+            string normalizedValue = value ?? string.Empty;
+
+            if (string.Equals(_launchArguments, normalizedValue, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _launchArguments = normalizedValue;
+            OnPropertyChanged(nameof(LaunchArguments));
+        }
+    }
+
+    [JsonIgnore]
+    public string Folder
+    {
+        get => _folder;
+        set
+        {
+            string normalizedValue = value ?? string.Empty;
+
+            if (string.Equals(_folder, normalizedValue, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _folder = normalizedValue;
+            OnPropertyChanged(nameof(Folder));
+            OnPropertyChanged(nameof(FilePath));
+        }
+    }
+
+    [JsonIgnore]
+    public string Name
+    {
+        get => _name;
+        set
+        {
+            string normalizedValue = value ?? string.Empty;
+
+            if (string.Equals(_name, normalizedValue, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _name = normalizedValue;
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(FilePath));
+        }
+    }
+
+    [JsonIgnore]
+    public string Type
+    {
+        get => _type;
+        set
+        {
+            string normalizedValue = value ?? string.Empty;
+
+            if (string.Equals(_type, normalizedValue, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _type = normalizedValue;
+            OnPropertyChanged(nameof(Type));
+            OnPropertyChanged(nameof(FilePath));
+        }
+    }
+
+    [JsonPropertyName("FilePath")]
+    public string FilePath
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Folder) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Type))
+            {
+                return string.Empty;
+            }
+
+            return string.Concat(Folder, Name, Type);
+        }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                _folder = string.Empty;
+                _name = string.Empty;
+                _type = string.Empty;
+                OnPropertyChanged(nameof(Folder));
+                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(nameof(Type));
+                OnPropertyChanged(nameof(FilePath));
+                OnPropertyChanged(nameof(AppIcon));
+                return;
+            }
+
+            string? directory = Path.GetDirectoryName(value);
+            _folder = string.IsNullOrEmpty(directory)
+                ? string.Empty
+                : directory + Path.DirectorySeparatorChar;
+
+            _name = Path.GetFileNameWithoutExtension(value);
+            _type = Path.GetExtension(value);
+
+            OnPropertyChanged(nameof(Folder));
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(Type));
+            OnPropertyChanged(nameof(FilePath));
+            OnPropertyChanged(nameof(AppIcon));
+        }
+    }
+
+    private static readonly Dictionary<string, BitmapImage> IconCache = new(StringComparer.OrdinalIgnoreCase);
+
+    [JsonIgnore]
+    public BitmapImage? AppIcon => From switch
+    {
+        LibraryEnum.Other => GetIconWithCache(FilePath),
+        LibraryEnum.Steam => Utils.ByteArrayToImage(Properties.Resources.Steam),
+        LibraryEnum.EpicGames => Utils.ByteArrayToImage(Properties.Resources.EpicGames),
+        _ => null,
+    };
+
+    private static BitmapImage? GetIconWithCache(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            return null;
+        }
+
+        if (IconCache.TryGetValue(filePath, out BitmapImage? cachedImage))
+        {
+            return cachedImage;
+        }
+
+        BitmapImage? icon = Utils.ExtractIconFromExe(filePath);
+
+        if (icon is not null)
+        {
+            IconCache[filePath] = icon;
+        }
+
+        return icon;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged(string propertyName) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

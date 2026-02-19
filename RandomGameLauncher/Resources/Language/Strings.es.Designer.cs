@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RG39.Language {
+namespace RandomGameLauncher.Resources.Language {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace RG39.Language {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RG39.Lang.strings - Copy", typeof(strings___Copy).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RandomGameLauncher.Resources.Language.Strings", typeof(strings___Copy).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

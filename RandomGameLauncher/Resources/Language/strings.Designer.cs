@@ -221,7 +221,16 @@ namespace RandomGameLauncher.Resources.Language {
                 return ResourceManager.GetString("PATH_EXE", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Launch parameters (optional).
+        /// </summary>
+        public static string LAUNCH_ARGS {
+            get {
+                return ResourceManager.GetString("LAUNCH_ARGS", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to ▶ PLAY.
         /// </summary>

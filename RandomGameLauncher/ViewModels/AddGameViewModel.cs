@@ -1,36 +1,64 @@
-﻿using RandomGameLauncher.Models;
 using RandomGameLauncher.Services;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace RandomGameLauncher.ViewModels
+namespace RandomGameLauncher.ViewModels;
+
+public class AddGameViewModel : INotifyPropertyChanged
 {
-    public class AddGameViewModel : INotifyPropertyChanged
+    private readonly IExecutablePicker _executablePicker;
+    private string _selectedFilePath = string.Empty;
+    private string _launchArguments = string.Empty;
+
+    public string SelectedFilePath
     {
-        public Game NewGame { get; private set; }
-
-        public ICommand OpenDialogCommand { get; }
-
-        public AddGameViewModel()
+        get => _selectedFilePath;
+        set
         {
-            NewGame = new Game(LibraryEnum.Other, "", "");
-            OpenDialogCommand = new RelayCommand(OpenDialog);
-        }
-
-        private void OpenDialog()
-        {
-            string? filePath = LibraryService.SelectExecutableFile();
-
-            if (!string.IsNullOrEmpty(filePath))
+            if (string.Equals(_selectedFilePath, value, StringComparison.Ordinal))
             {
-                NewGame.Active = true;
-                NewGame.FilePath = filePath;
-                OnPropertyChanged(nameof(NewGame));
+                return;
             }
-        }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _selectedFilePath = value;
+            OnPropertyChanged(nameof(SelectedFilePath));
+        }
     }
+
+    public string LaunchArguments
+    {
+        get => _launchArguments;
+        set
+        {
+            if (string.Equals(_launchArguments, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _launchArguments = value ?? string.Empty;
+            OnPropertyChanged(nameof(LaunchArguments));
+        }
+    }
+
+    public ICommand OpenDialogCommand { get; }
+
+    public AddGameViewModel(IExecutablePicker executablePicker)
+    {
+        _executablePicker = executablePicker;
+        OpenDialogCommand = new RelayCommand(OpenDialog);
+    }
+
+    private void OpenDialog()
+    {
+        string? filePath = _executablePicker.SelectExecutableFile();
+
+        if (!string.IsNullOrWhiteSpace(filePath))
+        {
+            SelectedFilePath = filePath;
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged(string propertyName) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

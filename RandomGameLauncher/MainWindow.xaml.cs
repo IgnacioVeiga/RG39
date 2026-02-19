@@ -1,64 +1,46 @@
-﻿using RandomGameLauncher.Properties;
+using RandomGameLauncher.Properties;
 using RandomGameLauncher.Resources.Language;
 using RandomGameLauncher.Services;
 using RandomGameLauncher.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RandomGameLauncher
+namespace RandomGameLauncher;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow(MainViewModel viewModel)
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-            DataContext = new MainViewModel();
+        InitializeComponent();
+        DataContext = viewModel;
 
-            // Generate menu items for every lang
-            // TODO: use a view another for the menu items of settings
-            foreach (var language in AppLanguageService.Languages)
+        // Generate menu items for every lang.
+        foreach (var language in AppLanguageService.Languages)
+        {
+            bool isLangSelected = Settings.Default.Language == language.Key;
+            MenuItem menuItem = new()
             {
-                bool isLangSelected = Settings.Default.Language == language.Key;
-                MenuItem menuItem = new()
-                {
-                    Tag = language.Key,
-                    Header = language.Value,
-                    IsCheckable = true,
-                    IsChecked = isLangSelected,
-                    IsEnabled = !isLangSelected
-                };
-                menuItem.Click += LanguageSelected_Click;
-                LanguagesMenu.Items.Add(menuItem);
-            }
+                Tag = language.Key,
+                Header = language.Value,
+                IsCheckable = true,
+                IsChecked = isLangSelected,
+                IsEnabled = !isLangSelected
+            };
+
+            menuItem.Click += LanguageSelected_Click;
+            LanguagesMenu.Items.Add(menuItem);
         }
+    }
 
-        private void LanguageSelected_Click(object sender, RoutedEventArgs e)
-        {
-            string? language = (sender as MenuItem)?.Tag.ToString();
-            AppLanguageService.ChangeLanguage(language);
-            MessageBox.Show(Strings.TOGGLE_LANG_MSG, Strings.RESTARTING, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+    private void LanguageSelected_Click(object sender, RoutedEventArgs e)
+    {
+        string? language = (sender as MenuItem)?.Tag?.ToString();
+        AppLanguageService.ChangeLanguage(language);
+        MessageBox.Show(Strings.TOGGLE_LANG_MSG, Strings.RESTARTING, MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
-            App.RestartApp();
-        }
-
-        private void HeaderCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel)
-            {
-                viewModel.IsAllActiveChecked = true;
-            }
-        }
-
-        private void HeaderCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel)
-            {
-                viewModel.IsAllActiveChecked = false;
-            }
-        }
-
+        App.RestartApp();
     }
 }
