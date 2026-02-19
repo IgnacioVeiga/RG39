@@ -3,6 +3,7 @@ using GameFinder.StoreHandlers.Steam;
 using NexusMods.Paths;
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Models;
+using System.IO;
 
 namespace RandomGameLauncher.Services;
 

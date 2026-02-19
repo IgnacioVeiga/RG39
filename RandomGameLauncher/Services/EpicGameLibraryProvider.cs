@@ -2,6 +2,7 @@ using Microsoft.Win32;
 using NexusMods.Paths;
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Models;
+using System.IO;
 using System.Text.Json;
 
 namespace RandomGameLauncher.Services;

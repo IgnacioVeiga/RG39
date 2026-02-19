@@ -1,6 +1,7 @@
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Models;
 using System.Diagnostics;
+using System.IO;
 
 namespace RandomGameLauncher.Services;
 
