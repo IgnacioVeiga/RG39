@@ -31,9 +31,11 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly AsyncRelayCommand<Game> _removeGameCommand;
     private readonly AsyncRelayCommand _clearListCommand;
 
-    private bool _isAllActiveChecked;
+    private bool? _isAllActiveChecked;
     private bool _isUpdatingActiveState;
     private bool _isLoading;
+    private int _totalGamesCount;
+    private int _activeGamesCount;
 
     public ObservableCollectionEx<Game> Games { get; }
     public IReadOnlyList<LanguageOptionItem> Languages { get; }
@@ -44,7 +46,7 @@ public class MainViewModel : INotifyPropertyChanged
     public static BitmapImage EpicGamesIcon => Utils.ByteArrayToImage(Properties.Resources.EpicGames);
     public static BitmapImage SteamIcon => Utils.ByteArrayToImage(Properties.Resources.Steam);
 
-    public bool IsAllActiveChecked
+    public bool? IsAllActiveChecked
     {
         get => _isAllActiveChecked;
         set
@@ -62,7 +64,16 @@ public class MainViewModel : INotifyPropertyChanged
                 return;
             }
 
-            SetAllGamesActive(value);
+            if (value is null)
+            {
+                UpdateHeaderCheckboxState();
+                return;
+            }
+
+            if (value is bool shouldActivateAll)
+            {
+                SetAllGamesActive(shouldActivateAll);
+            }
         }
     }
 
@@ -141,7 +152,7 @@ public class MainViewModel : INotifyPropertyChanged
             }
 
             OnPropertyChanged(nameof(GamesCount));
-            RecalculateHeaderCheckbox();
+            UpdateHeaderCheckboxState();
         }
         finally
         {
@@ -289,9 +300,10 @@ public class MainViewModel : INotifyPropertyChanged
             _isUpdatingActiveState = false;
         }
 
+        _activeGamesCount = isChecked ? _totalGamesCount : 0;
         RunBackgroundTask(PersistManualGamesAsync);
         _randomGameSelector.ResetCycle();
-        RecalculateHeaderCheckbox();
+        UpdateHeaderCheckboxState();
     }
 
     private void About()
@@ -426,7 +438,45 @@ public class MainViewModel : INotifyPropertyChanged
 
         OnPropertyChanged(nameof(GamesCount));
         OnPropertyChanged(nameof(StatusText));
-        RecalculateHeaderCheckbox();
+        RecalculateCountersAfterCollectionChange(e);
+        UpdateHeaderCheckboxState();
+    }
+
+    private void RecalculateCountersAfterCollectionChange(NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            _totalGamesCount = Games.Count;
+            _activeGamesCount = Games.Count(g => g.Active);
+            return;
+        }
+
+        if (e.NewItems is not null)
+        {
+            foreach (Game newGame in e.NewItems.OfType<Game>())
+            {
+                _totalGamesCount++;
+                if (newGame.Active)
+                {
+                    _activeGamesCount++;
+                }
+            }
+        }
+
+        if (e.OldItems is not null)
+        {
+            foreach (Game oldGame in e.OldItems.OfType<Game>())
+            {
+                _totalGamesCount--;
+                if (oldGame.Active)
+                {
+                    _activeGamesCount--;
+                }
+            }
+        }
+
+        _totalGamesCount = Math.Max(0, _totalGamesCount);
+        _activeGamesCount = Math.Clamp(_activeGamesCount, 0, _totalGamesCount);
     }
 
     private void Game_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -441,13 +491,19 @@ public class MainViewModel : INotifyPropertyChanged
 
         if (isActiveChanged)
         {
-            RecalculateHeaderCheckbox();
-            _randomGameSelector.ResetCycle();
-
             if (_isUpdatingActiveState)
             {
                 return;
             }
+
+            if (sender is Game changedGame)
+            {
+                _activeGamesCount += changedGame.Active ? 1 : -1;
+                _activeGamesCount = Math.Clamp(_activeGamesCount, 0, _totalGamesCount);
+            }
+
+            UpdateHeaderCheckboxState();
+            _randomGameSelector.ResetCycle();
         }
 
         if (sender is Game game && game.From == LibraryEnum.Other)
@@ -456,17 +512,26 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private void RecalculateHeaderCheckbox()
+    /// <summary>
+    /// Uses counters to keep header state in O(1), even for large libraries.
+    /// </summary>
+    private void UpdateHeaderCheckboxState()
     {
-        bool areAllActive = Games.Count > 0 && Games.All(g => g.Active);
+        bool? newHeaderState = _totalGamesCount switch
+        {
+            0 => false,
+            _ when _activeGamesCount == 0 => false,
+            _ when _activeGamesCount == _totalGamesCount => true,
+            _ => null
+        };
 
         _isUpdatingActiveState = true;
 
         try
         {
-            if (_isAllActiveChecked != areAllActive)
+            if (_isAllActiveChecked != newHeaderState)
             {
-                _isAllActiveChecked = areAllActive;
+                _isAllActiveChecked = newHeaderState;
                 OnPropertyChanged(nameof(IsAllActiveChecked));
             }
         }

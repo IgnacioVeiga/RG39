@@ -73,7 +73,7 @@
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="32" IsReadOnly="True">
                     <DataGridTemplateColumn.Header>
-                        <CheckBox IsThreeState="False"
+                        <CheckBox IsThreeState="True"
                                   IsChecked="{Binding IsAllActiveChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>

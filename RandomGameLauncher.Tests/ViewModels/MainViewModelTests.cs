@@ -54,6 +54,36 @@ public sealed class MainViewModelTests
         Assert.Single(catalogService.LastSavedSnapshot);
     }
 
+    [Fact]
+    public async Task HeaderCheckbox_UsesTriState_AndAppliesBulkToggle()
+    {
+        FakeGameCatalogService catalogService = new()
+        {
+            LoadResult =
+            [
+                new Game(LibraryEnum.Steam, "1", @"C:\Steam\A.url") { Active = true },
+                new Game(LibraryEnum.Steam, "2", @"C:\Steam\B.url") { Active = true },
+                new Game(LibraryEnum.Steam, "3", @"C:\Steam\C.url") { Active = false }
+            ]
+        };
+
+        MainViewModel sut = CreateViewModel(catalogService, new FakeAddGameDialogService());
+        await WaitUntilAsync(() => sut.Games.Count == 3 && !sut.IsLoading);
+
+        Assert.Null(sut.IsAllActiveChecked);
+
+        sut.IsAllActiveChecked = true;
+        Assert.All(sut.Games, game => Assert.True(game.Active));
+        Assert.True(sut.IsAllActiveChecked);
+
+        sut.Games[0].Active = false;
+        Assert.Null(sut.IsAllActiveChecked);
+
+        sut.IsAllActiveChecked = false;
+        Assert.All(sut.Games, game => Assert.False(game.Active));
+        Assert.False(sut.IsAllActiveChecked);
+    }
+
     private static MainViewModel CreateViewModel(
         IGameCatalogService catalogService,
         IAddGameDialogService addGameDialogService)
