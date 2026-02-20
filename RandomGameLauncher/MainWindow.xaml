@@ -68,16 +68,19 @@
         <DataGrid Grid.Row="3" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding Games}"
                   CanUserAddRows="False" HorizontalAlignment="Center"
                   EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True"
-                  VirtualizingPanel.VirtualizationMode="Recycling"
+                  VirtualizingPanel.VirtualizationMode="Standard"
                   d:ItemsSource="{d:SampleData ItemCount=30}" Cursor="Arrow" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="32" IsReadOnly="True">
                     <DataGridTemplateColumn.Header>
-                        <CheckBox IsChecked="{Binding IsAllActiveChecked, Mode=TwoWay}" />
+                        <CheckBox IsThreeState="False"
+                                  IsChecked="{Binding IsAllActiveChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox Cursor="Hand" IsChecked="{Binding Active, Mode=TwoWay}" />
+                            <CheckBox Cursor="Hand"
+                                      IsThreeState="False"
+                                      IsChecked="{Binding Active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
