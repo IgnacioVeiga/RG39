@@ -1,6 +1,5 @@
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Models;
-using RandomGameLauncher.Core.Utilities;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Properties;
 using RandomGameLauncher.Resources.Language;
@@ -8,29 +7,39 @@ using RandomGameLauncher.Services;
 using RandomGameLauncher.Views;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace RandomGameLauncher.ViewModels;
 
+/// <summary>
+/// Coordinates UI interactions while delegating catalog operations to application services.
+/// Keeping orchestration explicit here makes behavior easier to evolve without leaking
+/// persistence or discovery details into the view layer.
+/// </summary>
 public class MainViewModel : INotifyPropertyChanged
 {
-    private readonly IGameRepository _gameRepository;
-    private readonly IReadOnlyList<IGameLibraryProvider> _gameLibraryProviders;
+    private readonly IGameCatalogService _gameCatalogService;
     private readonly IGameLauncher _gameLauncher;
     private readonly IRandomGameSelector _randomGameSelector;
-    private readonly IPathNormalizer _pathNormalizer;
     private readonly IAddGameDialogService _addGameDialogService;
     private readonly IStorePathService _storePathService;
+    private readonly AsyncRelayCommand _playRandomGameCommand;
+    private readonly AsyncRelayCommand _addGameCommand;
+    private readonly AsyncRelayCommand<Game> _runGameCommand;
+    private readonly AsyncRelayCommand<Game> _removeGameCommand;
+    private readonly AsyncRelayCommand _clearListCommand;
 
     private bool _isAllActiveChecked;
     private bool _isUpdatingActiveState;
+    private bool _isLoading;
 
     public ObservableCollectionEx<Game> Games { get; }
+    public IReadOnlyList<LanguageOptionItem> Languages { get; }
 
     public string GamesCount => $"{Games.Count} {Strings.GAMES.ToLower()}";
+    public string StatusText => IsLoading ? $"{Strings.GAMES}..." : GamesCount;
 
     public static BitmapImage EpicGamesIcon => Utils.ByteArrayToImage(Properties.Resources.EpicGames);
     public static BitmapImage SteamIcon => Utils.ByteArrayToImage(Properties.Resources.Steam);
@@ -57,47 +66,90 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public ICommand PlayRandomGameCommand { get; }
-    public ICommand AddGameCommand { get; }
-    public ICommand RunGameCommand { get; }
-    public ICommand RemoveGameCommand { get; }
-    public ICommand ClearListCommand { get; }
+    public bool IsLoading
+    {
+        get => _isLoading;
+        private set
+        {
+            if (_isLoading == value)
+            {
+                return;
+            }
+
+            _isLoading = value;
+            OnPropertyChanged(nameof(IsLoading));
+            OnPropertyChanged(nameof(StatusText));
+            RaiseCommandsCanExecuteChanged();
+        }
+    }
+
+    public ICommand PlayRandomGameCommand => _playRandomGameCommand;
+    public ICommand AddGameCommand => _addGameCommand;
+    public ICommand RunGameCommand => _runGameCommand;
+    public ICommand RemoveGameCommand => _removeGameCommand;
+    public ICommand ClearListCommand => _clearListCommand;
     public ICommand HelpCommand { get; }
     public ICommand AboutCommand { get; }
+    public ICommand ChangeLanguageCommand { get; }
 
     public MainViewModel(
-        IGameRepository gameRepository,
-        IEnumerable<IGameLibraryProvider> gameLibraryProviders,
+        IGameCatalogService gameCatalogService,
         IGameLauncher gameLauncher,
         IRandomGameSelector randomGameSelector,
-        IPathNormalizer pathNormalizer,
         IAddGameDialogService addGameDialogService,
         IStorePathService storePathService)
     {
-        _gameRepository = gameRepository;
-        _gameLibraryProviders = gameLibraryProviders.ToList();
+        _gameCatalogService = gameCatalogService;
         _gameLauncher = gameLauncher;
         _randomGameSelector = randomGameSelector;
-        _pathNormalizer = pathNormalizer;
         _addGameDialogService = addGameDialogService;
         _storePathService = storePathService;
 
         Games = [];
         Games.CollectionChanged += Games_CollectionChanged;
 
-        ConfigureStorePathStatus();
-        LoadGames();
+        _playRandomGameCommand = new AsyncRelayCommand(PlayRandomGameAsync, CanUseInteractiveCommands, ShowUnhandledError);
+        _addGameCommand = new AsyncRelayCommand(AddGameAsync, CanUseInteractiveCommands, ShowUnhandledError);
+        _runGameCommand = new AsyncRelayCommand<Game>(RunGameAsync, g => g is not null && !IsLoading, ShowUnhandledError);
+        _removeGameCommand = new AsyncRelayCommand<Game>(RemoveGameAsync, g => g is not null && g.From == LibraryEnum.Other && !IsLoading, ShowUnhandledError);
+        _clearListCommand = new AsyncRelayCommand(ClearListAsync, CanUseInteractiveCommands, ShowUnhandledError);
 
-        PlayRandomGameCommand = new RelayCommand(PlayRandomGame);
-        AddGameCommand = new RelayCommand(AddGame);
-        RunGameCommand = new RelayCommand<Game>(RunGame);
-        RemoveGameCommand = new RelayCommand<Game>(RemoveGame);
-        ClearListCommand = new RelayCommand(ClearList);
+        Languages = BuildLanguages(Settings.Default.Language);
+        ChangeLanguageCommand = new RelayCommand<string?>(ChangeLanguage, CanChangeLanguage);
         HelpCommand = new RelayCommand(HowToUse);
         AboutCommand = new RelayCommand(About);
+
+        RunBackgroundTask(InitializeAsync);
     }
 
-    private void PlayRandomGame()
+    /// <summary>
+    /// Initializes the view model without blocking the UI thread.
+    /// Any failure is surfaced through a user-visible message while keeping the app responsive.
+    /// </summary>
+    private async Task InitializeAsync()
+    {
+        IsLoading = true;
+
+        try
+        {
+            ConfigureStorePathStatus();
+
+            IReadOnlyList<Game> loadedGames = await _gameCatalogService.LoadGamesAsync();
+            foreach (Game game in loadedGames)
+            {
+                Games.Add(game);
+            }
+
+            OnPropertyChanged(nameof(GamesCount));
+            RecalculateHeaderCheckbox();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task PlayRandomGameAsync()
     {
         List<Game> activeGames = Games.Where(g => g.Active).ToList();
 
@@ -107,7 +159,7 @@ public class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        IReadOnlyList<GameEntry> activeEntries = activeGames.Select(ToCoreGameEntry).ToList();
+        IReadOnlyList<GameEntry> activeEntries = activeGames.Select(_gameCatalogService.ToCoreGameEntry).ToList();
         GameEntry? randomEntry = _randomGameSelector.PickNext(activeEntries);
 
         if (randomEntry is null)
@@ -116,20 +168,20 @@ public class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        string selectedId = GameIdentity.Build(randomEntry, _pathNormalizer);
+        string selectedId = _gameCatalogService.BuildIdentity(randomEntry);
 
         Game? gameToLaunch = activeGames.FirstOrDefault(g =>
-            string.Equals(GameIdentity.Build(ToCoreGameEntry(g), _pathNormalizer), selectedId, StringComparison.OrdinalIgnoreCase));
+            string.Equals(_gameCatalogService.BuildIdentity(g), selectedId, StringComparison.OrdinalIgnoreCase));
 
         if (gameToLaunch is null)
         {
             return;
         }
 
-        RunGame(gameToLaunch);
+        await RunGameAsync(gameToLaunch);
     }
 
-    private void AddGame()
+    private async Task AddGameAsync()
     {
         AddGameDialogResult dialogResult = _addGameDialogService.ShowDialog();
         if (!dialogResult.Accepted)
@@ -140,15 +192,16 @@ public class MainViewModel : INotifyPropertyChanged
         string selectedFilePath = dialogResult.FilePath;
         string selectedLaunchArguments = dialogResult.LaunchArguments;
 
-        if (!TryCreateManualGame(selectedFilePath, selectedLaunchArguments, out Game? newGame))
+        if (!_gameCatalogService.TryCreateManualGame(selectedFilePath, selectedLaunchArguments, out Game? newGame))
         {
             MessageBox.Show($"{Strings.CANNOT_LOAD_GAME_MSG}\n\"{selectedFilePath}\"");
             return;
         }
 
+        string newGameId = _gameCatalogService.BuildIdentity(newGame);
         bool alreadyExists = Games.Any(g =>
             g.From == LibraryEnum.Other &&
-            _pathNormalizer.AreEquivalent(g.FilePath, newGame.FilePath));
+            string.Equals(_gameCatalogService.BuildIdentity(g), newGameId, StringComparison.OrdinalIgnoreCase));
 
         if (alreadyExists)
         {
@@ -157,11 +210,11 @@ public class MainViewModel : INotifyPropertyChanged
         }
 
         Games.Add(newGame);
-        PersistManualGames();
+        await PersistManualGamesAsync();
         _randomGameSelector.ResetCycle();
     }
 
-    private void RunGame(Game game)
+    private async Task RunGameAsync(Game? game)
     {
         if (game is null)
         {
@@ -170,7 +223,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         try
         {
-            _gameLauncher.LaunchAsync(ToCoreGameEntry(game)).GetAwaiter().GetResult();
+            await _gameLauncher.LaunchAsync(_gameCatalogService.ToCoreGameEntry(game));
             Application.Current.Shutdown();
         }
         catch (Exception ex)
@@ -179,7 +232,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private void RemoveGame(Game game)
+    private async Task RemoveGameAsync(Game? game)
     {
         if (game is null || game.From != LibraryEnum.Other)
         {
@@ -195,11 +248,11 @@ public class MainViewModel : INotifyPropertyChanged
         }
 
         Games.Remove(game);
-        PersistManualGames();
+        await PersistManualGamesAsync();
         _randomGameSelector.ResetCycle();
     }
 
-    private void ClearList()
+    private async Task ClearListAsync()
     {
         MessageBoxResult msgResult = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST, MessageBoxButton.YesNo);
 
@@ -216,7 +269,7 @@ public class MainViewModel : INotifyPropertyChanged
             }
         }
 
-        _gameRepository.ClearAsync().GetAwaiter().GetResult();
+        await _gameCatalogService.ClearManualGamesAsync();
         _randomGameSelector.ResetCycle();
     }
 
@@ -236,7 +289,7 @@ public class MainViewModel : INotifyPropertyChanged
             _isUpdatingActiveState = false;
         }
 
-        PersistManualGames();
+        RunBackgroundTask(PersistManualGamesAsync);
         _randomGameSelector.ResetCycle();
         RecalculateHeaderCheckbox();
     }
@@ -271,50 +324,6 @@ public class MainViewModel : INotifyPropertyChanged
         });
     }
 
-    private void LoadGames()
-    {
-        HashSet<string> knownIds = new(StringComparer.OrdinalIgnoreCase);
-
-        IReadOnlyList<StoredGame> storedGames = _gameRepository.LoadAsync().GetAwaiter().GetResult();
-        foreach (StoredGame storedGame in storedGames)
-        {
-            if (!TryCreateManualGame(storedGame.FilePath, storedGame.LaunchArguments, out Game? manualGame))
-            {
-                continue;
-            }
-
-            manualGame.Active = storedGame.Active;
-            TryAddGame(manualGame, knownIds);
-        }
-
-        foreach (IGameLibraryProvider provider in _gameLibraryProviders)
-        {
-            IReadOnlyList<GameEntry> discoveredGames;
-
-            try
-            {
-                discoveredGames = provider.GetInstalledGamesAsync().GetAwaiter().GetResult();
-            }
-            catch
-            {
-                discoveredGames = [];
-            }
-
-            foreach (GameEntry discoveredGame in discoveredGames)
-            {
-                if (!TryCreateLibraryGame(discoveredGame, out Game? game))
-                {
-                    continue;
-                }
-
-                TryAddGame(game, knownIds);
-            }
-        }
-
-        OnPropertyChanged(nameof(GamesCount));
-        RecalculateHeaderCheckbox();
-    }
-
     private void ConfigureStorePathStatus()
     {
         Settings.Default.SteamPath = BuildStorePathStatusLabel("Steam", _storePathService.GetStorePath(GameSource.Steam));
@@ -332,104 +341,70 @@ public class MainViewModel : INotifyPropertyChanged
         return path;
     }
 
-    private bool TryCreateManualGame(string? rawPath, string? launchArguments, out Game? game)
+    private Task PersistManualGamesAsync()
     {
-        game = null;
-
-        string? normalizedPath = _pathNormalizer.NormalizeAbsolutePath(rawPath);
-
-        if (string.IsNullOrWhiteSpace(normalizedPath) ||
-            !string.Equals(Path.GetExtension(normalizedPath), ".exe", StringComparison.OrdinalIgnoreCase) ||
-            !File.Exists(normalizedPath))
-        {
-            return false;
-        }
-
-        game = new Game(LibraryEnum.Other, string.Empty, normalizedPath)
-        {
-            Active = true
-        };
-        game.LaunchArguments = launchArguments ?? string.Empty;
-
-        return true;
+        // Save takes the full current snapshot to avoid incremental merge logic in the UI layer.
+        return _gameCatalogService.SaveManualGamesAsync(Games);
     }
 
-    private static bool TryCreateLibraryGame(GameEntry coreGame, out Game? game)
+    private void RunBackgroundTask(Func<Task> taskFactory)
     {
-        game = null;
-
-        if (string.IsNullOrWhiteSpace(coreGame.FilePath))
-        {
-            return false;
-        }
-
-        LibraryEnum from = coreGame.Source switch
-        {
-            GameSource.Steam => LibraryEnum.Steam,
-            GameSource.EpicGames => LibraryEnum.EpicGames,
-            _ => LibraryEnum.Other
-        };
-
-        game = new Game(from, coreGame.GameId, coreGame.FilePath)
-        {
-            Active = coreGame.Active
-        };
-        game.LaunchArguments = coreGame.LaunchArguments ?? string.Empty;
-
-        return true;
+        _ = RunBackgroundTaskCoreAsync(taskFactory);
     }
 
-    private void PersistManualGames()
+    private async Task RunBackgroundTaskCoreAsync(Func<Task> taskFactory)
     {
-        List<StoredGame> gamesToPersist = Games
-            .Where(g => g.From == LibraryEnum.Other)
-            .Select(g => new StoredGame(g.FilePath, g.Active, g.LaunchArguments))
+        try
+        {
+            await taskFactory();
+        }
+        catch (OperationCanceledException)
+        {
+            // Ignore cancellations from stale background operations.
+        }
+        catch (Exception ex)
+        {
+            ShowUnhandledError(ex);
+        }
+    }
+
+    private bool CanUseInteractiveCommands() => !IsLoading;
+
+    private static IReadOnlyList<LanguageOptionItem> BuildLanguages(string? selectedLanguage) =>
+        AppLanguageService.Languages
+            .Select(language => new LanguageOptionItem(
+                language.Key,
+                language.Value,
+                string.Equals(selectedLanguage, language.Key, StringComparison.OrdinalIgnoreCase)))
             .ToList();
 
-        _gameRepository.SaveAsync(gamesToPersist).GetAwaiter().GetResult();
-    }
+    private bool CanChangeLanguage(string? language) =>
+        !string.IsNullOrWhiteSpace(language) &&
+        !string.Equals(language, Settings.Default.Language, StringComparison.OrdinalIgnoreCase);
 
-    private void TryAddGame(Game game, ISet<string> knownIds)
+    private void ChangeLanguage(string? language)
     {
-        string id = GameIdentity.Build(ToCoreGameEntry(game), _pathNormalizer);
-        if (knownIds.Contains(id))
+        if (!CanChangeLanguage(language))
         {
             return;
         }
 
-        knownIds.Add(id);
-        Games.Add(game);
+        AppLanguageService.ChangeLanguage(language);
+        MessageBox.Show(Strings.TOGGLE_LANG_MSG, Strings.RESTARTING, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        App.RestartApp();
     }
 
-    private static GameSource ToGameSource(LibraryEnum source) => source switch
+    private void RaiseCommandsCanExecuteChanged()
     {
-        LibraryEnum.Steam => GameSource.Steam,
-        LibraryEnum.EpicGames => GameSource.EpicGames,
-        _ => GameSource.Other
-    };
-
-    private static string GetGameId(Game game)
-    {
-        if (game.From == LibraryEnum.Other)
-        {
-            return string.Empty;
-        }
-
-        return game.GameId;
+        _playRandomGameCommand.RaiseCanExecuteChanged();
+        _addGameCommand.RaiseCanExecuteChanged();
+        _runGameCommand.RaiseCanExecuteChanged();
+        _removeGameCommand.RaiseCanExecuteChanged();
+        _clearListCommand.RaiseCanExecuteChanged();
     }
 
-    private static string GetComparablePath(Game game)
-    {
-        if (game.From == LibraryEnum.Other)
-        {
-            return game.FilePath;
-        }
-
-        return string.Empty;
-    }
-
-    private static GameEntry ToCoreGameEntry(Game game) =>
-        new(ToGameSource(game.From), GetGameId(game), GetComparablePath(game), game.Active, game.LaunchArguments);
+    private static void ShowUnhandledError(Exception ex) =>
+        MessageBox.Show(ex.Message);
 
     private void Games_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
@@ -450,6 +425,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
 
         OnPropertyChanged(nameof(GamesCount));
+        OnPropertyChanged(nameof(StatusText));
         RecalculateHeaderCheckbox();
     }
 
@@ -476,7 +452,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         if (sender is Game game && game.From == LibraryEnum.Other)
         {
-            PersistManualGames();
+            RunBackgroundTask(PersistManualGamesAsync);
         }
     }
 

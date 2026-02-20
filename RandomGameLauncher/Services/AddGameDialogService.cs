@@ -1,4 +1,5 @@
 using RandomGameLauncher.Views;
+using RandomGameLauncher.ViewModels;
 
 namespace RandomGameLauncher.Services;
 
@@ -13,7 +14,8 @@ public sealed class AddGameDialogService : IAddGameDialogService
 
     public AddGameDialogResult ShowDialog()
     {
-        AddGameWindow addGameWindow = new(_executablePicker);
+        AddGameViewModel viewModel = new(_executablePicker);
+        AddGameWindow addGameWindow = new(viewModel);
         bool? dialogResult = addGameWindow.ShowDialog();
 
         if (dialogResult != true)
@@ -23,7 +25,7 @@ public sealed class AddGameDialogService : IAddGameDialogService
 
         return new AddGameDialogResult(
             true,
-            addGameWindow.SelectedFilePath,
-            addGameWindow.SelectedLaunchArguments);
+            viewModel.SelectedFilePath,
+            viewModel.LaunchArguments);
     }
 }

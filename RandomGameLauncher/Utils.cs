@@ -26,20 +26,23 @@ namespace RandomGameLauncher
             if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
                 return null;
 
-            Icon icon = Icon.ExtractAssociatedIcon(filePath);
-
-            using (var ms = new MemoryStream())
+            using Icon? icon = Icon.ExtractAssociatedIcon(filePath);
+            if (icon is null)
             {
-                icon?.ToBitmap().Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                ms.Position = 0;
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = ms;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                return bitmapImage;
+                return null;
             }
+
+            using var ms = new MemoryStream();
+            using Bitmap bitmap = icon.ToBitmap();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            ms.Position = 0;
+
+            var bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.StreamSource = ms;
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.EndInit();
+            return bitmapImage;
         }
     }
 

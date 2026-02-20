@@ -11,46 +11,53 @@ public sealed class SteamGameLibraryProvider : IGameLibraryProvider
 {
     public GameSource Source => GameSource.Steam;
 
-    public Task<IReadOnlyList<GameEntry>> GetInstalledGamesAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<GameEntry>> GetInstalledGamesAsync(CancellationToken ct = default)
     {
-        ct.ThrowIfCancellationRequested();
-
         try
         {
-            SteamHandler steamHandler = new(FileSystem.Shared, WindowsRegistry.Shared);
-            var steamGames = steamHandler.FindAllGamesById(out _);
-
-            List<GameEntry> games = [];
-
-            foreach (var steamGame in steamGames)
+            return await Task.Run<IReadOnlyList<GameEntry>>(() =>
             {
-                if (steamGame.Key == 0)
+                ct.ThrowIfCancellationRequested();
+
+                SteamHandler steamHandler = new(FileSystem.Shared, WindowsRegistry.Shared);
+                var steamGames = steamHandler.FindAllGamesById(out _);
+
+                List<GameEntry> games = [];
+
+                foreach (var steamGame in steamGames)
                 {
-                    continue;
+                    if (steamGame.Key == 0)
+                    {
+                        continue;
+                    }
+
+                    if (steamGame.Key == 228980)
+                    {
+                        continue;
+                    }
+
+                    string gameName = steamGame.Value.Name;
+                    if (gameName.Contains("Soundtrack", StringComparison.OrdinalIgnoreCase) ||
+                        gameName.EndsWith(" OST", StringComparison.OrdinalIgnoreCase) ||
+                        gameName.EndsWith("-OST", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    string path = $"{steamGame.Value.Path}{Path.DirectorySeparatorChar}{gameName}.url";
+                    games.Add(new GameEntry(Source, steamGame.Key.ToString(), path));
                 }
 
-                if (steamGame.Key == 228980)
-                {
-                    continue;
-                }
-
-                string gameName = steamGame.Value.Name;
-                if (gameName.Contains("Soundtrack", StringComparison.OrdinalIgnoreCase) ||
-                    gameName.EndsWith(" OST", StringComparison.OrdinalIgnoreCase) ||
-                    gameName.EndsWith("-OST", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                string path = $"{steamGame.Value.Path}{Path.DirectorySeparatorChar}{gameName}.url";
-                games.Add(new GameEntry(Source, steamGame.Key.ToString(), path));
-            }
-
-            return Task.FromResult<IReadOnlyList<GameEntry>>(games);
+                return games;
+            }, ct);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
         }
         catch
         {
-            return Task.FromResult<IReadOnlyList<GameEntry>>([]);
+            return [];
         }
     }
 }

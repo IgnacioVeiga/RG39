@@ -11,67 +11,74 @@ public sealed class EpicGameLibraryProvider : IGameLibraryProvider
 {
     public GameSource Source => GameSource.EpicGames;
 
-    public Task<IReadOnlyList<GameEntry>> GetInstalledGamesAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<GameEntry>> GetInstalledGamesAsync(CancellationToken ct = default)
     {
-        ct.ThrowIfCancellationRequested();
-
         try
         {
-            string? metadataDir = ReadMetadataDirectoryFromRegistry();
-            if (string.IsNullOrWhiteSpace(metadataDir) || !Directory.Exists(metadataDir))
+            return await Task.Run<IReadOnlyList<GameEntry>>(() =>
             {
-                return Task.FromResult<IReadOnlyList<GameEntry>>([]);
-            }
+                ct.ThrowIfCancellationRequested();
 
-            AbsolutePath manifestFolder = FileSystem.Shared.FromUnsanitizedFullPath(metadataDir);
+                string? metadataDir = ReadMetadataDirectoryFromRegistry();
+                if (string.IsNullOrWhiteSpace(metadataDir) || !Directory.Exists(metadataDir))
+                {
+                    return [];
+                }
 
-            AbsolutePath[] itemFiles;
-            try
-            {
-                itemFiles = FileSystem.Shared.EnumerateFiles(manifestFolder, "*.item").ToArray();
-            }
-            catch
-            {
-                return Task.FromResult<IReadOnlyList<GameEntry>>([]);
-            }
+                AbsolutePath manifestFolder = FileSystem.Shared.FromUnsanitizedFullPath(metadataDir);
 
-            List<GameEntry> games = [];
-
-            foreach (AbsolutePath itemFile in itemFiles)
-            {
+                AbsolutePath[] itemFiles;
                 try
                 {
-                    using Stream stream = FileSystem.Shared.ReadFile(itemFile);
-                    EgsGameManifest? game = JsonSerializer.Deserialize<EgsGameManifest>(stream);
-                    if (game is null)
-                    {
-                        continue;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(game.CatalogNamespace) ||
-                        string.IsNullOrWhiteSpace(game.CatalogItemId) ||
-                        string.IsNullOrWhiteSpace(game.AppName) ||
-                        string.IsNullOrWhiteSpace(game.DisplayName) ||
-                        string.IsNullOrWhiteSpace(game.InstallLocation))
-                    {
-                        continue;
-                    }
-
-                    string gameId = $"{game.CatalogNamespace}%3A{game.CatalogItemId}%3A{game.AppName}";
-                    string fakePath = $"{game.InstallLocation}{Path.DirectorySeparatorChar}{game.DisplayName}.url";
-                    games.Add(new GameEntry(Source, gameId, fakePath));
+                    itemFiles = FileSystem.Shared.EnumerateFiles(manifestFolder, "*.item").ToArray();
                 }
                 catch
                 {
-                    // Skip invalid manifest entries and keep loading the rest.
+                    return [];
                 }
-            }
 
-            return Task.FromResult<IReadOnlyList<GameEntry>>(games);
+                List<GameEntry> games = [];
+
+                foreach (AbsolutePath itemFile in itemFiles)
+                {
+                    try
+                    {
+                        using Stream stream = FileSystem.Shared.ReadFile(itemFile);
+                        EgsGameManifest? game = JsonSerializer.Deserialize<EgsGameManifest>(stream);
+                        if (game is null)
+                        {
+                            continue;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(game.CatalogNamespace) ||
+                            string.IsNullOrWhiteSpace(game.CatalogItemId) ||
+                            string.IsNullOrWhiteSpace(game.AppName) ||
+                            string.IsNullOrWhiteSpace(game.DisplayName) ||
+                            string.IsNullOrWhiteSpace(game.InstallLocation))
+                        {
+                            continue;
+                        }
+
+                        string gameId = $"{game.CatalogNamespace}%3A{game.CatalogItemId}%3A{game.AppName}";
+                        string fakePath = $"{game.InstallLocation}{Path.DirectorySeparatorChar}{game.DisplayName}.url";
+                        games.Add(new GameEntry(Source, gameId, fakePath));
+                    }
+                    catch
+                    {
+                        // Skip invalid manifest entries and keep loading the rest.
+                    }
+                }
+
+                return games;
+            }, ct);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
         }
         catch
         {
-            return Task.FromResult<IReadOnlyList<GameEntry>>([]);
+            return [];
         }
     }
 

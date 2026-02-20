@@ -77,6 +77,7 @@ public partial class App : Application
         services.AddSingleton<IGameRepository, JsonGameRepository>();
         services.AddSingleton<IGameLauncher, WindowsGameLauncher>();
         services.AddSingleton<IStorePathService, StorePathService>();
+        services.AddSingleton<IGameCatalogService, GameCatalogService>();
         services.AddSingleton<IExecutablePicker, ExecutableFilePicker>();
         services.AddTransient<IAddGameDialogService, AddGameDialogService>();
 
