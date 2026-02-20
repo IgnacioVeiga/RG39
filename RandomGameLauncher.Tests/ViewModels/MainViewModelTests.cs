@@ -72,14 +72,19 @@ public sealed class MainViewModelTests
 
         Assert.Null(sut.IsAllActiveChecked);
 
-        sut.IsAllActiveChecked = true;
+        RelayCommand toggleCommand = Assert.IsType<RelayCommand>(sut.ToggleAllActiveCommand);
+        toggleCommand.Execute(null);
         Assert.All(sut.Games, game => Assert.True(game.Active));
         Assert.True(sut.IsAllActiveChecked);
 
         sut.Games[0].Active = false;
         Assert.Null(sut.IsAllActiveChecked);
 
-        sut.IsAllActiveChecked = false;
+        toggleCommand.Execute(null);
+        Assert.All(sut.Games, game => Assert.True(game.Active));
+        Assert.True(sut.IsAllActiveChecked);
+
+        toggleCommand.Execute(null);
         Assert.All(sut.Games, game => Assert.False(game.Active));
         Assert.False(sut.IsAllActiveChecked);
     }

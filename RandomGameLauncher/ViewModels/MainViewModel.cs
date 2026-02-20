@@ -30,10 +30,12 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly AsyncRelayCommand<Game> _runGameCommand;
     private readonly AsyncRelayCommand<Game> _removeGameCommand;
     private readonly AsyncRelayCommand _clearListCommand;
+    private readonly RelayCommand _toggleAllActiveCommand;
 
     private bool? _isAllActiveChecked;
     private bool _isUpdatingActiveState;
     private bool _isLoading;
+    // Counters keep tri-state header updates constant-time for large lists.
     private int _totalGamesCount;
     private int _activeGamesCount;
 
@@ -49,7 +51,7 @@ public class MainViewModel : INotifyPropertyChanged
     public bool? IsAllActiveChecked
     {
         get => _isAllActiveChecked;
-        set
+        private set
         {
             if (_isAllActiveChecked == value)
             {
@@ -62,17 +64,6 @@ public class MainViewModel : INotifyPropertyChanged
             if (_isUpdatingActiveState)
             {
                 return;
-            }
-
-            if (value is null)
-            {
-                UpdateHeaderCheckboxState();
-                return;
-            }
-
-            if (value is bool shouldActivateAll)
-            {
-                SetAllGamesActive(shouldActivateAll);
             }
         }
     }
@@ -99,6 +90,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand RunGameCommand => _runGameCommand;
     public ICommand RemoveGameCommand => _removeGameCommand;
     public ICommand ClearListCommand => _clearListCommand;
+    public ICommand ToggleAllActiveCommand => _toggleAllActiveCommand;
     public ICommand HelpCommand { get; }
     public ICommand AboutCommand { get; }
     public ICommand ChangeLanguageCommand { get; }
@@ -124,6 +116,7 @@ public class MainViewModel : INotifyPropertyChanged
         _runGameCommand = new AsyncRelayCommand<Game>(RunGameAsync, g => g is not null && !IsLoading, ShowUnhandledError);
         _removeGameCommand = new AsyncRelayCommand<Game>(RemoveGameAsync, g => g is not null && g.From == LibraryEnum.Other && !IsLoading, ShowUnhandledError);
         _clearListCommand = new AsyncRelayCommand(ClearListAsync, CanUseInteractiveCommands, ShowUnhandledError);
+        _toggleAllActiveCommand = new RelayCommand(ToggleAllActive, CanToggleAllActive);
 
         Languages = BuildLanguages(Settings.Default.Language);
         ChangeLanguageCommand = new RelayCommand<string?>(ChangeLanguage, CanChangeLanguage);
@@ -286,6 +279,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void SetAllGamesActive(bool isChecked)
     {
+        // Bulk updates suppress per-item side effects and commit one final aggregate state.
         _isUpdatingActiveState = true;
 
         try
@@ -381,6 +375,7 @@ public class MainViewModel : INotifyPropertyChanged
     }
 
     private bool CanUseInteractiveCommands() => !IsLoading;
+    private bool CanToggleAllActive() => !IsLoading && _totalGamesCount > 0;
 
     private static IReadOnlyList<LanguageOptionItem> BuildLanguages(string? selectedLanguage) =>
         AppLanguageService.Languages
@@ -413,6 +408,7 @@ public class MainViewModel : INotifyPropertyChanged
         _runGameCommand.RaiseCanExecuteChanged();
         _removeGameCommand.RaiseCanExecuteChanged();
         _clearListCommand.RaiseCanExecuteChanged();
+        _toggleAllActiveCommand.RaiseCanExecuteChanged();
     }
 
     private static void ShowUnhandledError(Exception ex) =>
@@ -440,6 +436,7 @@ public class MainViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(StatusText));
         RecalculateCountersAfterCollectionChange(e);
         UpdateHeaderCheckboxState();
+        RaiseCommandsCanExecuteChanged();
     }
 
     private void RecalculateCountersAfterCollectionChange(NotifyCollectionChangedEventArgs e)
@@ -496,6 +493,7 @@ public class MainViewModel : INotifyPropertyChanged
                 return;
             }
 
+            // Keep active count in sync incrementally, then refresh tri-state header.
             if (sender is Game changedGame)
             {
                 _activeGamesCount += changedGame.Active ? 1 : -1;
@@ -525,20 +523,22 @@ public class MainViewModel : INotifyPropertyChanged
             _ => null
         };
 
-        _isUpdatingActiveState = true;
+        IsAllActiveChecked = newHeaderState;
+    }
 
-        try
+    /// <summary>
+    /// Header click policy: partial selection becomes "all active", otherwise toggles all off.
+    /// This keeps interaction predictable while still displaying tri-state feedback.
+    /// </summary>
+    private void ToggleAllActive()
+    {
+        if (_totalGamesCount == 0)
         {
-            if (_isAllActiveChecked != newHeaderState)
-            {
-                _isAllActiveChecked = newHeaderState;
-                OnPropertyChanged(nameof(IsAllActiveChecked));
-            }
+            return;
         }
-        finally
-        {
-            _isUpdatingActiveState = false;
-        }
+
+        bool shouldActivateAll = _activeGamesCount < _totalGamesCount;
+        SetAllGamesActive(shouldActivateAll);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
