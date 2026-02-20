@@ -18,6 +18,8 @@ public class Game : INotifyPropertyChanged
     private string _folder = string.Empty;
     private string _name = string.Empty;
     private string _type = string.Empty;
+    private static readonly BitmapImage SteamStoreIcon = Utils.ByteArrayToImage(Properties.Resources.Steam);
+    private static readonly BitmapImage EpicStoreIcon = Utils.ByteArrayToImage(Properties.Resources.EpicGames);
 
     public Game(LibraryEnum from, string gameId, string path)
     {
@@ -212,8 +214,8 @@ public class Game : INotifyPropertyChanged
     public BitmapImage? AppIcon => From switch
     {
         LibraryEnum.Other => GetIconWithCache(FilePath),
-        LibraryEnum.Steam => Utils.ByteArrayToImage(Properties.Resources.Steam),
-        LibraryEnum.EpicGames => Utils.ByteArrayToImage(Properties.Resources.EpicGames),
+        LibraryEnum.Steam => SteamStoreIcon,
+        LibraryEnum.EpicGames => EpicStoreIcon,
         _ => null,
     };
 

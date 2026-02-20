@@ -37,6 +37,12 @@ dotnet test RandomGameLauncher.Tests/RandomGameLauncher.Tests.csproj -c Release
 - Agregar/extender tests unitarios en `RandomGameLauncher.Tests` cuando cambie lógica de ViewModels o de orquestación de app.
 - Ejecutar build WPF en CI de Windows antes de mergear.
 
+## Bugs conocidos
+- El checkbox de actividad en el header del DataGrid puede no propagar su acción a todas las filas en ciertos estados de UI.
+  - Alcance: comportamiento del checkbox de cabecera en la lista de juegos de `MainWindow`.
+  - Estado actual: bug reconocido, pendiente de fix robusto.
+  - Workaround: usar los checkboxes por fila para cambios de estado por ítem.
+
 ## Estilo de commits
 - Mensajes cortos en inglés.
 - Commits enfocados (lógica, docs, CI).

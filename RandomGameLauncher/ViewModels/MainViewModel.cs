@@ -31,6 +31,8 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly AsyncRelayCommand<Game> _removeGameCommand;
     private readonly AsyncRelayCommand _clearListCommand;
     private readonly RelayCommand _toggleAllActiveCommand;
+    private static readonly BitmapImage EpicGamesStatusIcon = Utils.ByteArrayToImage(Properties.Resources.EpicGames);
+    private static readonly BitmapImage SteamStatusIcon = Utils.ByteArrayToImage(Properties.Resources.Steam);
 
     private bool? _isAllActiveChecked;
     private bool _isUpdatingActiveState;
@@ -45,8 +47,8 @@ public class MainViewModel : INotifyPropertyChanged
     public string GamesCount => $"{Games.Count} {Strings.GAMES.ToLower()}";
     public string StatusText => IsLoading ? $"{Strings.GAMES}..." : GamesCount;
 
-    public static BitmapImage EpicGamesIcon => Utils.ByteArrayToImage(Properties.Resources.EpicGames);
-    public static BitmapImage SteamIcon => Utils.ByteArrayToImage(Properties.Resources.Steam);
+    public static BitmapImage EpicGamesIcon => EpicGamesStatusIcon;
+    public static BitmapImage SteamIcon => SteamStatusIcon;
 
     public bool? IsAllActiveChecked
     {

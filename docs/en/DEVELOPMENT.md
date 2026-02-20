@@ -37,6 +37,12 @@ dotnet test RandomGameLauncher.Tests/RandomGameLauncher.Tests.csproj -c Release
 - Add/extend unit tests in `RandomGameLauncher.Tests` for view model or app orchestration changes.
 - Run WPF build on Windows CI before merge.
 
+## Known issues
+- DataGrid header activity checkbox may fail to propagate its action to all rows in some UI states.
+  - Scope: `MainWindow` game list header checkbox behavior.
+  - Current status: recognized bug, pending robust fix.
+  - Workaround: use row-level checkboxes for reliable per-item state changes.
+
 ## Commit style
 - Use short English commit messages.
 - Keep commits focused (logic, docs, CI).
