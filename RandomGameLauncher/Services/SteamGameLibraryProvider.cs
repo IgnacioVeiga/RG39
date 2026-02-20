@@ -7,6 +7,9 @@ using System.IO;
 
 namespace RandomGameLauncher.Services;
 
+/// <summary>
+/// Discovers Steam titles and maps them to launchable entries for the app catalog.
+/// </summary>
 public sealed class SteamGameLibraryProvider : IGameLibraryProvider
 {
     public GameSource Source => GameSource.Steam;
@@ -15,6 +18,7 @@ public sealed class SteamGameLibraryProvider : IGameLibraryProvider
     {
         try
         {
+            // GameFinder uses blocking APIs; offload to background thread to keep UI responsive.
             return await Task.Run<IReadOnlyList<GameEntry>>(() =>
             {
                 ct.ThrowIfCancellationRequested();

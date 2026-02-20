@@ -5,6 +5,10 @@ using System.Windows.Media.Imaging;
 
 namespace RandomGameLauncher.Models;
 
+/// <summary>
+/// UI-facing game model. It stores path parts separately to support DataGrid columns
+/// while still exposing a composed file path for persistence and comparisons.
+/// </summary>
 public class Game : INotifyPropertyChanged
 {
     private bool _active;
@@ -172,6 +176,7 @@ public class Game : INotifyPropertyChanged
         }
         set
         {
+            // Split path into folder/name/type so each part can be displayed independently in the grid.
             if (string.IsNullOrWhiteSpace(value))
             {
                 _folder = string.Empty;
@@ -214,6 +219,7 @@ public class Game : INotifyPropertyChanged
 
     private static BitmapImage? GetIconWithCache(string filePath)
     {
+        // Icon extraction can be expensive; cache by path for smoother scrolling.
         if (string.IsNullOrWhiteSpace(filePath))
         {
             return null;

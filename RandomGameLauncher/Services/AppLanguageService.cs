@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace RandomGameLauncher.Services
 {
+    /// <summary>
+    /// Centralizes language selection and persists it for next startup.
+    /// </summary>
     public static class AppLanguageService
     {
         public static readonly Dictionary<string, string> Languages = new()

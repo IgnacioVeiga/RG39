@@ -7,6 +7,9 @@ using System.Text.Json;
 
 namespace RandomGameLauncher.Services;
 
+/// <summary>
+/// Reads Epic metadata manifests and converts valid entries to launcher-compatible game IDs.
+/// </summary>
 public sealed class EpicGameLibraryProvider : IGameLibraryProvider
 {
     public GameSource Source => GameSource.EpicGames;
@@ -15,6 +18,7 @@ public sealed class EpicGameLibraryProvider : IGameLibraryProvider
     {
         try
         {
+            // Manifest parsing is file-system heavy; run it off the UI thread.
             return await Task.Run<IReadOnlyList<GameEntry>>(() =>
             {
                 ct.ThrowIfCancellationRequested();

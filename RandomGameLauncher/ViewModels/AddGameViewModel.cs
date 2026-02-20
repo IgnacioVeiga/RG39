@@ -4,6 +4,9 @@ using System.Windows.Input;
 
 namespace RandomGameLauncher.ViewModels;
 
+/// <summary>
+/// Handles add-game dialog input and validates whether confirmation can close the dialog.
+/// </summary>
 public class AddGameViewModel : INotifyPropertyChanged
 {
     private readonly IExecutablePicker _executablePicker;

@@ -3,6 +3,9 @@ using RandomGameLauncher.Core.Models;
 
 namespace RandomGameLauncher.Services;
 
+/// <summary>
+/// Reads launcher paths from known registry keys to show installation diagnostics in UI.
+/// </summary>
 public sealed class StorePathService : IStorePathService
 {
     public string GetStorePath(GameSource source)

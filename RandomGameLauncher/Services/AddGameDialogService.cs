@@ -3,6 +3,9 @@ using RandomGameLauncher.ViewModels;
 
 namespace RandomGameLauncher.Services;
 
+/// <summary>
+/// Isolates modal dialog wiring so ViewModels do not directly depend on window types.
+/// </summary>
 public sealed class AddGameDialogService : IAddGameDialogService
 {
     private readonly IExecutablePicker _executablePicker;

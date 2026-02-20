@@ -2,6 +2,9 @@ using System.Windows.Input;
 
 namespace RandomGameLauncher;
 
+/// <summary>
+/// Minimal synchronous ICommand implementation for UI actions that do not require async flow.
+/// </summary>
 public sealed class RelayCommand : ICommand
 {
     private readonly Action _execute;
@@ -25,6 +28,9 @@ public sealed class RelayCommand : ICommand
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }
 
+/// <summary>
+/// Typed synchronous command variant that safely handles nullable command parameters.
+/// </summary>
 public sealed class RelayCommand<T> : ICommand
 {
     private readonly Action<T?> _execute;

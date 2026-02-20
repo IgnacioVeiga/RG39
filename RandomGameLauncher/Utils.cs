@@ -6,6 +6,9 @@ using System.Collections.Specialized;
 
 namespace RandomGameLauncher
 {
+    /// <summary>
+    /// Image helpers shared by UI models and view models.
+    /// </summary>
     public static class Utils
     {
         public static BitmapImage ByteArrayToImage(byte[] imageData)
@@ -48,6 +51,9 @@ namespace RandomGameLauncher
 
     public class ObservableCollectionEx<T> : ObservableCollection<T>
     {
+        /// <summary>
+        /// Adds a batch and emits a single reset notification for UI refresh efficiency.
+        /// </summary>
         public void AddRange(IEnumerable<T> collection)
         {
             if (collection == null) return;

@@ -2,6 +2,9 @@ using System.Windows;
 
 namespace RandomGameLauncher;
 
+/// <summary>
+/// Bridges ViewModel-driven dialog result changes to Window.DialogResult.
+/// </summary>
 public static class DialogResultBehavior
 {
     public static readonly DependencyProperty DialogResultProperty =

@@ -5,6 +5,10 @@ using System.Text.Json;
 
 namespace RandomGameLauncher.Services;
 
+/// <summary>
+/// Persists manual entries in local app data and transparently migrates legacy storage
+/// from older app versions when needed.
+/// </summary>
 public sealed class JsonGameRepository : IGameRepository
 {
     private const string StorageFileName = "list.json";
@@ -35,6 +39,7 @@ public sealed class JsonGameRepository : IGameRepository
 
     public async Task<IReadOnlyList<StoredGame>> LoadAsync(CancellationToken ct = default)
     {
+        // Migration runs before reads so users keep old data without manual steps.
         await MigrateLegacyIfNeededAsync(ct);
 
         if (!File.Exists(_storageFilePath))
@@ -130,6 +135,7 @@ public sealed class JsonGameRepository : IGameRepository
 
     private StoredGame? ValidateAndNormalize(StoredGame game)
     {
+        // Validation is strict to avoid persisting broken or stale paths.
         string? normalizedPath = _pathNormalizer.NormalizeAbsolutePath(game.FilePath);
         if (string.IsNullOrWhiteSpace(normalizedPath))
         {

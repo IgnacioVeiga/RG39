@@ -5,6 +5,9 @@ using System.IO;
 
 namespace RandomGameLauncher.Services;
 
+/// <summary>
+/// Windows-specific launcher that starts either local executables or store URIs.
+/// </summary>
 public sealed class WindowsGameLauncher : IGameLauncher
 {
     public Task LaunchAsync(GameEntry game, CancellationToken ct = default)
@@ -31,6 +34,7 @@ public sealed class WindowsGameLauncher : IGameLauncher
 
     private static void LaunchExecutable(string executablePath, string launchArguments)
     {
+        // UseShellExecute keeps launch behavior compatible with .url handlers and shell resolution.
         Process.Start(new ProcessStartInfo
         {
             UseShellExecute = true,

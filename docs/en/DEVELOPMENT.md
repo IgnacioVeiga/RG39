@@ -22,6 +22,7 @@ Full app validation (Windows only):
 
 ```powershell
 dotnet build RandomGameLauncher/RandomGameLauncher.csproj -c Release -r win-x64
+dotnet test RandomGameLauncher.Tests/RandomGameLauncher.Tests.csproj -c Release
 ```
 
 ## Coding guidelines
@@ -33,6 +34,7 @@ dotnet build RandomGameLauncher/RandomGameLauncher.csproj -c Release -r win-x64
 
 ## Testing strategy
 - Add/extend unit tests in `RandomGameLauncher.Core.Tests` for any change in core logic.
+- Add/extend unit tests in `RandomGameLauncher.Tests` for view model or app orchestration changes.
 - Run WPF build on Windows CI before merge.
 
 ## Commit style
