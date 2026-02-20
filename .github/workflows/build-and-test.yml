@@ -91,3 +91,13 @@ jobs:
 
       - name: Build
         run: dotnet build RandomGameLauncher/RandomGameLauncher.csproj -c Release --no-restore -r win-x64
+
+      - name: Test app layer (Windows)
+        run: dotnet test RandomGameLauncher.Tests/RandomGameLauncher.Tests.csproj -c Release --logger trx --results-directory TestResults
+
+      - name: Upload app test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-test-results-windows
+          path: TestResults/*.trx
