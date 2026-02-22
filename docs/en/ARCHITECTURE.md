@@ -12,12 +12,18 @@ Random Game Launcher is a Windows WPF application split into two layers:
 - `RandomGameLauncher.Core/Models`: domain transport models (`GameEntry`, `StoredGame`, `GameSource`).
 - `RandomGameLauncher.Core/Services`: pure implementations (`BagRandomGameSelector`, `WindowsPathNormalizer`).
 - `RandomGameLauncher.Core/Utilities`: shared helpers (`GameIdentity`).
-- `RandomGameLauncher/Services`: infrastructure adapters and app orchestration services (JSON repository, game catalog service, Steam/Epic providers, executable picker, launcher, dialog service).
-- `RandomGameLauncher/ViewModels`: WPF view models orchestrating use cases.
+- `RandomGameLauncher/Services/Catalog`: catalog orchestration and providers (`GameCatalogService`, `JsonGameRepository`, `SteamGameLibraryProvider`, `EpicGameLibraryProvider`).
+- `RandomGameLauncher/Services/Dialogs`: dialog-related services (`AddGameDialogService`, `ExecutableFilePicker`).
+- `RandomGameLauncher/Services/Stores`: store path diagnostics (`StorePathService`).
+- `RandomGameLauncher/Services/Launching`: launch adapters (`WindowsGameLauncher`).
+- `RandomGameLauncher/ViewModels/Main`: main workflow view model split by responsibility with partial classes.
+- `RandomGameLauncher/Views/AddGame`: add-game dialog implemented with simple code-behind (intentionally lighter than full MVVM).
+- `RandomGameLauncher/Collections`: UI-focused collection helpers (`ObservableCollectionEx`).
+- `RandomGameLauncher/Infrastructure/Commands`: reusable sync/async command implementations.
 - `RandomGameLauncher.Tests`: tests for `MainViewModel` behavior and app-layer catalog flows.
 
 ## Data flow
-1. `App` composes dependencies using `Microsoft.Extensions.DependencyInjection`.
+1. `App` manually composes dependencies in `App.xaml.cs` (explicit composition root).
 2. `MainViewModel` initializes asynchronously and delegates catalog loading to `IGameCatalogService`.
 3. `IGameCatalogService` merges manual repository entries and discovered provider entries.
 4. UI exposes the unified list.
@@ -44,6 +50,7 @@ Manual entries support optional launch arguments:
 - Passed to `ProcessStartInfo.Arguments` by `WindowsGameLauncher`.
 
 ## Design decisions
+- App startup uses manual composition instead of a DI container to keep bootstrap easier to read for beginners.
 - Store libraries (Steam/Epic) are treated as discoverable sources, not persisted user entries.
 - Duplicate manual games are resolved by normalized absolute path (case-insensitive for Windows semantics).
 - Random selection uses a non-repeating bag per active set and resets when active flags change.

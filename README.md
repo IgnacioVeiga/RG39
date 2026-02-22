@@ -73,12 +73,14 @@ Language `.resx` files are in `RandomGameLauncher/Resources/Language/`.
 ***
 
 ## Documentation (English)
+- [Start here (beginner guide)](docs/en/START_HERE.md)
 - [Architecture](docs/en/ARCHITECTURE.md)
 - [Development](docs/en/DEVELOPMENT.md)
 - [Release process](docs/en/RELEASE.md)
 - [Roadmap](docs/en/ROADMAP.md)
 
 ## Documentation (Spanish)
+- [Empezar por aquí (guía para principiantes)](docs/es/START_HERE.md)
 - [Arquitectura](docs/es/ARCHITECTURE.md)
 - [Desarrollo](docs/es/DEVELOPMENT.md)
 - [Proceso de release](docs/es/RELEASE.md)
