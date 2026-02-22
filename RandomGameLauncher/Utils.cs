@@ -1,69 +1,57 @@
-﻿using System.IO;
 using System.Drawing;
+using System.IO;
 using System.Windows.Media.Imaging;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
-namespace RandomGameLauncher
+namespace RandomGameLauncher;
+
+/// <summary>
+/// UI image helper methods used by view models and models.
+/// </summary>
+public static class Utils
 {
     /// <summary>
-    /// Image helpers shared by UI models and view models.
+    /// Converts raw image bytes to a frozen WPF bitmap loaded in memory.
     /// </summary>
-    public static class Utils
+    public static BitmapImage ByteArrayToImage(byte[] imageData)
     {
-        public static BitmapImage ByteArrayToImage(byte[] imageData)
-        {
-            using (var ms = new MemoryStream(imageData))
-            {
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.StreamSource = ms;
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.EndInit();
-                return image;
-            }
-        }
+        using MemoryStream stream = new(imageData);
 
-        public static BitmapImage? ExtractIconFromExe(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-                return null;
+        BitmapImage image = new();
+        image.BeginInit();
+        image.StreamSource = stream;
+        image.CacheOption = BitmapCacheOption.OnLoad;
+        image.EndInit();
 
-            using Icon? icon = Icon.ExtractAssociatedIcon(filePath);
-            if (icon is null)
-            {
-                return null;
-            }
-
-            using var ms = new MemoryStream();
-            using Bitmap bitmap = icon.ToBitmap();
-            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            ms.Position = 0;
-
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = ms;
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-            return bitmapImage;
-        }
+        return image;
     }
 
-    public class ObservableCollectionEx<T> : ObservableCollection<T>
+    /// <summary>
+    /// Extracts an executable icon and converts it to a PNG-backed WPF bitmap.
+    /// </summary>
+    public static BitmapImage? ExtractIconFromExe(string filePath)
     {
-        /// <summary>
-        /// Adds a batch and emits a single reset notification for UI refresh efficiency.
-        /// </summary>
-        public void AddRange(IEnumerable<T> collection)
+        if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
         {
-            if (collection == null) return;
-
-            foreach (var item in collection)
-            {
-                Items.Add(item);
-            }
-
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            return null;
         }
+
+        using Icon? icon = Icon.ExtractAssociatedIcon(filePath);
+        if (icon is null)
+        {
+            return null;
+        }
+
+        using MemoryStream stream = new();
+        using Bitmap bitmap = icon.ToBitmap();
+        bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+        stream.Position = 0;
+
+        BitmapImage image = new();
+        image.BeginInit();
+        image.StreamSource = stream;
+        image.CacheOption = BitmapCacheOption.OnLoad;
+        image.EndInit();
+
+        return image;
     }
 }

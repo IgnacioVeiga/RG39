@@ -7,3 +7,5 @@
 /.vs
 .vscode/launch.json
 .vscode/tasks.json
+TestResults/
+*.csproj.user

@@ -8,6 +8,9 @@ namespace RandomGameLauncher;
 /// </summary>
 public partial class MainWindow : Window
 {
+    /// <summary>
+    /// Constructor that receives the already-composed main view model from the app bootstrap.
+    /// </summary>
     public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();

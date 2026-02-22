@@ -12,6 +12,9 @@ public sealed class AsyncRelayCommand : ICommand
     private readonly Action<Exception>? _onException;
     private bool _isExecuting;
 
+    /// <summary>
+    /// Constructor receiving async execute and optional can-execute/error delegates.
+    /// </summary>
     public AsyncRelayCommand(
         Func<Task> execute,
         Func<bool>? canExecute = null,
@@ -28,6 +31,9 @@ public sealed class AsyncRelayCommand : ICommand
     public async void Execute(object? parameter) =>
         await ExecuteAsync();
 
+    /// <summary>
+    /// Executes the command with reentrancy protection and centralized exception routing.
+    /// </summary>
     public async Task ExecuteAsync()
     {
         if (!CanExecute(null))
@@ -55,6 +61,9 @@ public sealed class AsyncRelayCommand : ICommand
 
     public event EventHandler? CanExecuteChanged;
 
+    /// <summary>
+    /// Notifies WPF that command execution eligibility may have changed.
+    /// </summary>
     public void RaiseCanExecuteChanged() =>
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }
@@ -69,6 +78,9 @@ public sealed class AsyncRelayCommand<T> : ICommand
     private readonly Action<Exception>? _onException;
     private bool _isExecuting;
 
+    /// <summary>
+    /// Constructor receiving typed async execute and optional can-execute/error delegates.
+    /// </summary>
     public AsyncRelayCommand(
         Func<T?, Task> execute,
         Func<T?, bool>? canExecute = null,
@@ -99,6 +111,9 @@ public sealed class AsyncRelayCommand<T> : ICommand
         await ExecuteAsync(typedParameter);
     }
 
+    /// <summary>
+    /// Executes the typed command with reentrancy protection and centralized exception routing.
+    /// </summary>
     public async Task ExecuteAsync(T? parameter)
     {
         if (_isExecuting || !(_canExecute?.Invoke(parameter) ?? true))
@@ -126,9 +141,15 @@ public sealed class AsyncRelayCommand<T> : ICommand
 
     public event EventHandler? CanExecuteChanged;
 
+    /// <summary>
+    /// Notifies WPF that command execution eligibility may have changed.
+    /// </summary>
     public void RaiseCanExecuteChanged() =>
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
+    /// <summary>
+    /// Converts command parameters to the expected generic type without runtime exceptions.
+    /// </summary>
     private static bool TryCastParameter(object? parameter, out T? typedParameter)
     {
         if (parameter is null)

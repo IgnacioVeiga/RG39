@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Services;
 using RandomGameLauncher.Properties;
@@ -11,18 +10,20 @@ using System.Windows;
 namespace RandomGameLauncher;
 
 /// <summary>
-/// Interaction logic for App.xaml
+/// WPF application bootstrapper. It enforces single instance and composes dependencies.
 /// </summary>
 public partial class App : Application
 {
     private static Mutex? _mutex;
-    private ServiceProvider? _serviceProvider;
 
     public App()
     {
         AppLanguageService.ChangeLanguage(Settings.Default.Language);
     }
 
+    /// <summary>
+    /// Restarts the current executable to apply settings that require a full reload.
+    /// </summary>
     internal static void RestartApp()
     {
         try
@@ -36,6 +37,9 @@ public partial class App : Application
         }
     }
 
+    /// <summary>
+    /// Startup routine with single-instance guard and manual object composition.
+    /// </summary>
     protected override void OnStartup(StartupEventArgs e)
     {
         const bool initiallyOwned = true;
@@ -51,42 +55,53 @@ public partial class App : Application
         }
 
         Exit += CloseMutexHandler;
-
-        _serviceProvider = ConfigureServices();
-
-        MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+        MainWindow mainWindow = CreateMainWindow();
         MainWindow = mainWindow;
         mainWindow.Show();
 
         base.OnStartup(e);
     }
 
+    /// <summary>
+    /// Releases the singleton mutex on application shutdown.
+    /// </summary>
     protected virtual void CloseMutexHandler(object? sender, EventArgs e)
     {
-        _serviceProvider?.Dispose();
         _mutex?.Close();
     }
 
-    private static ServiceProvider ConfigureServices()
+    /// <summary>
+    /// Composition root for the app. Dependencies are built explicitly to keep startup flow easy to read.
+    /// </summary>
+    private static MainWindow CreateMainWindow()
     {
-        ServiceCollection services = new();
+        IPathNormalizer pathNormalizer = new WindowsPathNormalizer();
+        IRandomGameSelector randomGameSelector = new BagRandomGameSelector(pathNormalizer);
 
-        services.AddSingleton<IPathNormalizer, WindowsPathNormalizer>();
-        services.AddSingleton<IRandomGameSelector, BagRandomGameSelector>();
+        IGameRepository gameRepository = new JsonGameRepository(pathNormalizer);
+        IGameLauncher gameLauncher = new WindowsGameLauncher();
+        IStorePathService storePathService = new StorePathService();
+        ExecutableFilePicker executableFilePicker = new();
+        IAddGameDialogService addGameDialogService = new AddGameDialogService(executableFilePicker);
 
-        services.AddSingleton<IGameRepository, JsonGameRepository>();
-        services.AddSingleton<IGameLauncher, WindowsGameLauncher>();
-        services.AddSingleton<IStorePathService, StorePathService>();
-        services.AddSingleton<IGameCatalogService, GameCatalogService>();
-        services.AddSingleton<IExecutablePicker, ExecutableFilePicker>();
-        services.AddTransient<IAddGameDialogService, AddGameDialogService>();
+        IGameLibraryProvider[] gameLibraryProviders =
+        [
+            new SteamGameLibraryProvider(),
+            new EpicGameLibraryProvider()
+        ];
 
-        services.AddSingleton<IGameLibraryProvider, SteamGameLibraryProvider>();
-        services.AddSingleton<IGameLibraryProvider, EpicGameLibraryProvider>();
+        IGameCatalogService gameCatalogService = new GameCatalogService(
+            gameRepository,
+            gameLibraryProviders,
+            pathNormalizer);
 
-        services.AddSingleton<MainViewModel>();
-        services.AddTransient<MainWindow>();
+        MainViewModel mainViewModel = new(
+            gameCatalogService,
+            gameLauncher,
+            randomGameSelector,
+            addGameDialogService,
+            storePathService);
 
-        return services.BuildServiceProvider();
+        return new MainWindow(mainViewModel);
     }
 }

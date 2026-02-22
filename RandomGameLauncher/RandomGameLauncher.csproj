@@ -3,8 +3,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <StartupObject>RandomGameLauncher.App</StartupObject>
     <ApplicationIcon>Resources\Icons\icon.ico</ApplicationIcon>
@@ -28,7 +26,6 @@
 
   <ItemGroup>
     <PackageReference Include="GameFinder" Version="4.3.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.10" />
   </ItemGroup>
 

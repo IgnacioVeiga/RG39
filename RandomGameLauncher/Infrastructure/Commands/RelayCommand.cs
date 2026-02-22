@@ -10,6 +10,9 @@ public sealed class RelayCommand : ICommand
     private readonly Action _execute;
     private readonly Func<bool>? _canExecute;
 
+    /// <summary>
+    /// Constructor receiving execute and optional can-execute delegates.
+    /// </summary>
     public RelayCommand(Action execute, Func<bool>? canExecute = null)
     {
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
@@ -24,6 +27,9 @@ public sealed class RelayCommand : ICommand
 
     public event EventHandler? CanExecuteChanged;
 
+    /// <summary>
+    /// Notifies WPF that command execution eligibility may have changed.
+    /// </summary>
     public void RaiseCanExecuteChanged() =>
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }
@@ -36,6 +42,9 @@ public sealed class RelayCommand<T> : ICommand
     private readonly Action<T?> _execute;
     private readonly Func<T?, bool>? _canExecute;
 
+    /// <summary>
+    /// Constructor receiving typed execute and optional can-execute delegates.
+    /// </summary>
     public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
     {
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
@@ -64,9 +73,15 @@ public sealed class RelayCommand<T> : ICommand
 
     public event EventHandler? CanExecuteChanged;
 
+    /// <summary>
+    /// Notifies WPF that command execution eligibility may have changed.
+    /// </summary>
     public void RaiseCanExecuteChanged() =>
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
+    /// <summary>
+    /// Converts command parameters to the expected generic type without runtime exceptions.
+    /// </summary>
     private static bool TryCastParameter(object? parameter, out T? typedParameter)
     {
         if (parameter is null)

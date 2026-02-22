@@ -3,8 +3,14 @@ using RandomGameLauncher.Resources.Language;
 
 namespace RandomGameLauncher.Services;
 
-public sealed class ExecutableFilePicker : IExecutablePicker
+/// <summary>
+/// Windows file picker for selecting executable files.
+/// </summary>
+public sealed class ExecutableFilePicker
 {
+    /// <summary>
+    /// Opens the native file dialog and returns an executable path or null when canceled.
+    /// </summary>
     public string? SelectExecutableFile()
     {
         OpenFileDialog openFileDialog = new()
