@@ -1,6 +1,7 @@
 using RandomGameLauncher.Core.Models;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Resources.Language;
+using RandomGameLauncher.Services;
 using System.Windows;
 
 namespace RandomGameLauncher.ViewModels;
