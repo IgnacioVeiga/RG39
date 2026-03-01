@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Windows.Media.Imaging;
@@ -9,7 +9,7 @@ namespace RandomGameLauncher.Models;
 /// UI-facing game model. It stores path parts separately to support DataGrid columns
 /// while still exposing a composed file path for persistence and comparisons.
 /// </summary>
-public class Game : INotifyPropertyChanged
+public class Game : ObservableObject
 {
     private bool _active;
     private string _gameId = string.Empty;
@@ -42,16 +42,7 @@ public class Game : INotifyPropertyChanged
     public bool Active
     {
         get => _active;
-        set
-        {
-            if (_active == value)
-            {
-                return;
-            }
-
-            _active = value;
-            OnPropertyChanged(nameof(Active));
-        }
+        set => SetProperty(ref _active, value);
     }
 
     [JsonIgnore]
@@ -61,14 +52,7 @@ public class Game : INotifyPropertyChanged
         set
         {
             string normalizedValue = value ?? string.Empty;
-
-            if (string.Equals(_gameId, normalizedValue, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            _gameId = normalizedValue;
-            OnPropertyChanged(nameof(GameId));
+            SetProperty(ref _gameId, normalizedValue);
         }
     }
 
@@ -78,14 +62,10 @@ public class Game : INotifyPropertyChanged
         get => _from;
         set
         {
-            if (_from == value)
+            if (SetProperty(ref _from, value))
             {
-                return;
+                OnPropertyChanged(nameof(AppIcon));
             }
-
-            _from = value;
-            OnPropertyChanged(nameof(From));
-            OnPropertyChanged(nameof(AppIcon));
         }
     }
 
@@ -96,14 +76,7 @@ public class Game : INotifyPropertyChanged
         set
         {
             string normalizedValue = value ?? string.Empty;
-
-            if (string.Equals(_launchArguments, normalizedValue, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            _launchArguments = normalizedValue;
-            OnPropertyChanged(nameof(LaunchArguments));
+            SetProperty(ref _launchArguments, normalizedValue);
         }
     }
 
@@ -114,15 +87,10 @@ public class Game : INotifyPropertyChanged
         set
         {
             string normalizedValue = value ?? string.Empty;
-
-            if (string.Equals(_folder, normalizedValue, StringComparison.Ordinal))
+            if (SetProperty(ref _folder, normalizedValue))
             {
-                return;
+                OnPropertyChanged(nameof(FilePath));
             }
-
-            _folder = normalizedValue;
-            OnPropertyChanged(nameof(Folder));
-            OnPropertyChanged(nameof(FilePath));
         }
     }
 
@@ -133,15 +101,10 @@ public class Game : INotifyPropertyChanged
         set
         {
             string normalizedValue = value ?? string.Empty;
-
-            if (string.Equals(_name, normalizedValue, StringComparison.Ordinal))
+            if (SetProperty(ref _name, normalizedValue))
             {
-                return;
+                OnPropertyChanged(nameof(FilePath));
             }
-
-            _name = normalizedValue;
-            OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(FilePath));
         }
     }
 
@@ -152,15 +115,10 @@ public class Game : INotifyPropertyChanged
         set
         {
             string normalizedValue = value ?? string.Empty;
-
-            if (string.Equals(_type, normalizedValue, StringComparison.Ordinal))
+            if (SetProperty(ref _type, normalizedValue))
             {
-                return;
+                OnPropertyChanged(nameof(FilePath));
             }
-
-            _type = normalizedValue;
-            OnPropertyChanged(nameof(Type));
-            OnPropertyChanged(nameof(FilePath));
         }
     }
 
@@ -242,8 +200,4 @@ public class Game : INotifyPropertyChanged
         return icon;
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private void OnPropertyChanged(string propertyName) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
