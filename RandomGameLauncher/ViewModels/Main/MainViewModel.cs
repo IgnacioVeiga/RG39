@@ -25,9 +25,15 @@ public partial class MainViewModel : ObservableObject
     private static readonly BitmapImage EpicGamesStatusIcon = Utils.ByteArrayToImage(Properties.Resources.EpicGames);
     private static readonly BitmapImage SteamStatusIcon = Utils.ByteArrayToImage(Properties.Resources.Steam);
 
+    [ObservableProperty]
     private bool? _isAllActiveChecked;
+
     private bool _isUpdatingActiveState;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusText))]
     private bool _isLoading;
+
     private int _totalGamesCount;
     private int _activeGamesCount;
 
@@ -39,28 +45,6 @@ public partial class MainViewModel : ObservableObject
 
     public static BitmapImage EpicGamesIcon => EpicGamesStatusIcon;
     public static BitmapImage SteamIcon => SteamStatusIcon;
-
-    public bool? IsAllActiveChecked
-    {
-        get => _isAllActiveChecked;
-        private set
-        {
-            SetProperty(ref _isAllActiveChecked, value);
-        }
-    }
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        private set
-        {
-            if (SetProperty(ref _isLoading, value))
-            {
-                OnPropertyChanged(nameof(StatusText));
-                RaiseCommandsCanExecuteChanged();
-            }
-        }
-    }
 
     /// <summary>
     /// Constructor wiring command handlers and starting background initialization.

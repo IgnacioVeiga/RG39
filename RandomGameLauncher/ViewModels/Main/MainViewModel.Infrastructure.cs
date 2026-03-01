@@ -12,6 +12,9 @@ public partial class MainViewModel
     /// </summary>
     private bool CanUseInteractiveCommands() => !IsLoading;
 
+    partial void OnIsLoadingChanged(bool value) =>
+        RaiseCommandsCanExecuteChanged();
+
     /// <summary>
     /// Returns true when the header selection toggle can be executed.
     /// </summary>
