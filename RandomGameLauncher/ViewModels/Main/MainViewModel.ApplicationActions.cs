@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Input;
 using RandomGameLauncher.Core.Models;
 using RandomGameLauncher.Properties;
 using RandomGameLauncher.Resources.Language;
@@ -16,13 +17,15 @@ public partial class MainViewModel
     /// <summary>
     /// Shows the modal about dialog.
     /// </summary>
+    [RelayCommand]
     private void About() =>
         new AboutWindow().ShowDialog();
 
     /// <summary>
     /// Opens the language-specific README section in the user's default browser.
     /// </summary>
-    private void HowToUse()
+    [RelayCommand]
+    private void Help()
     {
         string url = "https://github.com/IgnacioVeiga/RandomGameLauncher/blob/master/README";
 
@@ -78,6 +81,7 @@ public partial class MainViewModel
     /// <summary>
     /// Applies a new language and restarts the application so resources reload consistently.
     /// </summary>
+    [RelayCommand(CanExecute = nameof(CanChangeLanguage))]
     private void ChangeLanguage(string? language)
     {
         if (!CanChangeLanguage(language))

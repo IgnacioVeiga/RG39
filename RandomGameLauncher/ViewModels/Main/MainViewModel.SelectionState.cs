@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Input;
 using RandomGameLauncher.Models;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -37,6 +38,7 @@ public partial class MainViewModel
     /// <summary>
     /// Header click policy: partial selection becomes all-on, full selection becomes all-off.
     /// </summary>
+    [RelayCommand(CanExecute = nameof(CanToggleAllActive))]
     private void ToggleAllActive()
     {
         if (_totalGamesCount == 0)

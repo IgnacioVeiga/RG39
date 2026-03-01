@@ -1,13 +1,11 @@
 using RandomGameLauncher.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Models;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Properties;
 using RandomGameLauncher.Resources.Language;
 using RandomGameLauncher.Services;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace RandomGameLauncher.ViewModels;
@@ -23,13 +21,6 @@ public partial class MainViewModel : ObservableObject
     private readonly IRandomGameSelector _randomGameSelector;
     private readonly IAddGameDialogService _addGameDialogService;
     private readonly IStorePathService _storePathService;
-
-    private readonly AsyncRelayCommand _playRandomGameCommand;
-    private readonly AsyncRelayCommand _addGameCommand;
-    private readonly AsyncRelayCommand<Game> _runGameCommand;
-    private readonly AsyncRelayCommand<Game> _removeGameCommand;
-    private readonly AsyncRelayCommand _clearListCommand;
-    private readonly RelayCommand _toggleAllActiveCommand;
 
     private static readonly BitmapImage EpicGamesStatusIcon = Utils.ByteArrayToImage(Properties.Resources.EpicGames);
     private static readonly BitmapImage SteamStatusIcon = Utils.ByteArrayToImage(Properties.Resources.Steam);
@@ -71,16 +62,6 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    public ICommand PlayRandomGameCommand => _playRandomGameCommand;
-    public ICommand AddGameCommand => _addGameCommand;
-    public ICommand RunGameCommand => _runGameCommand;
-    public ICommand RemoveGameCommand => _removeGameCommand;
-    public ICommand ClearListCommand => _clearListCommand;
-    public ICommand ToggleAllActiveCommand => _toggleAllActiveCommand;
-    public ICommand HelpCommand { get; }
-    public ICommand AboutCommand { get; }
-    public ICommand ChangeLanguageCommand { get; }
-
     /// <summary>
     /// Constructor wiring command handlers and starting background initialization.
     /// </summary>
@@ -100,17 +81,7 @@ public partial class MainViewModel : ObservableObject
         Games = [];
         Games.CollectionChanged += Games_CollectionChanged;
 
-        _playRandomGameCommand = new AsyncRelayCommand(() => ExecuteCommandSafeAsync(PlayRandomGameAsync), CanUseInteractiveCommands);
-        _addGameCommand = new AsyncRelayCommand(() => ExecuteCommandSafeAsync(AddGameAsync), CanUseInteractiveCommands);
-        _runGameCommand = new AsyncRelayCommand<Game>(game => ExecuteCommandSafeAsync(() => RunGameAsync(game)), game => game is not null && !IsLoading);
-        _removeGameCommand = new AsyncRelayCommand<Game>(game => ExecuteCommandSafeAsync(() => RemoveGameAsync(game)), game => game is not null && game.From == LibraryEnum.Other && !IsLoading);
-        _clearListCommand = new AsyncRelayCommand(() => ExecuteCommandSafeAsync(ClearListAsync), CanUseInteractiveCommands);
-        _toggleAllActiveCommand = new RelayCommand(ToggleAllActive, CanToggleAllActive);
-
         Languages = BuildLanguages(Settings.Default.Language);
-        ChangeLanguageCommand = new RelayCommand<string?>(ChangeLanguage, CanChangeLanguage);
-        HelpCommand = new RelayCommand(HowToUse);
-        AboutCommand = new RelayCommand(About);
 
         RunBackgroundTask(InitializeAsync);
     }

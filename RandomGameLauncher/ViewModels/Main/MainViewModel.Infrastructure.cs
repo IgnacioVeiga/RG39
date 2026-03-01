@@ -1,3 +1,5 @@
+using RandomGameLauncher.Models;
+
 namespace RandomGameLauncher.ViewModels;
 
 /// <summary>
@@ -16,16 +18,29 @@ public partial class MainViewModel
     private bool CanToggleAllActive() => !IsLoading && _totalGamesCount > 0;
 
     /// <summary>
+    /// Returns true when a row launch action can execute.
+    /// </summary>
+    private bool CanRunGame(Game? game) => game is not null && !IsLoading;
+
+    /// <summary>
+    /// Returns true when a row can be removed from the manual list.
+    /// </summary>
+    private bool CanRemoveGame(Game? game) =>
+        game is not null &&
+        game.From == LibraryEnum.Other &&
+        !IsLoading;
+
+    /// <summary>
     /// Raises CanExecute updates for all command instances exposed by the view model.
     /// </summary>
     private void RaiseCommandsCanExecuteChanged()
     {
-        _playRandomGameCommand.NotifyCanExecuteChanged();
-        _addGameCommand.NotifyCanExecuteChanged();
-        _runGameCommand.NotifyCanExecuteChanged();
-        _removeGameCommand.NotifyCanExecuteChanged();
-        _clearListCommand.NotifyCanExecuteChanged();
-        _toggleAllActiveCommand.NotifyCanExecuteChanged();
+        PlayRandomGameCommand.NotifyCanExecuteChanged();
+        AddGameCommand.NotifyCanExecuteChanged();
+        RunGameCommand.NotifyCanExecuteChanged();
+        RemoveGameCommand.NotifyCanExecuteChanged();
+        ClearListCommand.NotifyCanExecuteChanged();
+        ToggleAllActiveCommand.NotifyCanExecuteChanged();
     }
 
     /// <summary>
@@ -52,26 +67,7 @@ public partial class MainViewModel
     /// </summary>
     private void RunBackgroundTask(Func<Task> taskFactory)
     {
-        _ = RunBackgroundTaskCoreAsync(taskFactory);
-    }
-
-    /// <summary>
-    /// Handles cancellation and unexpected failures from fire-and-forget routines.
-    /// </summary>
-    private async Task RunBackgroundTaskCoreAsync(Func<Task> taskFactory)
-    {
-        try
-        {
-            await taskFactory();
-        }
-        catch (OperationCanceledException)
-        {
-            // Ignore cancellations from stale operations.
-        }
-        catch (Exception ex)
-        {
-            ShowUnhandledError(ex);
-        }
+        _ = ExecuteCommandSafeAsync(taskFactory);
     }
 
     /// <summary>

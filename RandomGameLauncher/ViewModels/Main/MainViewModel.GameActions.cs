@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Input;
 using RandomGameLauncher.Core.Models;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Resources.Language;
@@ -37,7 +38,11 @@ public partial class MainViewModel
     /// <summary>
     /// Picks a random active game and delegates launch to the platform launcher.
     /// </summary>
-    private async Task PlayRandomGameAsync()
+    [RelayCommand(CanExecute = nameof(CanUseInteractiveCommands))]
+    private Task PlayRandomGameAsync() =>
+        ExecuteCommandSafeAsync(PlayRandomGameCoreAsync);
+
+    private async Task PlayRandomGameCoreAsync()
     {
         List<Game> activeGames = Games.Where(game => game.Active).ToList();
 
@@ -65,13 +70,17 @@ public partial class MainViewModel
             return;
         }
 
-        await RunGameAsync(gameToLaunch);
+        await RunGameCoreAsync(gameToLaunch);
     }
 
     /// <summary>
     /// Opens the add-game dialog, validates the selected executable, and persists manual entries.
     /// </summary>
-    private async Task AddGameAsync()
+    [RelayCommand(CanExecute = nameof(CanUseInteractiveCommands))]
+    private Task AddGameAsync() =>
+        ExecuteCommandSafeAsync(AddGameCoreAsync);
+
+    private async Task AddGameCoreAsync()
     {
         AddGameDialogResult dialogResult = _addGameDialogService.ShowDialog();
         if (!dialogResult.Accepted)
@@ -107,7 +116,11 @@ public partial class MainViewModel
     /// <summary>
     /// Launches a selected game and closes the application on success.
     /// </summary>
-    private async Task RunGameAsync(Game? game)
+    [RelayCommand(CanExecute = nameof(CanRunGame))]
+    private Task RunGameAsync(Game? game) =>
+        ExecuteCommandSafeAsync(() => RunGameCoreAsync(game));
+
+    private async Task RunGameCoreAsync(Game? game)
     {
         if (game is null)
         {
@@ -128,7 +141,11 @@ public partial class MainViewModel
     /// <summary>
     /// Removes a manual game after a user confirmation and persists the new snapshot.
     /// </summary>
-    private async Task RemoveGameAsync(Game? game)
+    [RelayCommand(CanExecute = nameof(CanRemoveGame))]
+    private Task RemoveGameAsync(Game? game) =>
+        ExecuteCommandSafeAsync(() => RemoveGameCoreAsync(game));
+
+    private async Task RemoveGameCoreAsync(Game? game)
     {
         if (game is null || game.From != LibraryEnum.Other)
         {
@@ -151,7 +168,11 @@ public partial class MainViewModel
     /// <summary>
     /// Clears all manual games while keeping store-discovered entries untouched.
     /// </summary>
-    private async Task ClearListAsync()
+    [RelayCommand(CanExecute = nameof(CanUseInteractiveCommands))]
+    private Task ClearListAsync() =>
+        ExecuteCommandSafeAsync(ClearListCoreAsync);
+
+    private async Task ClearListCoreAsync()
     {
         MessageBoxResult result = MessageBox.Show(Strings.CLEAR_LIST_MSG, Strings.CLEAR_LIST, MessageBoxButton.YesNo);
 
