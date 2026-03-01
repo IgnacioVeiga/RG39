@@ -120,14 +120,21 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Width="16" Height="16" Content="▶" FontSize="8" Margin="0,0,10,0"
+                                <Button Width="16" Height="16" Content="▶" Margin="0,0,10,0"
                                             Command="{Binding DataContext.RunGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                             CommandParameter="{Binding}" Style="{DynamicResource PlayGameButton}"
+                                            FontFamily="Segoe UI Symbol"
+                                            FontSize="10"
+                                            Padding="0"
                                             ToolTip="{x:Static l:Strings.PLAY_GAME}" />
 
-                                <Button Width="16" Height="16" Content="X" FontSize="8"
+                                <Button Width="16" Height="16" Content="X"
                                             Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                             CommandParameter="{Binding}" Style="{DynamicResource RemoveButton}"
+                                            FontFamily="Segoe UI"
+                                            FontSize="9"
+                                            FontWeight="Bold"
+                                            Padding="0"
                                             ToolTip="{x:Static l:Strings.REMOVE_GAME_MSG}" />
                             </StackPanel>
                         </DataTemplate>

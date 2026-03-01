@@ -15,15 +15,15 @@
         </Setter>
     </Style>
 
-    <SolidColorBrush x:Key="Button.Static.Background" Color="#2A475E" />
-    <SolidColorBrush x:Key="Button.Static.Border" Color="#66C0F4" />
-    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#365F7D" />
-    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#8FD2FF" />
-    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#1E3447" />
-    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#4EA6DE" />
-    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#25313F" />
-    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#4A5D70" />
-    <SolidColorBrush x:Key="Button.Foreground" Color="#ECF6FF" />
+    <SolidColorBrush x:Key="Button.Static.Background" Color="#3BBF3B" />
+    <SolidColorBrush x:Key="Button.Static.Border" Color="#2B8C2B" />
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#42D842" />
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#32A432" />
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#3082E0" />
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#2564AD" />
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#2E3136" />
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#6F7682" />
+    <SolidColorBrush x:Key="Button.Foreground" Color="#ECF9E9" />
 
     <Style x:Key="PlayGameButton" TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
@@ -33,7 +33,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Padding" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -42,7 +42,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="3"
+                        CornerRadius="1.5"
                         SnapsToDevicePixels="true">
                         <ContentPresenter
                             x:Name="contentPresenter"
