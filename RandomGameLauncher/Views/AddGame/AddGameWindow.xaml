@@ -10,11 +10,12 @@
         FontFamily="Segoe UI"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
+        SizeToContent="Height"
         Title="{x:Static l:Strings.ADD_GAME}"
-        Height="290"
+        Height="340"
         Width="720"
         MinWidth="680"
-        MinHeight="280">
+        MinHeight="340">
     <Window.Resources>
         <Style x:Key="DialogLabelStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{DynamicResource SteamForegroundMuted}" />
