@@ -61,6 +61,7 @@ To add a manual game, go to `Games` > `Add game`, choose the executable and (opt
 - Microsoft.WindowsDesktop.App.WPF
 
 ### Packages
+- CommunityToolkit.Mvvm
 - System.Drawing.Common
 - GameFinder
 

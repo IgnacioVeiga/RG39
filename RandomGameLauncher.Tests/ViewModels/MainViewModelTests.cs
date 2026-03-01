@@ -5,6 +5,7 @@ using RandomGameLauncher.Services;
 using RandomGameLauncher.ViewModels;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 
 namespace RandomGameLauncher.Tests.ViewModels;
 
@@ -45,8 +46,9 @@ public sealed class MainViewModelTests
         MainViewModel sut = CreateViewModel(catalogService, addGameDialogService);
         await WaitUntilAsync(() => !sut.IsLoading);
 
-        AsyncRelayCommand command = Assert.IsType<AsyncRelayCommand>(sut.AddGameCommand);
-        await command.ExecuteAsync();
+        ICommand command = sut.AddGameCommand;
+        command.Execute(null);
+        await WaitUntilAsync(() => catalogService.SaveCalls == 1);
 
         Assert.Single(sut.Games);
         Assert.Equal("--safe", sut.Games[0].LaunchArguments);
@@ -72,7 +74,7 @@ public sealed class MainViewModelTests
 
         Assert.Null(sut.IsAllActiveChecked);
 
-        RelayCommand toggleCommand = Assert.IsType<RelayCommand>(sut.ToggleAllActiveCommand);
+        ICommand toggleCommand = sut.ToggleAllActiveCommand;
         toggleCommand.Execute(null);
         Assert.All(sut.Games, game => Assert.True(game.Active));
         Assert.True(sut.IsAllActiveChecked);

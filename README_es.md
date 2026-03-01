@@ -62,6 +62,7 @@ Para agregar un juego manual, ve a `Juegos` > `Añadir juego`, selecciona el eje
 - Microsoft.WindowsDesktop.App.WPF
 
 ### Paquetes
+- CommunityToolkit.Mvvm
 - System.Drawing.Common
 - GameFinder
 

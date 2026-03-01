@@ -1,11 +1,12 @@
 using RandomGameLauncher.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RandomGameLauncher.Core.Abstractions;
 using RandomGameLauncher.Core.Models;
 using RandomGameLauncher.Models;
 using RandomGameLauncher.Properties;
 using RandomGameLauncher.Resources.Language;
 using RandomGameLauncher.Services;
-using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -15,7 +16,7 @@ namespace RandomGameLauncher.ViewModels;
 /// Main application view model. This type coordinates user interactions and delegates
 /// domain or infrastructure concerns to services so the UI state remains explicit.
 /// </summary>
-public partial class MainViewModel : INotifyPropertyChanged
+public partial class MainViewModel : ObservableObject
 {
     private readonly IGameCatalogService _gameCatalogService;
     private readonly IGameLauncher _gameLauncher;
@@ -53,13 +54,7 @@ public partial class MainViewModel : INotifyPropertyChanged
         get => _isAllActiveChecked;
         private set
         {
-            if (_isAllActiveChecked == value)
-            {
-                return;
-            }
-
-            _isAllActiveChecked = value;
-            OnPropertyChanged(nameof(IsAllActiveChecked));
+            SetProperty(ref _isAllActiveChecked, value);
         }
     }
 
@@ -68,15 +63,11 @@ public partial class MainViewModel : INotifyPropertyChanged
         get => _isLoading;
         private set
         {
-            if (_isLoading == value)
+            if (SetProperty(ref _isLoading, value))
             {
-                return;
+                OnPropertyChanged(nameof(StatusText));
+                RaiseCommandsCanExecuteChanged();
             }
-
-            _isLoading = value;
-            OnPropertyChanged(nameof(IsLoading));
-            OnPropertyChanged(nameof(StatusText));
-            RaiseCommandsCanExecuteChanged();
         }
     }
 
@@ -109,11 +100,11 @@ public partial class MainViewModel : INotifyPropertyChanged
         Games = [];
         Games.CollectionChanged += Games_CollectionChanged;
 
-        _playRandomGameCommand = new AsyncRelayCommand(PlayRandomGameAsync, CanUseInteractiveCommands, ShowUnhandledError);
-        _addGameCommand = new AsyncRelayCommand(AddGameAsync, CanUseInteractiveCommands, ShowUnhandledError);
-        _runGameCommand = new AsyncRelayCommand<Game>(RunGameAsync, game => game is not null && !IsLoading, ShowUnhandledError);
-        _removeGameCommand = new AsyncRelayCommand<Game>(RemoveGameAsync, game => game is not null && game.From == LibraryEnum.Other && !IsLoading, ShowUnhandledError);
-        _clearListCommand = new AsyncRelayCommand(ClearListAsync, CanUseInteractiveCommands, ShowUnhandledError);
+        _playRandomGameCommand = new AsyncRelayCommand(() => ExecuteCommandSafeAsync(PlayRandomGameAsync), CanUseInteractiveCommands);
+        _addGameCommand = new AsyncRelayCommand(() => ExecuteCommandSafeAsync(AddGameAsync), CanUseInteractiveCommands);
+        _runGameCommand = new AsyncRelayCommand<Game>(game => ExecuteCommandSafeAsync(() => RunGameAsync(game)), game => game is not null && !IsLoading);
+        _removeGameCommand = new AsyncRelayCommand<Game>(game => ExecuteCommandSafeAsync(() => RemoveGameAsync(game)), game => game is not null && game.From == LibraryEnum.Other && !IsLoading);
+        _clearListCommand = new AsyncRelayCommand(() => ExecuteCommandSafeAsync(ClearListAsync), CanUseInteractiveCommands);
         _toggleAllActiveCommand = new RelayCommand(ToggleAllActive, CanToggleAllActive);
 
         Languages = BuildLanguages(Settings.Default.Language);
@@ -123,12 +114,4 @@ public partial class MainViewModel : INotifyPropertyChanged
 
         RunBackgroundTask(InitializeAsync);
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    /// <summary>
-    /// Shared property notification helper used across partial files.
-    /// </summary>
-    private void OnPropertyChanged(string propertyName) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

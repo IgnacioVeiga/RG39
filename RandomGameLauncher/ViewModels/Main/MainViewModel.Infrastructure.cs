@@ -20,12 +20,31 @@ public partial class MainViewModel
     /// </summary>
     private void RaiseCommandsCanExecuteChanged()
     {
-        _playRandomGameCommand.RaiseCanExecuteChanged();
-        _addGameCommand.RaiseCanExecuteChanged();
-        _runGameCommand.RaiseCanExecuteChanged();
-        _removeGameCommand.RaiseCanExecuteChanged();
-        _clearListCommand.RaiseCanExecuteChanged();
-        _toggleAllActiveCommand.RaiseCanExecuteChanged();
+        _playRandomGameCommand.NotifyCanExecuteChanged();
+        _addGameCommand.NotifyCanExecuteChanged();
+        _runGameCommand.NotifyCanExecuteChanged();
+        _removeGameCommand.NotifyCanExecuteChanged();
+        _clearListCommand.NotifyCanExecuteChanged();
+        _toggleAllActiveCommand.NotifyCanExecuteChanged();
+    }
+
+    /// <summary>
+    /// Executes a command body and keeps exception reporting centralized.
+    /// </summary>
+    private async Task ExecuteCommandSafeAsync(Func<Task> taskFactory)
+    {
+        try
+        {
+            await taskFactory();
+        }
+        catch (OperationCanceledException)
+        {
+            // Ignore cancellations from stale operations.
+        }
+        catch (Exception ex)
+        {
+            ShowUnhandledError(ex);
+        }
     }
 
     /// <summary>

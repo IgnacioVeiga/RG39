@@ -19,7 +19,7 @@ Random Game Launcher is a Windows WPF application split into two layers:
 - `RandomGameLauncher/ViewModels/Main`: main workflow view model split by responsibility with partial classes.
 - `RandomGameLauncher/Views/AddGame`: add-game dialog implemented with simple code-behind (intentionally lighter than full MVVM).
 - `RandomGameLauncher/Collections`: UI-focused collection helpers (`ObservableCollectionEx`).
-- `RandomGameLauncher/Infrastructure/Commands`: reusable sync/async command implementations.
+- `CommunityToolkit.Mvvm`: MVVM commands (`RelayCommand`/`AsyncRelayCommand`) and helpers used by ViewModels.
 - `RandomGameLauncher.Tests`: tests for `MainViewModel` behavior and app-layer catalog flows.
 
 ## Data flow
