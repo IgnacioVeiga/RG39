@@ -7,7 +7,9 @@
         xmlns:properties="clr-namespace:RandomGameLauncher.Properties"
         xmlns:l="clr-namespace:RandomGameLauncher.Resources.Language"
         mc:Ignorable="d"
-        Background="{DynamicResource SteamBackground}"
+        Background="{DynamicResource SteamWindowBackground}"
+        Foreground="{DynamicResource SteamForeground}"
+        FontFamily="Segoe UI"
         Title="Random Game Launcher" MinWidth="600" MinHeight="500"
         d:Width="600" d:Height="500"
         ResizeMode="CanResizeWithGrip" SizeToContent="Width" >

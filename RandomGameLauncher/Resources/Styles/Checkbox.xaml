@@ -23,21 +23,21 @@
         </Setter>
     </Style>
 
-    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#1C222D" />
-    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#151A23" />
-    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#1995F9" />
+    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#172230" />
+    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#2A3C50" />
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#66C0F4" />
 
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#1E1F23" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#151A23" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#1995F9" />
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#203043" />
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#3D5872" />
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#8FD2FF" />
 
-    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#1E1F23" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#151A23" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#1995F9" />
+    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#132130" />
+    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#2A4B67" />
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#9CD9FF" />
     
-    <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#E6E6E6" />
-    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#BCBCBC" />
-    <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#707070" />
+    <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#222D39" />
+    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#334556" />
+    <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#5F768B" />
     
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />

@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="{x:Type StatusBar}">
-        <Setter Property="Background" Value="#2A2E33" />
+        <Setter Property="Background" Value="{DynamicResource SteamSurface}" />
         <Setter Property="Foreground" Value="{DynamicResource SteamForeground}" />
-        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SteamSurfaceElevated}" />
         <Setter Property="BorderThickness" Value="0,1,0,0" />
-        <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.StatusFontFamilyKey}}" />
-        <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.StatusFontSizeKey}}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.StatusFontStyleKey}}" />
         <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.StatusFontWeightKey}}" />
         <Setter Property="Template">

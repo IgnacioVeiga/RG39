@@ -15,22 +15,22 @@
     
     <SolidColorBrush x:Key="ScrollBar.Static.Background" Color="Transparent" />
     <SolidColorBrush x:Key="ScrollBar.Static.Border" Color="Transparent" />
-    <SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.Static.Thumb" Color="#606774" />
+    <SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#6F8AA1" />
+    <SolidColorBrush x:Key="ScrollBar.Static.Thumb" Color="#3A556C" />
     
     <SolidColorBrush x:Key="ScrollBar.MouseOver.Background" Color="Transparent" />
     <SolidColorBrush x:Key="ScrollBar.MouseOver.Border" Color="Transparent" />
-    <SolidColorBrush x:Key="ScrollBar.MouseOver.Glyph" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.MouseOver.Thumb" Color="#7B8392" />
+    <SolidColorBrush x:Key="ScrollBar.MouseOver.Glyph" Color="#9DC9E8" />
+    <SolidColorBrush x:Key="ScrollBar.MouseOver.Thumb" Color="#4F7392" />
     
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Background" Color="#606060" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Background" Color="#213345" />
     <SolidColorBrush x:Key="ScrollBar.Pressed.Border" Color="Transparent" />
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Thumb" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Glyph" Color="#7B8392" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Thumb" Color="#2F4C66" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Glyph" Color="#B3DCF7" />
     
     <SolidColorBrush x:Key="ScrollBar.Disabled.Background" Color="Transparent" />
     <SolidColorBrush x:Key="ScrollBar.Disabled.Border" Color="Transparent" />
-    <SolidColorBrush x:Key="ScrollBar.Disabled.Glyph" Color="#7B8392" />
+    <SolidColorBrush x:Key="ScrollBar.Disabled.Glyph" Color="#4B5D70" />
     
     <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
