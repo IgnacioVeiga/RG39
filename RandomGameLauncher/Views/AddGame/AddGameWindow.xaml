@@ -5,56 +5,113 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:RandomGameLauncher.Resources.Language"
         mc:Ignorable="d"
-        Background="{DynamicResource SteamBackground}"
+        Background="{DynamicResource SteamWindowBackground}"
         Foreground="{DynamicResource SteamForeground}"
+        FontFamily="Segoe UI"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
         Title="{x:Static l:Strings.ADD_GAME}"
-        Height="200"
-        Width="600">
-    <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="520" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        Height="290"
+        Width="720"
+        MinWidth="680"
+        MinHeight="280">
+    <Window.Resources>
+        <Style x:Key="DialogLabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource SteamForegroundMuted}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="DialogTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource SteamBackgroundAlt}" />
+            <Setter Property="Foreground" Value="{DynamicResource SteamForeground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SteamSurfaceElevated}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{x:Static l:Strings.PATH_EXE}" />
-
-        <TextBox x:Name="SelectedFilePathTextBox"
-                 Grid.Row="1"
-                 Grid.Column="0"
-                 Margin="0,0,0,8" />
-
-        <Button Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,0,0,8"
-                Content="{x:Static l:Strings.SEARCH}"
-                Click="BrowseExecutable_Click"
-                Style="{DynamicResource PlayGameButton}" />
-
-        <TextBlock Grid.Row="2"
-                   Grid.ColumnSpan="2"
-                   Text="{x:Static l:Strings.LAUNCH_ARGS}" />
-
-        <TextBox x:Name="LaunchArgumentsTextBox"
-                 Grid.Row="3"
-                 Grid.ColumnSpan="2" />
-
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-            <Button Content="{x:Static l:Strings.CANCEL}" Margin="60,0,30,0"
-                    IsCancel="True"
-                    Style="{DynamicResource RemoveButton}" />
-
-            <Button Content="{x:Static l:Strings.ADD}" Margin="30,0,60,0"
-                    Click="Confirm_Click"
-                    IsDefault="True"
-                    Style="{DynamicResource PlayGameButton}" />
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="{x:Static l:Strings.ADD_GAME}" FontSize="22" FontWeight="SemiBold" />
+            <TextBlock Text="{x:Static l:Strings.PATH_EXE}" Style="{StaticResource DialogLabelStyle}" Margin="0,4,0,0" />
         </StackPanel>
+
+        <Border Grid.Row="1"
+                Background="{DynamicResource SteamSurface}"
+                BorderBrush="{DynamicResource SteamSurfaceElevated}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{x:Static l:Strings.PATH_EXE}" Style="{StaticResource DialogLabelStyle}" />
+
+                <TextBox x:Name="SelectedFilePathTextBox"
+                         Grid.Row="1"
+                         Grid.Column="0"
+                         Margin="0,0,12,12"
+                         VerticalContentAlignment="Center"
+                         Style="{StaticResource DialogTextBoxStyle}" />
+
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        MinWidth="110"
+                        Height="32"
+                        Margin="0,0,0,12"
+                        Content="{x:Static l:Strings.SEARCH}"
+                        Click="BrowseExecutable_Click"
+                        Style="{DynamicResource PlayGameButton}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           Text="{x:Static l:Strings.LAUNCH_ARGS}"
+                           Style="{StaticResource DialogLabelStyle}" />
+
+                <TextBox x:Name="LaunchArgumentsTextBox"
+                         Grid.Row="3"
+                         Grid.ColumnSpan="2"
+                         Height="32"
+                         Margin="0,0,0,12"
+                         VerticalContentAlignment="Center"
+                         Style="{StaticResource DialogTextBoxStyle}" />
+
+                <Separator Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,0,12" Background="{DynamicResource SteamSurfaceElevated}" />
+
+                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{x:Static l:Strings.CANCEL}"
+                            MinWidth="110"
+                            Height="32"
+                            Margin="0,0,10,0"
+                            IsCancel="True"
+                            Style="{DynamicResource RemoveButton}" />
+
+                    <Button Content="{x:Static l:Strings.ADD}"
+                            MinWidth="140"
+                            Height="32"
+                            Click="Confirm_Click"
+                            IsDefault="True"
+                            Style="{DynamicResource PlayGameButton}" />
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
